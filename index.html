@@ -1,13 +1,1187 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mi Ciudadanía — Guía de Naturalización</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Guía interactiva en español para el proceso de naturalización a ciudadano estadounidense. 128 preguntas del examen cívico 2025, verificación de elegibilidad, y simulación de entrevista." />
+  <meta name="keywords" content="ciudadanía, naturalización, USCIS, examen cívico 2025, inmigración, español" />
+  <meta name="author" content="Gustavo Valbuena - Fundador de PeopleBot AI" />
+  <title>Mi Ciudadanía — Guía de Naturalización a EE.UU.</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🇺🇸</text></svg>" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    #root { min-height: 100vh; }
+    #loading { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #F5F5F7; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    #loading .spinner { width: 32px; height: 32px; border: 3px solid #E5E5EA; border-top-color: #0071E3; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 12px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #loading span { color: #6e6e73; font-size: 15px; }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <div id="loading"><div class="spinner"></div><span>Cargando Mi Ciudadanía...</span></div>
+  </div>
+
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
+
+  <script type="text/babel">
+const { useState, useEffect, useCallback, useMemo, useRef } = React;
+
+
+// ─── ICON SYSTEM (inline SVGs, no external dependency) ──────────────────────
+const _iconPaths = {"AlertCircle":["<circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"12\" y1=\"8\" x2=\"12\" y2=\"12\"/><line x1=\"12\" y1=\"16\" x2=\"12.01\" y2=\"16\"/>"],"ArrowLeft":["<line x1=\"19\" y1=\"12\" x2=\"5\" y2=\"12\"/><polyline points=\"12 19 5 12 12 5\"/>"],"ArrowRight":["<line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"/><polyline points=\"12 5 19 12 12 19\"/>"],"Award":["<circle cx=\"12\" cy=\"8\" r=\"6\"/><path d=\"M15.477 12.89 17 22l-5-3-5 3 1.523-9.11\"/>"],"BookOpen":["<path d=\"M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z\"/><path d=\"M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z\"/>"],"BookMarked":["<path d=\"M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20\"/><polyline points=\"10 2 10 10 13 7 16 10 16 2\"/>"],"Bookmark":["<path d=\"m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z\"/>"],"Brain":["<path d=\"M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z\"/><path d=\"M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z\"/>"],"Check":["<polyline points=\"20 6 9 17 4 12\"/>"],"CheckCircle2":["<path d=\"M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z\"/><path d=\"m9 12 2 2 4-4\"/>"],"ChevronDown":["<polyline points=\"6 9 12 15 18 9\"/>"],"ChevronLeft":["<polyline points=\"15 18 9 12 15 6\"/>"],"ChevronRight":["<polyline points=\"9 18 15 12 9 6\"/>"],"ChevronUp":["<polyline points=\"18 15 12 9 6 15\"/>"],"Circle":["<circle cx=\"12\" cy=\"12\" r=\"10\"/>"],"CircleDot":["<circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"1\"/>"],"ClipboardList":["<rect width=\"8\" height=\"4\" x=\"8\" y=\"2\" rx=\"1\" ry=\"1\"/><path d=\"M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2\"/><path d=\"M12 11h4\"/><path d=\"M12 16h4\"/><path d=\"M8 11h.01\"/><path d=\"M8 16h.01\"/>"],"Clock":["<circle cx=\"12\" cy=\"12\" r=\"10\"/><polyline points=\"12 6 12 12 16 14\"/>"],"DollarSign":["<line x1=\"12\" y1=\"2\" x2=\"12\" y2=\"22\"/><path d=\"M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6\"/>"],"Eye":["<path d=\"M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>"],"EyeOff":["<path d=\"M9.88 9.88a3 3 0 1 0 4.24 4.24\"/><path d=\"M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68\"/><path d=\"M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61\"/><line x1=\"2\" y1=\"2\" x2=\"22\" y2=\"22\"/>"],"FileText":["<path d=\"M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z\"/><polyline points=\"14 2 14 8 20 8\"/><line x1=\"16\" y1=\"13\" x2=\"8\" y2=\"13\"/><line x1=\"16\" y1=\"17\" x2=\"8\" y2=\"17\"/><line x1=\"10\" y1=\"9\" x2=\"8\" y2=\"9\"/>"],"Flag":["<path d=\"M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z\"/><line x1=\"4\" y1=\"22\" x2=\"4\" y2=\"15\"/>"],"Globe":["<circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"2\" y1=\"12\" x2=\"22\" y2=\"12\"/><path d=\"M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z\"/>"],"GraduationCap":["<path d=\"M22 10v6M2 10l10-5 10 5-10 5z\"/><path d=\"M6 12v5c0 2 2 3 6 3s6-1 6-3v-5\"/>"],"Hash":["<line x1=\"4\" y1=\"9\" x2=\"20\" y2=\"9\"/><line x1=\"4\" y1=\"15\" x2=\"20\" y2=\"15\"/><line x1=\"10\" y1=\"3\" x2=\"8\" y2=\"21\"/><line x1=\"16\" y1=\"3\" x2=\"14\" y2=\"21\"/>"],"HelpCircle":["<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3\"/><line x1=\"12\" y1=\"17\" x2=\"12.01\" y2=\"17\"/>"],"Home":["<path d=\"m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"/><polyline points=\"9 22 9 12 15 12 15 22\"/>"],"Info":["<circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"12\" y1=\"16\" x2=\"12\" y2=\"12\"/><line x1=\"12\" y1=\"8\" x2=\"12.01\" y2=\"8\"/>"],"Layers":["<polygon points=\"12 2 2 7 12 12 22 7 12 2\"/><polyline points=\"2 17 12 22 22 17\"/><polyline points=\"2 12 12 17 22 12\"/>"],"Lightbulb":["<path d=\"M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5\"/><path d=\"M9 18h6\"/><path d=\"M10 22h4\"/>"],"ListChecks":["<path d=\"m3 17 2 2 4-4\"/><path d=\"m3 7 2 2 4-4\"/><path d=\"M13 6h8\"/><path d=\"M13 12h8\"/><path d=\"M13 18h8\"/>"],"Menu":["<line x1=\"4\" y1=\"12\" x2=\"20\" y2=\"12\"/><line x1=\"4\" y1=\"6\" x2=\"20\" y2=\"6\"/><line x1=\"4\" y1=\"18\" x2=\"20\" y2=\"18\"/>"],"MessageSquare":["<path d=\"M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z\"/>"],"RotateCcw":["<path d=\"M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8\"/><path d=\"M3 3v5h5\"/>"],"Scale":["<path d=\"m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z\"/><path d=\"m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z\"/><path d=\"M7 21h10\"/><path d=\"M12 3v18\"/><path d=\"M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2\"/>"],"Search":["<circle cx=\"11\" cy=\"11\" r=\"8\"/><line x1=\"21\" y1=\"21\" x2=\"16.65\" y2=\"16.65\"/>"],"Shield":["<path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\"/>"],"Shuffle":["<polyline points=\"16 3 21 3 21 8\"/><line x1=\"4\" y1=\"20\" x2=\"21\" y2=\"3\"/><polyline points=\"21 16 21 21 16 21\"/><line x1=\"15\" y1=\"15\" x2=\"21\" y2=\"21\"/><line x1=\"4\" y1=\"4\" x2=\"9\" y2=\"9\"/>"],"Sparkles":["<path d=\"m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z\"/><path d=\"M5 3v4\"/><path d=\"M19 17v4\"/><path d=\"M3 5h4\"/><path d=\"M17 19h4\"/>"],"Star":["<polygon points=\"12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2\"/>"],"Target":["<circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"6\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/>"],"Timer":["<line x1=\"10\" y1=\"2\" x2=\"14\" y2=\"2\"/><line x1=\"12\" y1=\"14\" x2=\"12\" y2=\"8\"/><circle cx=\"12\" cy=\"14\" r=\"8\"/>"],"TrendingUp":["<polyline points=\"22 7 13.5 15.5 8.5 10.5 2 17\"/><polyline points=\"16 7 22 7 22 13\"/>"],"Users":["<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/><path d=\"M22 21v-2a4 4 0 0 0-3-3.87\"/><path d=\"M16 3.13a4 4 0 0 1 0 7.75\"/>"],"Volume2":["<polygon points=\"11 5 6 9 2 9 2 15 6 15 11 19 11 5\"/><path d=\"M15.54 8.46a5 5 0 0 1 0 7.07\"/><path d=\"M19.07 4.93a10 10 0 0 1 0 14.14\"/>"],"X":["<line x1=\"18\" y1=\"6\" x2=\"6\" y2=\"18\"/><line x1=\"6\" y1=\"6\" x2=\"18\" y2=\"18\"/>"],"Zap":["<polygon points=\"13 2 3 14 12 14 11 22 21 10 12 10 13 2\"/>"]};
+
+function _Icon({ name, size = 24, color = "currentColor", strokeWidth = 2, fill = "none", style, className, ...rest }) {
+  const paths = _iconPaths[name];
+  if (!paths) return null;
+  return React.createElement("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    width: size, height: size, viewBox: "0 0 24 24",
+    fill: fill === "none" ? "none" : fill,
+    stroke: color, strokeWidth: strokeWidth,
+    strokeLinecap: "round", strokeLinejoin: "round",
+    style: style, className: className, ...rest,
+    dangerouslySetInnerHTML: { __html: paths[0] }
+  });
+}
+
+// Create named icon components matching lucide-react API
+const AlertCircle = (props) => React.createElement(_Icon, { name: "AlertCircle", ...props });
+const ArrowLeft = (props) => React.createElement(_Icon, { name: "ArrowLeft", ...props });
+const ArrowRight = (props) => React.createElement(_Icon, { name: "ArrowRight", ...props });
+const Award = (props) => React.createElement(_Icon, { name: "Award", ...props });
+const BookOpen = (props) => React.createElement(_Icon, { name: "BookOpen", ...props });
+const BookMarked = (props) => React.createElement(_Icon, { name: "BookMarked", ...props });
+const Bookmark = (props) => React.createElement(_Icon, { name: "Bookmark", ...props });
+const Brain = (props) => React.createElement(_Icon, { name: "Brain", ...props });
+const Check = (props) => React.createElement(_Icon, { name: "Check", ...props });
+const CheckCircle2 = (props) => React.createElement(_Icon, { name: "CheckCircle2", ...props });
+const ChevronDown = (props) => React.createElement(_Icon, { name: "ChevronDown", ...props });
+const ChevronLeft = (props) => React.createElement(_Icon, { name: "ChevronLeft", ...props });
+const ChevronRight = (props) => React.createElement(_Icon, { name: "ChevronRight", ...props });
+const ChevronUp = (props) => React.createElement(_Icon, { name: "ChevronUp", ...props });
+const Circle = (props) => React.createElement(_Icon, { name: "Circle", ...props });
+const CircleDot = (props) => React.createElement(_Icon, { name: "CircleDot", ...props });
+const ClipboardList = (props) => React.createElement(_Icon, { name: "ClipboardList", ...props });
+const Clock = (props) => React.createElement(_Icon, { name: "Clock", ...props });
+const DollarSign = (props) => React.createElement(_Icon, { name: "DollarSign", ...props });
+const Eye = (props) => React.createElement(_Icon, { name: "Eye", ...props });
+const EyeOff = (props) => React.createElement(_Icon, { name: "EyeOff", ...props });
+const FileText = (props) => React.createElement(_Icon, { name: "FileText", ...props });
+const Flag = (props) => React.createElement(_Icon, { name: "Flag", ...props });
+const Globe = (props) => React.createElement(_Icon, { name: "Globe", ...props });
+const GraduationCap = (props) => React.createElement(_Icon, { name: "GraduationCap", ...props });
+const Hash = (props) => React.createElement(_Icon, { name: "Hash", ...props });
+const HelpCircle = (props) => React.createElement(_Icon, { name: "HelpCircle", ...props });
+const Home = (props) => React.createElement(_Icon, { name: "Home", ...props });
+const Info = (props) => React.createElement(_Icon, { name: "Info", ...props });
+const Layers = (props) => React.createElement(_Icon, { name: "Layers", ...props });
+const Lightbulb = (props) => React.createElement(_Icon, { name: "Lightbulb", ...props });
+const ListChecks = (props) => React.createElement(_Icon, { name: "ListChecks", ...props });
+const Menu = (props) => React.createElement(_Icon, { name: "Menu", ...props });
+const MessageSquare = (props) => React.createElement(_Icon, { name: "MessageSquare", ...props });
+const RotateCcw = (props) => React.createElement(_Icon, { name: "RotateCcw", ...props });
+const Scale = (props) => React.createElement(_Icon, { name: "Scale", ...props });
+const Search = (props) => React.createElement(_Icon, { name: "Search", ...props });
+const Shield = (props) => React.createElement(_Icon, { name: "Shield", ...props });
+const Shuffle = (props) => React.createElement(_Icon, { name: "Shuffle", ...props });
+const Sparkles = (props) => React.createElement(_Icon, { name: "Sparkles", ...props });
+const Star = (props) => React.createElement(_Icon, { name: "Star", ...props });
+const Target = (props) => React.createElement(_Icon, { name: "Target", ...props });
+const Timer = (props) => React.createElement(_Icon, { name: "Timer", ...props });
+const TrendingUp = (props) => React.createElement(_Icon, { name: "TrendingUp", ...props });
+const Users = (props) => React.createElement(_Icon, { name: "Users", ...props });
+const Volume2 = (props) => React.createElement(_Icon, { name: "Volume2", ...props });
+const X = (props) => React.createElement(_Icon, { name: "X", ...props });
+const Zap = (props) => React.createElement(_Icon, { name: "Zap", ...props });
+
+
+
+// ─── DATA ────────────────────────────────────────────────────────────────────
+
+const CIVICS_QUESTIONS = [
+  // AMERICAN GOVERNMENT - A: Principles of American Government
+  { id: 1, section: "Gobierno Americano", subsection: "Principios", q_en: "What is the form of government of the United States?", q_es: "¿Cuál es la forma de gobierno de los Estados Unidos?", answers_en: ["Republic", "Constitution-based federal republic", "Representative democracy"], answers_es: ["República", "República federal basada en la Constitución", "Democracia representativa"], starred: false },
+  { id: 2, section: "Gobierno Americano", subsection: "Principios", q_en: "What is the supreme law of the land?", q_es: "¿Cuál es la ley suprema del país?", answers_en: ["(U.S.) Constitution"], answers_es: ["La Constitución (de EE.UU.)"], starred: true },
+  { id: 3, section: "Gobierno Americano", subsection: "Principios", q_en: "Name one thing the U.S. Constitution does.", q_es: "Nombre una cosa que hace la Constitución de EE.UU.", answers_en: ["Forms the government", "Defines powers of government", "Defines the parts of government", "Protects the rights of the people"], answers_es: ["Forma el gobierno", "Define los poderes del gobierno", "Define las partes del gobierno", "Protege los derechos del pueblo"], starred: false },
+  { id: 4, section: "Gobierno Americano", subsection: "Principios", q_en: "The U.S. Constitution starts with the words 'We the People.' What does 'We the People' mean?", q_es: "La Constitución de EE.UU. comienza con las palabras 'We the People' (Nosotros el Pueblo). ¿Qué significa?", answers_en: ["Self-government", "Popular sovereignty", "Consent of the governed", "People should govern themselves", "(Example of) social contract"], answers_es: ["Autogobierno", "Soberanía popular", "Consentimiento de los gobernados", "El pueblo debe gobernarse a sí mismo", "(Ejemplo de) contrato social"], starred: false },
+  { id: 5, section: "Gobierno Americano", subsection: "Principios", q_en: "How are changes made to the U.S. Constitution?", q_es: "¿Cómo se hacen cambios a la Constitución de EE.UU.?", answers_en: ["Amendments", "The amendment process"], answers_es: ["Enmiendas", "El proceso de enmiendas"], starred: false },
+  { id: 6, section: "Gobierno Americano", subsection: "Principios", q_en: "What does the Bill of Rights protect?", q_es: "¿Qué protege la Declaración de Derechos (Bill of Rights)?", answers_en: ["(The basic) rights of Americans", "(The basic) rights of people living in the United States"], answers_es: ["Los derechos (básicos) de los estadounidenses", "Los derechos (básicos) de las personas que viven en EE.UU."], starred: false },
+  { id: 7, section: "Gobierno Americano", subsection: "Principios", q_en: "How many amendments does the U.S. Constitution have?", q_es: "¿Cuántas enmiendas tiene la Constitución de EE.UU.?", answers_en: ["Twenty-seven (27)"], answers_es: ["Veintisiete (27)"], starred: true },
+  { id: 8, section: "Gobierno Americano", subsection: "Principios", q_en: "Why is the Declaration of Independence important?", q_es: "¿Por qué es importante la Declaración de Independencia?", answers_en: ["It says America is free from British control.", "It says all people are created equal.", "It identifies inherent rights.", "It identifies individual freedoms."], answers_es: ["Dice que América es libre del control británico.", "Dice que todas las personas son creadas iguales.", "Identifica derechos inherentes.", "Identifica libertades individuales."], starred: false },
+  { id: 9, section: "Gobierno Americano", subsection: "Principios", q_en: "What founding document said the American colonies were free from Britain?", q_es: "¿Qué documento fundacional dijo que las colonias americanas eran libres de Gran Bretaña?", answers_en: ["Declaration of Independence"], answers_es: ["La Declaración de Independencia"], starred: false },
+  { id: 10, section: "Gobierno Americano", subsection: "Principios", q_en: "Name two important ideas from the Declaration of Independence and the U.S. Constitution.", q_es: "Nombre dos ideas importantes de la Declaración de Independencia y la Constitución de EE.UU.", answers_en: ["Equality", "Liberty", "Social contract", "Natural rights", "Limited government", "Self-government"], answers_es: ["Igualdad", "Libertad", "Contrato social", "Derechos naturales", "Gobierno limitado", "Autogobierno"], starred: false },
+  { id: 11, section: "Gobierno Americano", subsection: "Principios", q_en: "The words 'Life, Liberty, and the pursuit of Happiness' are in what founding document?", q_es: "Las palabras 'Vida, Libertad y la búsqueda de la Felicidad' están en qué documento fundacional?", answers_en: ["Declaration of Independence"], answers_es: ["La Declaración de Independencia"], starred: false },
+  { id: 12, section: "Gobierno Americano", subsection: "Principios", q_en: "What is the economic system of the United States?", q_es: "¿Cuál es el sistema económico de los Estados Unidos?", answers_en: ["Capitalism", "Free market economy"], answers_es: ["Capitalismo", "Economía de libre mercado"], starred: true },
+  { id: 13, section: "Gobierno Americano", subsection: "Principios", q_en: "What is the rule of law?", q_es: "¿Qué es el estado de derecho?", answers_en: ["Everyone must follow the law.", "Leaders must obey the law.", "Government must obey the law.", "No one is above the law."], answers_es: ["Todos deben seguir la ley.", "Los líderes deben obedecer la ley.", "El gobierno debe obedecer la ley.", "Nadie está por encima de la ley."], starred: false },
+  { id: 14, section: "Gobierno Americano", subsection: "Principios", q_en: "Many documents influenced the U.S. Constitution. Name one.", q_es: "Muchos documentos influyeron en la Constitución de EE.UU. Nombre uno.", answers_en: ["Declaration of Independence", "Articles of Confederation", "Federalist Papers", "Anti-Federalist Papers", "Virginia Declaration of Rights", "Fundamental Orders of Connecticut", "Mayflower Compact", "Iroquois Great Law of Peace"], answers_es: ["Declaración de Independencia", "Artículos de la Confederación", "Los Documentos Federalistas", "Los Documentos Anti-Federalistas", "Declaración de Derechos de Virginia", "Órdenes Fundamentales de Connecticut", "Pacto del Mayflower", "Gran Ley de Paz Iroquesa"], starred: false },
+  { id: 15, section: "Gobierno Americano", subsection: "Principios", q_en: "There are three branches of government. Why?", q_es: "Hay tres ramas del gobierno. ¿Por qué?", answers_en: ["So one part does not become too powerful", "Checks and balances", "Separation of powers"], answers_es: ["Para que una parte no se vuelva demasiado poderosa", "Controles y equilibrios", "Separación de poderes"], starred: false },
+  // B: System of Government
+  { id: 16, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "Name the three branches of government.", q_es: "Nombre las tres ramas del gobierno.", answers_en: ["Legislative, executive, and judicial", "Congress, president, and the courts"], answers_es: ["Legislativa, ejecutiva y judicial", "Congreso, presidente y los tribunales"], starred: false },
+  { id: 17, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "The President of the United States is in charge of which branch of government?", q_es: "¿De qué rama del gobierno está a cargo el Presidente de EE.UU.?", answers_en: ["Executive branch"], answers_es: ["La rama ejecutiva"], starred: false },
+  { id: 18, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "What part of the federal government writes laws?", q_es: "¿Qué parte del gobierno federal escribe las leyes?", answers_en: ["(U.S.) Congress", "(U.S. or national) legislature", "Legislative branch"], answers_es: ["El Congreso (de EE.UU.)", "La legislatura (de EE.UU. o nacional)", "La rama legislativa"], starred: false },
+  { id: 19, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "What are the two parts of the U.S. Congress?", q_es: "¿Cuáles son las dos partes del Congreso de EE.UU.?", answers_en: ["Senate and House (of Representatives)"], answers_es: ["El Senado y la Cámara de Representantes"], starred: false },
+  { id: 20, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "Name one power of the U.S. Congress.", q_es: "Nombre un poder del Congreso de EE.UU.", answers_en: ["Writes laws", "Declares war", "Makes the federal budget"], answers_es: ["Escribe leyes", "Declara la guerra", "Hace el presupuesto federal"], starred: true },
+  { id: 21, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "How many U.S. senators are there?", q_es: "¿Cuántos senadores de EE.UU. hay?", answers_en: ["One hundred (100)"], answers_es: ["Cien (100)"], starred: false },
+  { id: 22, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "How long is a term for a U.S. senator?", q_es: "¿Cuánto dura el período de un senador de EE.UU.?", answers_en: ["Six (6) years"], answers_es: ["Seis (6) años"], starred: false },
+  { id: 23, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "Who is one of your state's U.S. senators now?", q_es: "¿Quién es uno de los senadores de EE.UU. de su estado actualmente?", answers_en: ["Answers will vary by state."], answers_es: ["Las respuestas varían según el estado."], starred: false },
+  { id: 24, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "How many voting members are in the House of Representatives?", q_es: "¿Cuántos miembros con derecho a voto hay en la Cámara de Representantes?", answers_en: ["Four hundred thirty-five (435)"], answers_es: ["Cuatrocientos treinta y cinco (435)"], starred: false },
+  { id: 25, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "How long is a term for a member of the House of Representatives?", q_es: "¿Cuánto dura el período de un miembro de la Cámara de Representantes?", answers_en: ["Two (2) years"], answers_es: ["Dos (2) años"], starred: false },
+  { id: 26, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "Why do U.S. representatives serve shorter terms than U.S. senators?", q_es: "¿Por qué los representantes de EE.UU. sirven períodos más cortos que los senadores?", answers_en: ["To more closely follow public opinion"], answers_es: ["Para seguir más de cerca la opinión pública"], starred: false },
+  { id: 27, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "How many senators does each state have?", q_es: "¿Cuántos senadores tiene cada estado?", answers_en: ["Two (2)"], answers_es: ["Dos (2)"], starred: false },
+  { id: 28, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "Why does each state have two senators?", q_es: "¿Por qué cada estado tiene dos senadores?", answers_en: ["Equal representation (for small states)", "The Great Compromise (Connecticut Compromise)"], answers_es: ["Representación igualitaria (para estados pequeños)", "El Gran Compromiso (Compromiso de Connecticut)"], starred: false },
+  { id: 29, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "Name your U.S. representative.", q_es: "Nombre a su representante de EE.UU.", answers_en: ["Answers will vary by district."], answers_es: ["Las respuestas varían según el distrito."], starred: false },
+  { id: 30, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "What is the name of the Speaker of the House of Representatives now?", q_es: "¿Cuál es el nombre del Presidente de la Cámara de Representantes ahora?", answers_en: ["Visit uscis.gov/citizenship/testupdates for current answer."], answers_es: ["Visite uscis.gov/citizenship/testupdates para la respuesta actual."], starred: true },
+  { id: 31, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "Who does a U.S. senator represent?", q_es: "¿A quién representa un senador de EE.UU.?", answers_en: ["Citizens of their state", "People of their state"], answers_es: ["Los ciudadanos de su estado", "Las personas de su estado"], starred: false },
+  { id: 32, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "Who elects U.S. senators?", q_es: "¿Quién elige a los senadores de EE.UU.?", answers_en: ["Citizens from their state"], answers_es: ["Los ciudadanos de su estado"], starred: false },
+  { id: 33, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "Who does a member of the House of Representatives represent?", q_es: "¿A quién representa un miembro de la Cámara de Representantes?", answers_en: ["Citizens in their (congressional) district"], answers_es: ["Los ciudadanos de su distrito (congresional)"], starred: false },
+  { id: 34, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "Who elects members of the House of Representatives?", q_es: "¿Quién elige a los miembros de la Cámara de Representantes?", answers_en: ["Citizens from their (congressional) district"], answers_es: ["Los ciudadanos de su distrito (congresional)"], starred: false },
+  { id: 35, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "Some states have more representatives than other states. Why?", q_es: "Algunos estados tienen más representantes que otros. ¿Por qué?", answers_en: ["(Because of) the state's population", "(Because) they have more people"], answers_es: ["(Por) la población del estado", "(Porque) tienen más personas"], starred: false },
+  { id: 36, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "The President of the United States is elected for how many years?", q_es: "¿Para cuántos años es elegido el Presidente de EE.UU.?", answers_en: ["Four (4) years"], answers_es: ["Cuatro (4) años"], starred: true },
+  { id: 37, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "The President of the United States can serve only two terms. Why?", q_es: "El Presidente de EE.UU. solo puede servir dos períodos. ¿Por qué?", answers_en: ["(Because of) the 22nd Amendment", "To keep the president from becoming too powerful"], answers_es: ["(Por) la Enmienda 22", "Para evitar que el presidente se vuelva demasiado poderoso"], starred: false },
+  { id: 38, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "What is the name of the President of the United States now?", q_es: "¿Cuál es el nombre del Presidente de EE.UU. ahora?", answers_en: ["Visit uscis.gov/citizenship/testupdates for current answer."], answers_es: ["Visite uscis.gov/citizenship/testupdates para la respuesta actual."], starred: true },
+  { id: 39, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "What is the name of the Vice President of the United States now?", q_es: "¿Cuál es el nombre del Vicepresidente de EE.UU. ahora?", answers_en: ["Visit uscis.gov/citizenship/testupdates for current answer."], answers_es: ["Visite uscis.gov/citizenship/testupdates para la respuesta actual."], starred: true },
+  { id: 40, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "If the president can no longer serve, who becomes president?", q_es: "Si el presidente ya no puede servir, ¿quién se convierte en presidente?", answers_en: ["The Vice President (of the United States)"], answers_es: ["El Vicepresidente (de los Estados Unidos)"], starred: false },
+  { id: 41, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "Name one power of the president.", q_es: "Nombre un poder del presidente.", answers_en: ["Signs bills into law", "Vetoes bills", "Enforces laws", "Commander in Chief (of the military)", "Chief diplomat", "Appoints federal judges"], answers_es: ["Firma proyectos de ley", "Veta proyectos de ley", "Hace cumplir las leyes", "Comandante en Jefe (de las fuerzas armadas)", "Diplomático principal", "Nombra jueces federales"], starred: false },
+  { id: 42, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "Who is Commander in Chief of the U.S. military?", q_es: "¿Quién es el Comandante en Jefe del ejército de EE.UU.?", answers_en: ["The President (of the United States)"], answers_es: ["El Presidente (de los Estados Unidos)"], starred: false },
+  { id: 43, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "Who signs bills to become laws?", q_es: "¿Quién firma los proyectos de ley para convertirlos en ley?", answers_en: ["The President (of the United States)"], answers_es: ["El Presidente (de los Estados Unidos)"], starred: false },
+  { id: 44, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "Who vetoes bills?", q_es: "¿Quién veta los proyectos de ley?", answers_en: ["The President (of the United States)"], answers_es: ["El Presidente (de los Estados Unidos)"], starred: true },
+  { id: 45, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "Who appoints federal judges?", q_es: "¿Quién nombra a los jueces federales?", answers_en: ["The President (of the United States)"], answers_es: ["El Presidente (de los Estados Unidos)"], starred: false },
+  { id: 46, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "The executive branch has many parts. Name one.", q_es: "La rama ejecutiva tiene muchas partes. Nombre una.", answers_en: ["President (of the United States)", "Cabinet", "Federal departments and agencies"], answers_es: ["El Presidente", "El Gabinete", "Departamentos y agencias federales"], starred: false },
+  { id: 47, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "What does the President's Cabinet do?", q_es: "¿Qué hace el Gabinete del Presidente?", answers_en: ["Advises the President (of the United States)"], answers_es: ["Aconseja al Presidente (de los Estados Unidos)"], starred: false },
+  { id: 48, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "What are two Cabinet-level positions?", q_es: "¿Cuáles son dos posiciones a nivel de Gabinete?", answers_en: ["Attorney General", "Secretary of State", "Secretary of the Treasury", "Secretary of Defense", "Secretary of Education", "Secretary of Energy", "Secretary of Health and Human Services", "Secretary of Homeland Security"], answers_es: ["Fiscal General", "Secretario de Estado", "Secretario del Tesoro", "Secretario de Defensa", "Secretario de Educación", "Secretario de Energía", "Secretario de Salud y Servicios Humanos", "Secretario de Seguridad Nacional"], starred: false },
+  { id: 49, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "Why is the Electoral College important?", q_es: "¿Por qué es importante el Colegio Electoral?", answers_en: ["It decides who is elected president.", "It provides a compromise between the popular election of the president and congressional selection."], answers_es: ["Decide quién es elegido presidente.", "Provee un compromiso entre la elección popular del presidente y la selección congresional."], starred: false },
+  { id: 50, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "What is one part of the judicial branch?", q_es: "¿Cuál es una parte de la rama judicial?", answers_en: ["Supreme Court", "Federal Courts"], answers_es: ["La Corte Suprema", "Los Tribunales Federales"], starred: false },
+  { id: 51, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "What does the judicial branch do?", q_es: "¿Qué hace la rama judicial?", answers_en: ["Reviews laws", "Explains laws", "Resolves disputes (disagreements) about the law", "Decides if a law goes against the (U.S.) Constitution"], answers_es: ["Revisa leyes", "Explica leyes", "Resuelve disputas sobre la ley", "Decide si una ley va contra la Constitución"], starred: false },
+  { id: 52, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "What is the highest court in the United States?", q_es: "¿Cuál es el tribunal más alto de los Estados Unidos?", answers_en: ["Supreme Court"], answers_es: ["La Corte Suprema"], starred: true },
+  { id: 53, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "How many seats are on the Supreme Court?", q_es: "¿Cuántos asientos hay en la Corte Suprema?", answers_en: ["Nine (9)"], answers_es: ["Nueve (9)"], starred: false },
+  { id: 54, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "How many Supreme Court justices are usually needed to decide a case?", q_es: "¿Cuántos jueces de la Corte Suprema se necesitan generalmente para decidir un caso?", answers_en: ["Five (5)"], answers_es: ["Cinco (5)"], starred: false },
+  { id: 55, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "How long do Supreme Court justices serve?", q_es: "¿Cuánto tiempo sirven los jueces de la Corte Suprema?", answers_en: ["(For) life", "Lifetime appointment", "(Until) retirement"], answers_es: ["De por vida", "Nombramiento vitalicio", "(Hasta la) jubilación"], starred: false },
+  { id: 56, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "Supreme Court justices serve for life. Why?", q_es: "Los jueces de la Corte Suprema sirven de por vida. ¿Por qué?", answers_en: ["To be independent (of politics)", "To limit outside (political) influence"], answers_es: ["Para ser independientes (de la política)", "Para limitar la influencia externa (política)"], starred: false },
+  { id: 57, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "Who is the Chief Justice of the United States now?", q_es: "¿Quién es el Presidente de la Corte Suprema de EE.UU. ahora?", answers_en: ["Visit uscis.gov/citizenship/testupdates for current answer."], answers_es: ["Visite uscis.gov/citizenship/testupdates para la respuesta actual."], starred: false },
+  { id: 58, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "Name one power that is only for the federal government.", q_es: "Nombre un poder que es solo del gobierno federal.", answers_en: ["Print paper money", "Mint coins", "Declare war", "Create an army", "Make treaties", "Set foreign policy"], answers_es: ["Imprimir billetes", "Acuñar monedas", "Declarar la guerra", "Crear un ejército", "Hacer tratados", "Establecer política exterior"], starred: false },
+  { id: 59, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "Name one power that is only for the states.", q_es: "Nombre un poder que es solo de los estados.", answers_en: ["Provide schooling and education", "Provide protection (police)", "Provide safety (fire departments)", "Give a driver's license", "Approve zoning and land use"], answers_es: ["Proveer educación", "Proveer protección (policía)", "Proveer seguridad (bomberos)", "Dar licencia de conducir", "Aprobar zonificación y uso de tierra"], starred: false },
+  { id: 60, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "What is the purpose of the 10th Amendment?", q_es: "¿Cuál es el propósito de la Enmienda 10?", answers_en: ["(It states that the) powers not given to the federal government belong to the states or to the people."], answers_es: ["(Establece que) los poderes no otorgados al gobierno federal pertenecen a los estados o al pueblo."], starred: false },
+  { id: 61, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "Who is the governor of your state now?", q_es: "¿Quién es el gobernador de su estado ahora?", answers_en: ["Answers will vary by state."], answers_es: ["Las respuestas varían según el estado."], starred: true },
+  { id: 62, section: "Gobierno Americano", subsection: "Sistema de Gobierno", q_en: "What is the capital of your state?", q_es: "¿Cuál es la capital de su estado?", answers_en: ["Answers will vary by state."], answers_es: ["Las respuestas varían según el estado."], starred: false },
+  // C: Rights and Responsibilities
+  { id: 63, section: "Gobierno Americano", subsection: "Derechos y Responsabilidades", q_en: "There are four amendments to the U.S. Constitution about who can vote. Describe one of them.", q_es: "Hay cuatro enmiendas a la Constitución sobre quién puede votar. Describa una.", answers_en: ["Citizens eighteen (18) and older (can vote).", "You don't have to pay (a poll tax) to vote.", "Any citizen can vote. (Women and men can vote.)", "A male citizen of any race (can vote)."], answers_es: ["Los ciudadanos de dieciocho (18) años o más pueden votar.", "No tiene que pagar un impuesto para votar.", "Cualquier ciudadano puede votar. (Mujeres y hombres pueden votar.)", "Un ciudadano masculino de cualquier raza puede votar."], starred: false },
+  { id: 64, section: "Gobierno Americano", subsection: "Derechos y Responsabilidades", q_en: "Who can vote in federal elections, run for federal office, and serve on a jury in the United States?", q_es: "¿Quién puede votar en elecciones federales, postularse para un cargo federal y servir en un jurado?", answers_en: ["Citizens", "Citizens of the United States", "U.S. citizens"], answers_es: ["Los ciudadanos", "Los ciudadanos de los Estados Unidos", "Los ciudadanos estadounidenses"], starred: false },
+  { id: 65, section: "Gobierno Americano", subsection: "Derechos y Responsabilidades", q_en: "What are three rights of everyone living in the United States?", q_es: "¿Cuáles son tres derechos de todos los que viven en los Estados Unidos?", answers_en: ["Freedom of expression", "Freedom of speech", "Freedom of assembly", "Freedom to petition the government", "Freedom of religion", "The right to bear arms"], answers_es: ["Libertad de expresión", "Libertad de palabra", "Libertad de reunión", "Libertad de petición al gobierno", "Libertad de religión", "El derecho a portar armas"], starred: false },
+  { id: 66, section: "Gobierno Americano", subsection: "Derechos y Responsabilidades", q_en: "What do we show loyalty to when we say the Pledge of Allegiance?", q_es: "¿A qué mostramos lealtad cuando decimos el Juramento de Lealtad?", answers_en: ["The United States", "The flag"], answers_es: ["Los Estados Unidos", "La bandera"], starred: true },
+  { id: 67, section: "Gobierno Americano", subsection: "Derechos y Responsabilidades", q_en: "Name two promises that new citizens make in the Oath of Allegiance.", q_es: "Nombre dos promesas que los nuevos ciudadanos hacen en el Juramento de Lealtad.", answers_en: ["Give up loyalty to other countries", "Defend the (U.S.) Constitution", "Obey the laws of the United States", "Serve in the military (if needed)", "Serve (help, do important work for) the nation (if needed)", "Be loyal to the United States"], answers_es: ["Renunciar a la lealtad a otros países", "Defender la Constitución", "Obedecer las leyes de EE.UU.", "Servir en las fuerzas armadas (si es necesario)", "Servir a la nación (si es necesario)", "Ser leal a los Estados Unidos"], starred: false },
+  { id: 68, section: "Gobierno Americano", subsection: "Derechos y Responsabilidades", q_en: "How can people become United States citizens?", q_es: "¿Cómo pueden las personas convertirse en ciudadanos de EE.UU.?", answers_en: ["Be born in the United States", "Naturalize", "Derive citizenship (under conditions set by Congress)"], answers_es: ["Nacer en los Estados Unidos", "Naturalizarse", "Derivar ciudadanía (bajo condiciones establecidas por el Congreso)"], starred: false },
+  { id: 69, section: "Gobierno Americano", subsection: "Derechos y Responsabilidades", q_en: "What are two examples of civic participation in the United States?", q_es: "¿Cuáles son dos ejemplos de participación cívica en EE.UU.?", answers_en: ["Vote", "Run for office", "Join a political party", "Help with a campaign", "Join a civic group", "Join a community group", "Give an elected official your opinion (on an issue)", "Contact elected officials", "Support or oppose an issue or policy", "Write to a newspaper"], answers_es: ["Votar", "Postularse para un cargo", "Unirse a un partido político", "Ayudar con una campaña", "Unirse a un grupo cívico", "Unirse a un grupo comunitario", "Dar su opinión a un funcionario electo", "Contactar funcionarios electos", "Apoyar u oponerse a un asunto o política", "Escribir a un periódico"], starred: false },
+  { id: 70, section: "Gobierno Americano", subsection: "Derechos y Responsabilidades", q_en: "What is one way Americans can serve their country?", q_es: "¿Cuál es una forma en que los estadounidenses pueden servir a su país?", answers_en: ["Vote", "Pay taxes", "Obey the law", "Serve in the military", "Run for office", "Work for local, state, or federal government"], answers_es: ["Votar", "Pagar impuestos", "Obedecer la ley", "Servir en las fuerzas armadas", "Postularse para un cargo", "Trabajar para el gobierno"], starred: false },
+  { id: 71, section: "Gobierno Americano", subsection: "Derechos y Responsabilidades", q_en: "Why is it important to pay federal taxes?", q_es: "¿Por qué es importante pagar impuestos federales?", answers_en: ["Required by law", "All people pay to fund the federal government", "Required by the (U.S.) Constitution (16th Amendment)", "Civic duty"], answers_es: ["Es requerido por ley", "Todos pagan para financiar el gobierno federal", "Es requerido por la Constitución (Enmienda 16)", "Deber cívico"], starred: false },
+  { id: 72, section: "Gobierno Americano", subsection: "Derechos y Responsabilidades", q_en: "It is important for all men age 18 through 25 to register for the Selective Service. Name one reason why.", q_es: "Es importante que todos los hombres de 18 a 25 años se registren en el Servicio Selectivo. Nombre una razón.", answers_en: ["Required by law", "Civic duty", "Makes the draft fair, if needed"], answers_es: ["Es requerido por ley", "Deber cívico", "Hace el reclutamiento justo, si es necesario"], starred: false },
+  // AMERICAN HISTORY
+  { id: 73, section: "Historia Americana", subsection: "Periodo Colonial e Independencia", q_en: "The colonists came to America for many reasons. Name one.", q_es: "Los colonos vinieron a América por muchas razones. Nombre una.", answers_en: ["Freedom", "Political liberty", "Religious freedom", "Economic opportunity", "Escape persecution"], answers_es: ["Libertad", "Libertad política", "Libertad religiosa", "Oportunidad económica", "Escapar de la persecución"], starred: false },
+  { id: 74, section: "Historia Americana", subsection: "Periodo Colonial e Independencia", q_en: "Who lived in America before the Europeans arrived?", q_es: "¿Quiénes vivían en América antes de que llegaran los europeos?", answers_en: ["American Indians", "Native Americans"], answers_es: ["Los indios americanos", "Los nativos americanos"], starred: true },
+  { id: 75, section: "Historia Americana", subsection: "Periodo Colonial e Independencia", q_en: "What group of people was taken and sold as slaves?", q_es: "¿Qué grupo de personas fue tomado y vendido como esclavos?", answers_en: ["Africans", "People from Africa"], answers_es: ["Africanos", "Personas de África"], starred: false },
+  { id: 76, section: "Historia Americana", subsection: "Periodo Colonial e Independencia", q_en: "What war did the Americans fight to win independence from Britain?", q_es: "¿Qué guerra pelearon los americanos para ganar la independencia de Gran Bretaña?", answers_en: ["American Revolution", "The (American) Revolutionary War", "War for (American) Independence"], answers_es: ["La Revolución Americana", "La Guerra Revolucionaria (Americana)", "La Guerra por la Independencia (Americana)"], starred: false },
+  { id: 77, section: "Historia Americana", subsection: "Periodo Colonial e Independencia", q_en: "Name one reason why the Americans declared independence from Britain.", q_es: "Nombre una razón por la que los americanos declararon la independencia de Gran Bretaña.", answers_en: ["High taxes", "Taxation without representation", "British soldiers stayed in Americans' houses", "They did not have self-government", "Boston Massacre", "Boston Tea Party (Tea Act)", "Stamp Act", "Sugar Act", "Townshend Acts", "Intolerable (Coercive) Acts"], answers_es: ["Impuestos altos", "Impuestos sin representación", "Los soldados británicos se alojaban en casas americanas", "No tenían autogobierno", "La Masacre de Boston", "El Motín del Té de Boston", "La Ley del Timbre", "La Ley del Azúcar", "Las Leyes de Townshend", "Las Leyes Intolerables"], starred: false },
+  { id: 78, section: "Historia Americana", subsection: "Periodo Colonial e Independencia", q_en: "Who wrote the Declaration of Independence?", q_es: "¿Quién escribió la Declaración de Independencia?", answers_en: ["(Thomas) Jefferson"], answers_es: ["(Thomas) Jefferson"], starred: true },
+  { id: 79, section: "Historia Americana", subsection: "Periodo Colonial e Independencia", q_en: "When was the Declaration of Independence adopted?", q_es: "¿Cuándo fue adoptada la Declaración de Independencia?", answers_en: ["July 4, 1776"], answers_es: ["4 de julio de 1776"], starred: false },
+  { id: 80, section: "Historia Americana", subsection: "Periodo Colonial e Independencia", q_en: "The American Revolution had many important events. Name one.", q_es: "La Revolución Americana tuvo muchos eventos importantes. Nombre uno.", answers_en: ["(Battle of) Bunker Hill", "Declaration of Independence", "Washington Crossing the Delaware (Battle of Trenton)", "(Battle of) Saratoga", "Valley Forge (Encampment)", "(Battle of) Yorktown"], answers_es: ["(Batalla de) Bunker Hill", "Declaración de Independencia", "Washington cruzando el Delaware (Batalla de Trenton)", "(Batalla de) Saratoga", "Valley Forge (Campamento)", "(Batalla de) Yorktown"], starred: false },
+  { id: 81, section: "Historia Americana", subsection: "Periodo Colonial e Independencia", q_en: "There were 13 original states. Name five.", q_es: "Había 13 estados originales. Nombre cinco.", answers_en: ["New Hampshire", "Massachusetts", "Rhode Island", "Connecticut", "New York", "New Jersey", "Pennsylvania", "Delaware", "Maryland", "Virginia", "North Carolina", "South Carolina", "Georgia"], answers_es: ["New Hampshire", "Massachusetts", "Rhode Island", "Connecticut", "New York", "New Jersey", "Pennsylvania", "Delaware", "Maryland", "Virginia", "Carolina del Norte", "Carolina del Sur", "Georgia"], starred: false },
+  { id: 82, section: "Historia Americana", subsection: "Periodo Colonial e Independencia", q_en: "What founding document was written in 1787?", q_es: "¿Qué documento fundacional fue escrito en 1787?", answers_en: ["(U.S.) Constitution"], answers_es: ["La Constitución (de EE.UU.)"], starred: false },
+  { id: 83, section: "Historia Americana", subsection: "Periodo Colonial e Independencia", q_en: "The Federalist Papers supported the passage of the U.S. Constitution. Name one of the writers.", q_es: "Los Documentos Federalistas apoyaron la aprobación de la Constitución. Nombre uno de los escritores.", answers_en: ["(James) Madison", "(Alexander) Hamilton", "(John) Jay", "Publius"], answers_es: ["(James) Madison", "(Alexander) Hamilton", "(John) Jay", "Publius"], starred: false },
+  { id: 84, section: "Historia Americana", subsection: "Periodo Colonial e Independencia", q_en: "Why were the Federalist Papers important?", q_es: "¿Por qué fueron importantes los Documentos Federalistas?", answers_en: ["They helped people understand the (U.S.) Constitution.", "They supported passing the (U.S.) Constitution."], answers_es: ["Ayudaron a las personas a entender la Constitución.", "Apoyaron la aprobación de la Constitución."], starred: false },
+  { id: 85, section: "Historia Americana", subsection: "Periodo Colonial e Independencia", q_en: "Benjamin Franklin is famous for many things. Name one.", q_es: "Benjamin Franklin es famoso por muchas cosas. Nombre una.", answers_en: ["Founded the first free public libraries", "First Postmaster General of the United States", "Helped write the Declaration of Independence", "Inventor", "U.S. diplomat"], answers_es: ["Fundó las primeras bibliotecas públicas gratuitas", "Primer Director General de Correos de EE.UU.", "Ayudó a escribir la Declaración de Independencia", "Inventor", "Diplomático de EE.UU."], starred: false },
+  { id: 86, section: "Historia Americana", subsection: "Periodo Colonial e Independencia", q_en: "George Washington is famous for many things. Name one.", q_es: "George Washington es famoso por muchas cosas. Nombre una.", answers_en: ['"Father of Our Country"', "First president of the United States", "General of the Continental Army", "President of the Constitutional Convention"], answers_es: ['"Padre de Nuestra Nación"', "Primer presidente de los Estados Unidos", "General del Ejército Continental", "Presidente de la Convención Constitucional"], starred: true },
+  { id: 87, section: "Historia Americana", subsection: "Periodo Colonial e Independencia", q_en: "Thomas Jefferson is famous for many things. Name one.", q_es: "Thomas Jefferson es famoso por muchas cosas. Nombre una.", answers_en: ["Writer of the Declaration of Independence", "Third president of the United States", "Doubled the size of the United States (Louisiana Purchase)", "First Secretary of State", "Founded the University of Virginia"], answers_es: ["Escritor de la Declaración de Independencia", "Tercer presidente de EE.UU.", "Duplicó el tamaño de EE.UU. (Compra de Luisiana)", "Primer Secretario de Estado", "Fundó la Universidad de Virginia"], starred: false },
+  { id: 88, section: "Historia Americana", subsection: "Periodo Colonial e Independencia", q_en: "James Madison is famous for many things. Name one.", q_es: "James Madison es famoso por muchas cosas. Nombre una.", answers_en: ['"Father of the Constitution"', "Fourth president of the United States", "President during the War of 1812", "One of the writers of the Federalist Papers"], answers_es: ['"Padre de la Constitución"', "Cuarto presidente de EE.UU.", "Presidente durante la Guerra de 1812", "Uno de los escritores de los Documentos Federalistas"], starred: false },
+  { id: 89, section: "Historia Americana", subsection: "Periodo Colonial e Independencia", q_en: "Alexander Hamilton is famous for many things. Name one.", q_es: "Alexander Hamilton es famoso por muchas cosas. Nombre una.", answers_en: ["First Secretary of the Treasury", "One of the writers of the Federalist Papers", "Helped establish the First Bank of the United States", "Aide to General George Washington", "Member of the Continental Congress"], answers_es: ["Primer Secretario del Tesoro", "Uno de los escritores de los Documentos Federalistas", "Ayudó a establecer el Primer Banco de EE.UU.", "Asistente del General George Washington", "Miembro del Congreso Continental"], starred: false },
+  { id: 90, section: "Historia Americana", subsection: "Siglo XIX (1800s)", q_en: "What territory did the United States buy from France in 1803?", q_es: "¿Qué territorio compró EE.UU. de Francia en 1803?", answers_en: ["Louisiana Territory", "Louisiana"], answers_es: ["El Territorio de Luisiana", "Luisiana"], starred: false },
+  { id: 91, section: "Historia Americana", subsection: "Siglo XIX (1800s)", q_en: "Name one war fought by the United States in the 1800s.", q_es: "Nombre una guerra peleada por EE.UU. en los 1800s.", answers_en: ["War of 1812", "Mexican-American War", "Civil War", "Spanish-American War"], answers_es: ["Guerra de 1812", "Guerra México-Americana", "Guerra Civil", "Guerra Hispano-Americana"], starred: false },
+  { id: 92, section: "Historia Americana", subsection: "Siglo XIX (1800s)", q_en: "Name the U.S. war between the North and the South.", q_es: "Nombre la guerra de EE.UU. entre el Norte y el Sur.", answers_en: ["The Civil War"], answers_es: ["La Guerra Civil"], starred: false },
+  { id: 93, section: "Historia Americana", subsection: "Siglo XIX (1800s)", q_en: "The Civil War had many important events. Name one.", q_es: "La Guerra Civil tuvo muchos eventos importantes. Nombre uno.", answers_en: ["(Battle of) Fort Sumter", "Emancipation Proclamation", "(Battle of) Vicksburg", "(Battle of) Gettysburg", "Sherman's March", "(Surrender at) Appomattox", "(Battle of) Antietam/Sharpsburg", "Lincoln was assassinated."], answers_es: ["(Batalla de) Fort Sumter", "Proclamación de Emancipación", "(Batalla de) Vicksburg", "(Batalla de) Gettysburg", "La Marcha de Sherman", "(Rendición en) Appomattox", "(Batalla de) Antietam/Sharpsburg", "Lincoln fue asesinado."], starred: false },
+  { id: 94, section: "Historia Americana", subsection: "Siglo XIX (1800s)", q_en: "Abraham Lincoln is famous for many things. Name one.", q_es: "Abraham Lincoln es famoso por muchas cosas. Nombre una.", answers_en: ["Freed the slaves (Emancipation Proclamation)", "Saved (or preserved) the Union", "Led the United States during the Civil War", "16th president of the United States", "Delivered the Gettysburg Address"], answers_es: ["Liberó a los esclavos (Proclamación de Emancipación)", "Salvó (o preservó) la Unión", "Dirigió a EE.UU. durante la Guerra Civil", "16o presidente de EE.UU.", "Pronunció el Discurso de Gettysburg"], starred: true },
+  { id: 95, section: "Historia Americana", subsection: "Siglo XIX (1800s)", q_en: "What did the Emancipation Proclamation do?", q_es: "¿Qué hizo la Proclamación de Emancipación?", answers_en: ["Freed the slaves", "Freed slaves in the Confederacy", "Freed slaves in the Confederate states", "Freed slaves in most Southern states"], answers_es: ["Liberó a los esclavos", "Liberó esclavos en la Confederación", "Liberó esclavos en los estados Confederados", "Liberó esclavos en la mayoría de los estados del Sur"], starred: false },
+  { id: 96, section: "Historia Americana", subsection: "Siglo XIX (1800s)", q_en: "What U.S. war ended slavery?", q_es: "¿Qué guerra de EE.UU. terminó con la esclavitud?", answers_en: ["The Civil War"], answers_es: ["La Guerra Civil"], starred: false },
+  { id: 97, section: "Historia Americana", subsection: "Siglo XIX (1800s)", q_en: "What amendment says all persons born or naturalized in the United States are U.S. citizens?", q_es: "¿Qué enmienda dice que todas las personas nacidas o naturalizadas en EE.UU. son ciudadanos?", answers_en: ["14th Amendment"], answers_es: ["La Enmienda 14"], starred: false },
+  { id: 98, section: "Historia Americana", subsection: "Siglo XIX (1800s)", q_en: "When did all men get the right to vote?", q_es: "¿Cuándo obtuvieron todos los hombres el derecho a votar?", answers_en: ["After the Civil War", "During Reconstruction", "(With the) 15th Amendment", "1870"], answers_es: ["Después de la Guerra Civil", "Durante la Reconstrucción", "(Con la) Enmienda 15", "1870"], starred: false },
+  { id: 99, section: "Historia Americana", subsection: "Siglo XIX (1800s)", q_en: "Name one leader of the women's rights movement in the 1800s.", q_es: "Nombre un líder del movimiento por los derechos de la mujer en los 1800s.", answers_en: ["Susan B. Anthony", "Elizabeth Cady Stanton", "Sojourner Truth", "Harriet Tubman", "Lucretia Mott", "Lucy Stone"], answers_es: ["Susan B. Anthony", "Elizabeth Cady Stanton", "Sojourner Truth", "Harriet Tubman", "Lucretia Mott", "Lucy Stone"], starred: false },
+  { id: 100, section: "Historia Americana", subsection: "Historia Reciente", q_en: "Name one war fought by the United States in the 1900s.", q_es: "Nombre una guerra peleada por EE.UU. en los 1900s.", answers_en: ["World War I", "World War II", "Korean War", "Vietnam War", "(Persian) Gulf War"], answers_es: ["Primera Guerra Mundial", "Segunda Guerra Mundial", "Guerra de Corea", "Guerra de Vietnam", "Guerra del Golfo (Pérsico)"], starred: false },
+  { id: 101, section: "Historia Americana", subsection: "Historia Reciente", q_en: "Why did the United States enter World War I?", q_es: "¿Por qué entró EE.UU. en la Primera Guerra Mundial?", answers_en: ["Because Germany attacked U.S. (civilian) ships", "To support the Allied Powers", "To oppose the Central Powers"], answers_es: ["Porque Alemania atacó barcos (civiles) de EE.UU.", "Para apoyar a las Potencias Aliadas", "Para oponerse a las Potencias Centrales"], starred: false },
+  { id: 102, section: "Historia Americana", subsection: "Historia Reciente", q_en: "When did all women get the right to vote?", q_es: "¿Cuándo obtuvieron todas las mujeres el derecho a votar?", answers_en: ["1920", "After World War I", "(With the) 19th Amendment"], answers_es: ["1920", "Después de la Primera Guerra Mundial", "(Con la) Enmienda 19"], starred: false },
+  { id: 103, section: "Historia Americana", subsection: "Historia Reciente", q_en: "What was the Great Depression?", q_es: "¿Qué fue la Gran Depresión?", answers_en: ["Longest economic recession in modern history"], answers_es: ["La recesión económica más larga de la historia moderna"], starred: false },
+  { id: 104, section: "Historia Americana", subsection: "Historia Reciente", q_en: "When did the Great Depression start?", q_es: "¿Cuándo comenzó la Gran Depresión?", answers_en: ["The Great Crash (1929)", "Stock market crash of 1929"], answers_es: ["El Gran Crack (1929)", "La caída de la bolsa de valores de 1929"], starred: false },
+  { id: 105, section: "Historia Americana", subsection: "Historia Reciente", q_en: "Who was president during the Great Depression and World War II?", q_es: "¿Quién fue presidente durante la Gran Depresión y la Segunda Guerra Mundial?", answers_en: ["(Franklin) Roosevelt"], answers_es: ["(Franklin) Roosevelt"], starred: false },
+  { id: 106, section: "Historia Americana", subsection: "Historia Reciente", q_en: "Why did the United States enter World War II?", q_es: "¿Por qué entró EE.UU. en la Segunda Guerra Mundial?", answers_en: ["(Bombing of) Pearl Harbor", "Japanese attacked Pearl Harbor", "To support the Allied Powers", "To oppose the Axis Powers"], answers_es: ["(Bombardeo de) Pearl Harbor", "Los japoneses atacaron Pearl Harbor", "Para apoyar a las Potencias Aliadas", "Para oponerse a las Potencias del Eje"], starred: false },
+  { id: 107, section: "Historia Americana", subsection: "Historia Reciente", q_en: "Dwight Eisenhower is famous for many things. Name one.", q_es: "Dwight Eisenhower es famoso por muchas cosas. Nombre una.", answers_en: ["General during World War II", "President at the end of (during) the Korean War", "34th president of the United States", "Signed the Federal-Aid Highway Act of 1956"], answers_es: ["General durante la Segunda Guerra Mundial", "Presidente al final de la Guerra de Corea", "34o presidente de EE.UU.", "Firmó la Ley Federal de Carreteras de 1956"], starred: false },
+  { id: 108, section: "Historia Americana", subsection: "Historia Reciente", q_en: "Who was the United States' main rival during the Cold War?", q_es: "¿Quién fue el principal rival de EE.UU. durante la Guerra Fría?", answers_en: ["Soviet Union", "USSR", "Russia"], answers_es: ["La Unión Soviética", "La URSS", "Rusia"], starred: false },
+  { id: 109, section: "Historia Americana", subsection: "Historia Reciente", q_en: "During the Cold War, what was one main concern of the United States?", q_es: "Durante la Guerra Fría, ¿cuál era una preocupación principal de EE.UU.?", answers_en: ["Communism", "Nuclear war"], answers_es: ["El comunismo", "La guerra nuclear"], starred: false },
+  { id: 110, section: "Historia Americana", subsection: "Historia Reciente", q_en: "Why did the United States enter the Korean War?", q_es: "¿Por qué entró EE.UU. en la Guerra de Corea?", answers_en: ["To stop the spread of communism"], answers_es: ["Para detener la propagación del comunismo"], starred: false },
+  { id: 111, section: "Historia Americana", subsection: "Historia Reciente", q_en: "Why did the United States enter the Vietnam War?", q_es: "¿Por qué entró EE.UU. en la Guerra de Vietnam?", answers_en: ["To stop the spread of communism"], answers_es: ["Para detener la propagación del comunismo"], starred: false },
+  { id: 112, section: "Historia Americana", subsection: "Historia Reciente", q_en: "What did the civil rights movement do?", q_es: "¿Qué hizo el movimiento de derechos civiles?", answers_en: ["Fought to end racial discrimination"], answers_es: ["Luchó para acabar con la discriminación racial"], starred: false },
+  { id: 113, section: "Historia Americana", subsection: "Historia Reciente", q_en: "Martin Luther King, Jr. is famous for many things. Name one.", q_es: "Martin Luther King, Jr. es famoso por muchas cosas. Nombre una.", answers_en: ["Fought for civil rights", "Worked for equality for all Americans"], answers_es: ["Luchó por los derechos civiles", "Trabajó por la igualdad para todos los estadounidenses"], starred: true },
+  { id: 114, section: "Historia Americana", subsection: "Historia Reciente", q_en: "Why did the United States enter the Persian Gulf War?", q_es: "¿Por qué entró EE.UU. en la Guerra del Golfo Pérsico?", answers_en: ["To force the Iraqi military from Kuwait"], answers_es: ["Para sacar al ejército iraquí de Kuwait"], starred: false },
+  { id: 115, section: "Historia Americana", subsection: "Historia Reciente", q_en: "What major event happened on September 11, 2001 in the United States?", q_es: "¿Qué evento importante ocurrió el 11 de septiembre de 2001 en EE.UU.?", answers_en: ["Terrorists attacked the United States"], answers_es: ["Terroristas atacaron los Estados Unidos"], starred: true },
+  { id: 116, section: "Historia Americana", subsection: "Historia Reciente", q_en: "Name one U.S. military conflict after the September 11, 2001 attacks.", q_es: "Nombre un conflicto militar de EE.UU. después de los ataques del 11 de septiembre de 2001.", answers_en: ["(Global) War on Terror", "War in Afghanistan", "War in Iraq"], answers_es: ["Guerra (Global) contra el Terrorismo", "Guerra en Afganistán", "Guerra en Irak"], starred: false },
+  { id: 117, section: "Historia Americana", subsection: "Historia Reciente", q_en: "Name one American Indian tribe in the United States.", q_es: "Nombre una tribu indígena americana en los Estados Unidos.", answers_en: ["Apache", "Cherokee", "Cheyenne", "Choctaw", "Navajo", "Seminole", "Sioux", "Lakota", "Mohawk", "Hopi"], answers_es: ["Apache", "Cherokee", "Cheyenne", "Choctaw", "Navajo", "Seminole", "Sioux", "Lakota", "Mohawk", "Hopi"], starred: false },
+  { id: 118, section: "Historia Americana", subsection: "Historia Reciente", q_en: "Name one example of an American innovation.", q_es: "Nombre un ejemplo de una innovación americana.", answers_en: ["Light bulb", "Automobile (cars, internal combustion engine)", "Skyscrapers", "Airplane", "Assembly line", "Landing on the moon", "Integrated circuit (IC)"], answers_es: ["Bombilla eléctrica", "Automóvil (carros, motor de combustión interna)", "Rascacielos", "Avión", "Línea de ensamblaje", "Aterrizaje en la luna", "Circuito integrado (IC)"], starred: false },
+  // SYMBOLS AND HOLIDAYS
+  { id: 119, section: "Símbolos y Feriados", subsection: "Símbolos", q_en: "What is the capital of the United States?", q_es: "¿Cuál es la capital de los Estados Unidos?", answers_en: ["Washington, D.C."], answers_es: ["Washington, D.C."], starred: false },
+  { id: 120, section: "Símbolos y Feriados", subsection: "Símbolos", q_en: "Where is the Statue of Liberty?", q_es: "¿Dónde está la Estatua de la Libertad?", answers_en: ["New York (Harbor)", "Liberty Island"], answers_es: ["Puerto de Nueva York", "Isla de la Libertad"], starred: false },
+  { id: 121, section: "Símbolos y Feriados", subsection: "Símbolos", q_en: "Why does the flag have 13 stripes?", q_es: "¿Por qué la bandera tiene 13 franjas?", answers_en: ["(Because there were) 13 original colonies", "(Because the stripes) represent the original colonies"], answers_es: ["(Porque había) 13 colonias originales", "(Porque las franjas) representan las colonias originales"], starred: true },
+  { id: 122, section: "Símbolos y Feriados", subsection: "Símbolos", q_en: "Why does the flag have 50 stars?", q_es: "¿Por qué la bandera tiene 50 estrellas?", answers_en: ["(Because there is) one star for each state", "(Because) each star represents a state", "(Because there are) 50 states"], answers_es: ["(Porque hay) una estrella por cada estado", "(Porque) cada estrella representa un estado", "(Porque hay) 50 estados"], starred: false },
+  { id: 123, section: "Símbolos y Feriados", subsection: "Símbolos", q_en: "What is the name of the national anthem?", q_es: "¿Cuál es el nombre del himno nacional?", answers_en: ["The Star-Spangled Banner"], answers_es: ["The Star-Spangled Banner (La Bandera Adornada de Estrellas)"], starred: false },
+  { id: 124, section: "Símbolos y Feriados", subsection: "Símbolos", q_en: "The Nation's first motto was 'E Pluribus Unum.' What does that mean?", q_es: "El primer lema de la nación fue 'E Pluribus Unum'. ¿Qué significa?", answers_en: ["Out of many, one", "We all become one"], answers_es: ["De muchos, uno", "Todos nos convertimos en uno"], starred: false },
+  { id: 125, section: "Símbolos y Feriados", subsection: "Feriados", q_en: "What is Independence Day?", q_es: "¿Qué es el Día de la Independencia?", answers_en: ["A holiday to celebrate U.S. independence (from Britain)", "The country's birthday"], answers_es: ["Un día festivo para celebrar la independencia de EE.UU. (de Gran Bretaña)", "El cumpleaños del país"], starred: false },
+  { id: 126, section: "Símbolos y Feriados", subsection: "Feriados", q_en: "Name three national U.S. holidays.", q_es: "Nombre tres días festivos nacionales de EE.UU.", answers_en: ["New Year's Day", "Martin Luther King, Jr. Day", "Presidents Day", "Memorial Day", "Independence Day", "Labor Day", "Columbus Day", "Veterans Day", "Thanksgiving Day", "Christmas Day"], answers_es: ["Día de Año Nuevo", "Día de Martin Luther King, Jr.", "Día de los Presidentes", "Día de los Caídos", "Día de la Independencia", "Día del Trabajo", "Día de la Raza", "Día de los Veteranos", "Día de Acción de Gracias", "Día de Navidad"], starred: true },
+  { id: 127, section: "Símbolos y Feriados", subsection: "Feriados", q_en: "What is Memorial Day?", q_es: "¿Qué es el Día de los Caídos (Memorial Day)?", answers_en: ["A holiday to honor soldiers who died in military service"], answers_es: ["Un día festivo para honrar a los soldados que murieron en servicio militar"], starred: false },
+  { id: 128, section: "Símbolos y Feriados", subsection: "Feriados", q_en: "What is Veterans Day?", q_es: "¿Qué es el Día de los Veteranos?", answers_en: ["A holiday to honor people in the (U.S.) military", "A holiday to honor people who have served (in the U.S. military)"], answers_es: ["Un día festivo para honrar a las personas en las fuerzas armadas de EE.UU.", "Un día festivo para honrar a las personas que han servido en las fuerzas armadas de EE.UU."], starred: false },
+];
+
+const ELIGIBILITY_QUESTIONS = [
+  { id: "age", text: "¿Tiene 18 años de edad o más?", help: "Debe tener al menos 18 años para aplicar a la naturalización.", disqualifyMsg: "Debe tener al menos 18 años para aplicar. Si es menor de 18, puede derivar ciudadanía a través de sus padres ciudadanos bajo ciertas condiciones." },
+  { id: "lpr", text: "¿Es usted Residente Permanente Legal (tiene Green Card)?", help: "Debe tener estatus de Residente Permanente Legal (tarjeta verde) para aplicar.", disqualifyMsg: "Debe obtener primero su Residencia Permanente Legal (Green Card) antes de poder solicitar la naturalización. Consulte uscis.gov para más información sobre cómo obtener la residencia permanente." },
+  { id: "lpr_time", text: "¿Ha sido Residente Permanente por al menos 5 años? (o 3 años si está casado/a con un ciudadano/a estadounidense)", help: "Se requiere un período mínimo de residencia permanente. 5 años para la mayoría, 3 años si está casado/a con un ciudadano/a de EE.UU.", disqualifyMsg: "Aún no cumple el tiempo mínimo requerido de residencia permanente. Puede presentar su solicitud 90 días antes de completar el requisito de residencia continua. Use la calculadora de USCIS en uscis.gov para determinar su fecha más temprana de solicitud." },
+  { id: "continuous", text: "¿Ha residido continuamente en Estados Unidos durante ese período?", help: "Debe demostrar que ha vivido continuamente en EE.UU. durante los últimos 5 años (o 3 años). Ausencias de más de 6 meses pueden interrumpir la residencia continua.", disqualifyMsg: "Debe demostrar residencia continua. Si ha viajado fuera de EE.UU. por períodos largos (más de 6 meses), esto puede afectar su elegibilidad. Consulte con un abogado de inmigración." },
+  { id: "physical", text: "¿Ha estado físicamente presente en EE.UU. por al menos 30 meses de los últimos 5 años? (o 18 meses de los últimos 3 años)", help: "Además de residir continuamente, debe haber estado físicamente en el territorio de EE.UU. al menos la mitad del período requerido.", disqualifyMsg: "No cumple el requisito de presencia física. Debe haber estado físicamente en EE.UU. por al menos la mitad del período requerido. Puede necesitar esperar más tiempo antes de aplicar." },
+  { id: "state", text: "¿Ha vivido en su estado o distrito de USCIS actual por al menos 3 meses?", help: "Debe haber vivido al menos 3 meses en el estado o distrito de USCIS donde presentará su solicitud.", disqualifyMsg: "Debe residir al menos 3 meses en su estado o distrito de USCIS actual antes de presentar su solicitud ahí." },
+  { id: "english", text: "¿Puede leer, escribir y hablar inglés básico?", help: "Debe poder demostrar capacidad básica en inglés (lectura, escritura y conversación). Hay excepciones para personas de 50+ años con 20+ años de residencia permanente, o de 55+ años con 15+ años de residencia permanente.", disqualifyMsg: "Necesita demostrar conocimiento básico de inglés. Sin embargo, hay excepciones: si tiene 50+ años con 20+ años como residente permanente, o 55+ años con 15+ años, puede estar exento. Consulte uscis.gov/citizenship para excepciones." },
+  { id: "moral", text: "¿Ha mantenido buen carácter moral? (Sin condenas graves, sin fraude, cumple con impuestos, etc.)", help: "USCIS evaluará su carácter moral de forma integral: historial criminal, cumplimiento fiscal, participación comunitaria, y conducta general. Desde 2025, la evaluación es más estricta.", disqualifyMsg: "Problemas de carácter moral pueden impedir su naturalización. Consulte con un abogado de inmigración para evaluar su situación específica antes de presentar la solicitud." },
+  { id: "civics", text: "¿Está dispuesto/a a estudiar y tomar el examen de educación cívica e historia de EE.UU.?", help: "Debe aprobar un examen de 128 preguntas sobre gobierno e historia de EE.UU. Le harán hasta 20 preguntas y debe responder al menos 12 correctamente.", disqualifyMsg: "El examen cívico es obligatorio. ¡Esta aplicación le ayudará a prepararse! Continúe con su proceso y use la sección de estudio para practicar." },
+  { id: "oath", text: "¿Está dispuesto/a a tomar el Juramento de Lealtad a los Estados Unidos?", help: "Al naturalizarse, debe jurar lealtad a los Estados Unidos, renunciar a lealtad a otros países, y comprometerse a defender la Constitución.", disqualifyMsg: "El Juramento de Lealtad es requisito para completar la naturalización. Si tiene objeciones religiosas o de conciencia a ciertas partes del juramento, pueden existir acomodaciones. Consulte con USCIS." }
+];
+
+const PROCESS_STEPS = [
+  { id: 1, title: "Verificar Elegibilidad", desc: "Confirme que cumple todos los requisitos de elegibilidad para la naturalización.", details: "Use la sección de Elegibilidad de esta aplicación o visite uscis.gov/citizenship para verificar que cumple con todos los requisitos: edad, tiempo de residencia permanente, residencia continua, presencia física, buen carácter moral, y conocimiento de inglés y educación cívica.", icon: "shield" },
+  { id: 2, title: "Preparar Documentos", desc: "Reúna todos los documentos necesarios antes de llenar la solicitud.", details: "Documentos necesarios: copia de su Green Card (ambos lados), 2 fotos tamaño pasaporte, evidencia de viajes fuera de EE.UU., registros de impuestos (últimos 5 años), certificado de matrimonio (si aplica), registros de Selective Service (hombres 18-25), y cualquier documento de cambio de nombre.", icon: "file" },
+  { id: 3, title: "Llenar Formulario N-400", desc: "Complete la Solicitud de Naturalización (Form N-400) con precisión.", details: "El formulario N-400 se puede llenar en línea en uscis.gov o en papel. Sea preciso y honesto en todas las respuestas. El costo actual es de $760. Si necesita ayuda, considere consultar con un abogado de inmigración autorizado.", icon: "clipboard" },
+  { id: 4, title: "Enviar Solicitud y Pago", desc: "Envíe su formulario N-400 con el pago correspondiente a USCIS.", details: "Puede enviar en línea o por correo. El pago de $760 incluye la tarifa de biométricos. Si no puede pagar, puede solicitar una exención de tarifa (Fee Waiver) con el formulario I-912. Guarde una copia de todo lo que envíe.", icon: "dollar" },
+  { id: 5, title: "Cita de Biométricos", desc: "Asista a su cita para toma de huellas digitales y fotografía.", details: "USCIS le enviará una notificación (Form I-797C) con la fecha, hora y lugar de su cita de biométricos. Es generalmente 1-2 meses después de enviar su solicitud. Lleve su Green Card y la notificación de cita. No falte a esta cita.", icon: "target" },
+  { id: 6, title: "Estudiar para el Examen", desc: "Prepare el examen de educación cívica (128 preguntas) y el examen de inglés.", details: "El examen cívico 2025 tiene 128 preguntas. Le harán hasta 20 y debe acertar al menos 12. También habrá un examen de lectura, escritura y conversación en inglés. Use la sección de Aprendizaje de esta aplicación para practicar.", icon: "book" },
+  { id: 7, title: "Entrevista con USCIS", desc: "Asista a su entrevista de naturalización en la oficina de USCIS.", details: "En la entrevista, un oficial de USCIS revisará su solicitud N-400, verificará sus respuestas, evaluará su inglés, y le administrará el examen cívico. Lleve todos sus documentos originales, su Green Card, y la notificación de entrevista. Llegue con tiempo.", icon: "message" },
+  { id: 8, title: "Recibir Decisión", desc: "USCIS le notificará si su solicitud fue aprobada, denegada, o continuada.", details: "Después de la entrevista recibirá un Form N-652 con el resultado. Si es aprobado, recibirá información sobre la ceremonia. Si es continuado, puede necesitar proveer documentos adicionales o retomar el examen. Si es denegado, puede apelar.", icon: "check" },
+  { id: 9, title: "Ceremonia de Juramento", desc: "Asista a la ceremonia de naturalización y tome el Juramento de Lealtad.", details: "Esta es la etapa final. Tomará el Juramento de Lealtad a los Estados Unidos, entregará su Green Card, y recibirá su Certificado de Naturalización (Form N-550). ¡Felicidades, ahora es ciudadano/a estadounidense!", icon: "award" },
+  { id: 10, title: "Después de la Ciudadanía", desc: "Pasos importantes después de convertirse en ciudadano/a.", details: "Registrarse para votar, solicitar un pasaporte estadounidense (formulario DS-11), actualizar su información en el Seguro Social, y considerar registrarse para servicio de jurado. Guarde su Certificado de Naturalización en un lugar seguro.", icon: "flag" }
+];
+
+// ─── COMPONENTS ──────────────────────────────────────────────────────────────
+
+const cn = (...classes) => classes.filter(Boolean).join(" ");
+
+const IconMap = {shield: Shield, file: FileText, clipboard: ClipboardList, dollar: DollarSign, target: Target, book: BookOpen, message: MessageSquare, check: CheckCircle2, award: Award, flag: Flag};
+
+// ─── DISCLAIMER GATE ─────────────────────────────────────────────────────────
+
+function DisclaimerGate({ onAccept }) {
+  const [checked, setChecked] = useState(false);
+  const [lang, setLang] = useState("es"); // es | en
+
+  return (
+    <div style={{fontFamily: "'SF Pro Display', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif", background: "#F5F5F7", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, color: "#1d1d1f"}}>
+      <div style={{maxWidth: 680, width: "100%"}}>
+        {/* Header */}
+        <div style={{textAlign: "center", marginBottom: 32}}>
+          <div style={{width: 56, height: 56, borderRadius: 14, background: "linear-gradient(135deg, #0071E3, #34C759)", display: "inline-flex", alignItems: "center", justifyContent: "center", marginBottom: 16}}>
+            <Scale size={28} color="#fff" />
+          </div>
+          <h1 style={{fontSize: "clamp(24px, 4vw, 32px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 8px"}}>Mi Ciudadanía</h1>
+          <p style={{fontSize: 14, color: "#6e6e73", margin: 0}}>Creado por Gustavo Valbuena — Fundador de PeopleBot AI</p>
+        </div>
+
+        {/* Language toggle */}
+        <div style={{display: "flex", justifyContent: "center", gap: 4, marginBottom: 20}}>
+          <button onClick={() => setLang("es")} style={{padding: "6px 16px", borderRadius: 8, border: "none", fontSize: 13, fontWeight: 600, cursor: "pointer", background: lang === "es" ? "#0071E3" : "#E5E5EA", color: lang === "es" ? "#fff" : "#6e6e73"}}>Español</button>
+          <button onClick={() => setLang("en")} style={{padding: "6px 16px", borderRadius: 8, border: "none", fontSize: 13, fontWeight: 600, cursor: "pointer", background: lang === "en" ? "#0071E3" : "#E5E5EA", color: lang === "en" ? "#fff" : "#6e6e73"}}>English</button>
+        </div>
+
+        {/* Disclaimer card */}
+        <div style={{background: "#fff", borderRadius: 20, border: "1px solid rgba(0,0,0,0.08)", overflow: "hidden"}}>
+          {/* Title bar */}
+          <div style={{background: "linear-gradient(135deg, #1d1d1f, #2c2c2e)", padding: "16px 24px", display: "flex", alignItems: "center", gap: 10}}>
+            <Shield size={18} color="#FF9500" />
+            <span style={{fontSize: 15, fontWeight: 600, color: "#fff"}}>{lang === "es" ? "Aviso Legal Importante" : "Important Legal Notice"}</span>
+          </div>
+
+          {/* Content */}
+          <div style={{padding: "24px 28px", maxHeight: 420, overflowY: "auto"}}>
+            {lang === "es" ? (
+              <div style={{fontSize: 14, color: "#424245", lineHeight: 1.7}}>
+                <p style={{fontWeight: 700, fontSize: 15, color: "#1d1d1f", margin: "0 0 16px"}}>
+                  Por favor lea cuidadosamente antes de utilizar esta aplicación.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>1. Esta aplicación no constituye asesoría legal</p>
+                <p style={{margin: "0 0 16px"}}>
+                  Mi Ciudadanía es una herramienta educativa e informativa gratuita creada con fines exclusivamente orientativos. El contenido proporcionado en esta aplicación no constituye, bajo ninguna circunstancia, asesoría legal, representación legal, ni consejo jurídico de ningún tipo. La información presentada no debe ser interpretada como una opinión legal sobre su situación particular. Esta herramienta no analiza los hechos individuales de su caso ni aplica la ley a sus circunstancias específicas.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>2. No se establece relación abogado-cliente</p>
+                <p style={{margin: "0 0 16px"}}>
+                  El uso de esta aplicación no crea, ni pretende crear, una relación abogado-cliente entre usted y el creador de esta herramienta. El creador de esta aplicación, Gustavo Valbuena / PeopleBot AI, no es un bufete de abogados, no es abogado, no ejerce la abogacía, y no está autorizado para proveer representación legal ni asesoría jurídica en materia de inmigración ni en ninguna otra área del derecho.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>3. No es un "notario", consultor de inmigración, ni representante acreditado</p>
+                <p style={{margin: "0 0 16px"}}>
+                  El creador de esta aplicación y PeopleBot AI no son "notarios públicos", consultores de inmigración, ni representantes acreditados por el Departamento de Justicia (DOJ). Conforme al Código de Regulaciones Federales (8 CFR § 1.2 y 8 CFR § 292.1), solo abogados con licencia y representantes acreditados por el DOJ están autorizados para ejercer la ley de inmigración en los Estados Unidos. Esta aplicación no se presenta como calificada en asuntos legales ni en procedimientos de inmigración y naturalización.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>4. Esta aplicación no prepara, completa, ni presenta formularios de inmigración</p>
+                <p style={{margin: "0 0 16px"}}>
+                  Esta herramienta no prepara, completa, revisa, ni presenta ningún formulario ante USCIS, el DHS, ni ninguna otra agencia gubernamental en su nombre. No selecciona formularios para usted ni le indica qué formularios presentar. No actúa en representación de ninguna persona ante ninguna entidad gubernamental.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>5. Consulte con un profesional autorizado</p>
+                <p style={{margin: "0 0 16px"}}>
+                  Las leyes de inmigración son complejas y cambian frecuentemente. Cada caso es único y depende de circunstancias individuales. Antes de tomar cualquier decisión relacionada con su proceso de inmigración o naturalización, debe consultar con un abogado de inmigración debidamente autorizado y con licencia en su jurisdicción, o con un representante acreditado reconocido por el Departamento de Justicia de los Estados Unidos (DOJ) conforme a 8 CFR § 292.1. Usted no debe actuar ni dejar de actuar basándose en la información de esta aplicación sin antes buscar asesoría profesional adecuada.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>6. Alcance de la herramienta de elegibilidad</p>
+                <p style={{margin: "0 0 16px"}}>
+                  La sección de "Verificación de Elegibilidad" de esta aplicación presenta criterios generales de elegibilidad públicamente disponibles en uscis.gov. No constituye un análisis individualizado de su caso, no evalúa los hechos específicos de su situación, y no representa una determinación oficial de elegibilidad por parte de USCIS ni de ninguna autoridad. Solo USCIS puede determinar oficialmente su elegibilidad para la naturalización.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>7. La información puede no estar actualizada</p>
+                <p style={{margin: "0 0 16px"}}>
+                  Aunque esta aplicación se basa en fuentes oficiales de USCIS (U.S. Citizenship and Immigration Services), la información puede no reflejar los cambios más recientes en leyes, políticas, formularios, tarifas, o procedimientos. Las respuestas a ciertas preguntas del examen cívico pueden cambiar debido a elecciones o nombramientos. Visite siempre <span style={{fontWeight: 600}}>uscis.gov</span> y <span style={{fontWeight: 600}}>uscis.gov/citizenship/testupdates</span> para obtener la información más actualizada.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>8. Sin garantía de resultados</p>
+                <p style={{margin: "0 0 16px"}}>
+                  El uso de esta aplicación no garantiza la aprobación de su solicitud de naturalización, ni el éxito en el examen cívico, ni ningún otro resultado en su proceso migratorio. Los resultados de cualquier simulación o evaluación dentro de esta aplicación son meramente indicativos y se ofrecen "tal cual" (as-is) sin garantía alguna de exactitud, completitud, o vigencia.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>9. Limitación de responsabilidad</p>
+                <p style={{margin: "0 0 16px"}}>
+                  En la máxima medida permitida por la ley aplicable, el creador de esta aplicación, sus colaboradores, y PeopleBot AI no serán responsables por ningún daño directo, indirecto, incidental, consecuente, especial, punitivo, o cualquier otro tipo de daño que resulte del uso o la imposibilidad de uso de esta aplicación, incluyendo pero no limitado a: decisiones tomadas basándose en la información aquí presentada, pérdidas económicas, retrasos en procesos migratorios, denegación de solicitudes, o cualquier consecuencia migratoria adversa.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>10. Fuentes de información y uso gratuito</p>
+                <p style={{margin: "0 0 16px"}}>
+                  Esta aplicación es gratuita y sin fines de lucro. Todo el contenido está basado en materiales públicos disponibles en uscis.gov, incluyendo las 128 preguntas del examen cívico 2025 (documento M-1778, 09/25), los requisitos de elegibilidad para naturalización, y el proceso de solicitud del formulario N-400. Usted puede acceder directamente a estos materiales y presentar solicitudes ante USCIS sin necesidad de esta herramienta ni de ningún intermediario en uscis.gov.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>11. Protección contra fraude migratorio</p>
+                <p style={{margin: "0 0 16px"}}>
+                  Tenga cuidado con personas u organizaciones que prometen resultados garantizados en su proceso de inmigración. Solo un abogado con licencia o un representante acreditado por el DOJ puede brindarle asesoría legal en materia de inmigración (8 CFR § 292.1). Desconfíe de "notarios" o "consultores de inmigración" que ofrecen servicios legales sin estar autorizados. Para reportar fraude migratorio o la práctica no autorizada de la ley de inmigración, contacte a USCIS al 1-800-375-5283 o visite uscis.gov/avoid-scams.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>12. Ley aplicable</p>
+                <p style={{margin: "0 0 16px"}}>
+                  Este aviso legal se rige por las leyes federales de los Estados Unidos, incluyendo la Ley de Inmigración y Nacionalidad (INA), el Código de Regulaciones Federales (8 CFR), y las leyes del estado aplicable. En caso de conflicto entre cualquier disposición de este aviso y la ley aplicable, prevalecerá la ley aplicable.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>13. Privacidad</p>
+                <p style={{margin: "0 0 0"}}>
+                  Esta aplicación no recopila, almacena, ni transmite información personal identificable. Ningún dato ingresado en esta herramienta es enviado a servidores externos. Toda la interacción ocurre localmente en su dispositivo. No se requiere registro ni creación de cuenta.
+                </p>
+              </div>
+            ) : (
+              <div style={{fontSize: 14, color: "#424245", lineHeight: 1.7}}>
+                <p style={{fontWeight: 700, fontSize: 15, color: "#1d1d1f", margin: "0 0 16px"}}>
+                  Please read carefully before using this application.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>1. This application does not constitute legal advice</p>
+                <p style={{margin: "0 0 16px"}}>
+                  Mi Ciudadanía is a free educational and informational tool created solely for guidance purposes. The content provided in this application does not constitute, under any circumstances, legal advice, legal representation, or legal counsel of any kind. The information presented should not be construed as a legal opinion on your particular situation. This tool does not analyze the individual facts of your case nor apply the law to your specific circumstances.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>2. No attorney-client relationship is established</p>
+                <p style={{margin: "0 0 16px"}}>
+                  Use of this application does not create, nor is it intended to create, an attorney-client relationship between you and the creator of this tool. The creator of this application, Gustavo Valbuena / PeopleBot AI, is not a law firm, is not an attorney, does not practice law, and is not authorized to provide legal representation or legal advice on immigration matters or any other area of law.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>3. Not a "notario," immigration consultant, or accredited representative</p>
+                <p style={{margin: "0 0 16px"}}>
+                  The creator of this application and PeopleBot AI are not "notarios públicos," immigration consultants, or representatives accredited by the Department of Justice (DOJ). Pursuant to the Code of Federal Regulations (8 CFR § 1.2 and 8 CFR § 292.1), only licensed attorneys and DOJ-accredited representatives are authorized to practice immigration law in the United States. This application does not hold itself out as qualified in legal matters or in immigration and naturalization procedure.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>4. This application does not prepare, complete, or file immigration forms</p>
+                <p style={{margin: "0 0 16px"}}>
+                  This tool does not prepare, complete, review, or file any forms with USCIS, DHS, or any other government agency on your behalf. It does not select forms for you or advise you on which forms to file. It does not act on behalf of any person before any governmental entity.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>5. Consult a licensed professional</p>
+                <p style={{margin: "0 0 16px"}}>
+                  Immigration laws are complex and change frequently. Each case is unique and depends on individual circumstances. Before making any decisions related to your immigration or naturalization process, you should consult with a duly licensed immigration attorney in your jurisdiction or an accredited representative recognized by the U.S. Department of Justice (DOJ) pursuant to 8 CFR § 292.1. You should not act or refrain from acting based on information in this application without first seeking appropriate professional counsel.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>6. Scope of the eligibility tool</p>
+                <p style={{margin: "0 0 16px"}}>
+                  The "Eligibility Verification" section of this application presents general eligibility criteria publicly available on uscis.gov. It does not constitute an individualized analysis of your case, does not evaluate the specific facts of your situation, and does not represent an official determination of eligibility by USCIS or any authority. Only USCIS can officially determine your eligibility for naturalization.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>7. Information may not be current</p>
+                <p style={{margin: "0 0 16px"}}>
+                  Although this application is based on official USCIS (U.S. Citizenship and Immigration Services) sources, the information may not reflect the most recent changes in laws, policies, forms, fees, or procedures. Answers to certain civics test questions may change due to elections or appointments. Always visit <span style={{fontWeight: 600}}>uscis.gov</span> and <span style={{fontWeight: 600}}>uscis.gov/citizenship/testupdates</span> for the most up-to-date information.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>8. No guarantee of results</p>
+                <p style={{margin: "0 0 16px"}}>
+                  Use of this application does not guarantee approval of your naturalization application, success on the civics test, or any other outcome in your immigration process. Results from any simulation or assessment within this application are for informational purposes only and are provided "as-is" without any warranty of accuracy, completeness, or currency.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>9. Limitation of liability</p>
+                <p style={{margin: "0 0 16px"}}>
+                  To the maximum extent permitted by applicable law, the creator of this application, its contributors, and PeopleBot AI shall not be liable for any direct, indirect, incidental, consequential, special, punitive, or any other type of damage resulting from the use or inability to use this application, including but not limited to: decisions made based on the information presented herein, financial losses, delays in immigration processes, denial of applications, or any adverse immigration consequence.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>10. Information sources and free use</p>
+                <p style={{margin: "0 0 16px"}}>
+                  This application is free and non-commercial. All content is based on publicly available materials from uscis.gov, including the 128 questions of the 2025 civics test (document M-1778, 09/25), naturalization eligibility requirements, and the N-400 application process. You can access these materials directly and file applications with USCIS without this tool or any intermediary at uscis.gov.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>11. Protection against immigration fraud</p>
+                <p style={{margin: "0 0 16px"}}>
+                  Be cautious of individuals or organizations that promise guaranteed results in your immigration process. Only a licensed attorney or a DOJ-accredited representative can provide legal advice on immigration matters (8 CFR § 292.1). Be wary of "notarios" or "immigration consultants" who offer legal services without authorization. To report immigration fraud or the unauthorized practice of immigration law, contact USCIS at 1-800-375-5283 or visit uscis.gov/avoid-scams.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>12. Governing law</p>
+                <p style={{margin: "0 0 16px"}}>
+                  This legal notice is governed by the federal laws of the United States, including the Immigration and Nationality Act (INA), the Code of Federal Regulations (8 CFR), and applicable state laws. In the event of any conflict between any provision of this notice and applicable law, the applicable law shall prevail.
+                </p>
+
+                <p style={{fontWeight: 600, color: "#1d1d1f", margin: "0 0 6px"}}>13. Privacy</p>
+                <p style={{margin: "0 0 0"}}>
+                  This application does not collect, store, or transmit personally identifiable information. No data entered in this tool is sent to external servers. All interaction occurs locally on your device. No registration or account creation is required.
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Checkbox and button */}
+          <div style={{padding: "20px 28px 28px", borderTop: "1px solid rgba(0,0,0,0.06)"}}>
+            <label style={{display: "flex", alignItems: "flex-start", gap: 12, cursor: "pointer", marginBottom: 20}} onClick={() => setChecked(!checked)}>
+              <div style={{width: 24, height: 24, borderRadius: 6, border: checked ? "none" : "2px solid #D1D1D6", background: checked ? "#0071E3" : "#fff", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1, transition: "all 0.2s"}}>
+                {checked && <Check size={14} color="#fff" strokeWidth={3} />}
+              </div>
+              <span style={{fontSize: 14, color: "#1d1d1f", lineHeight: 1.5}}>
+                {lang === "es" 
+                  ? "He leído, comprendo y acepto este aviso legal en su totalidad. Entiendo que esta aplicación es únicamente una herramienta informativa y educativa gratuita, que no constituye asesoría legal, que no establece relación abogado-cliente, que su creador no es abogado ni consultor de inmigración autorizado, y que debo consultar con un abogado de inmigración con licencia o un representante acreditado por el DOJ (conforme a 8 CFR § 292.1) antes de tomar decisiones sobre mi proceso migratorio."
+                  : "I have read, understand, and accept this legal notice in its entirety. I understand that this application is solely a free informational and educational tool, that it does not constitute legal advice, that it does not establish an attorney-client relationship, that its creator is not an attorney or authorized immigration consultant, and that I should consult with a licensed immigration attorney or DOJ-accredited representative (pursuant to 8 CFR § 292.1) before making decisions about my immigration process."
+                }
+              </span>
+            </label>
+
+            <button onClick={onAccept} disabled={!checked}
+              style={{width: "100%", padding: "16px", borderRadius: 14, border: "none", background: checked ? "linear-gradient(135deg, #0071E3, #0077ED)" : "#E5E5EA", color: checked ? "#fff" : "#aeaeb2", fontSize: 16, fontWeight: 600, cursor: checked ? "pointer" : "not-allowed", transition: "all 0.3s", display: "flex", alignItems: "center", justifyContent: "center", gap: 8}}>
+              {checked && <ArrowRight size={18} />}
+              {lang === "es" ? "Aceptar y continuar" : "Accept and continue"}
+            </button>
+          </div>
+        </div>
+
+        <p style={{textAlign: "center", fontSize: 12, color: "#aeaeb2", marginTop: 16}}>
+          {lang === "es" 
+            ? "Fuente oficial: uscis.gov — Reporte fraude: uscis.gov/avoid-scams — Línea USCIS: 1-800-375-5283"
+            : "Official source: uscis.gov — Report fraud: uscis.gov/avoid-scams — USCIS Contact: 1-800-375-5283"
+          }
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [currentView, setCurrentView] = useState("home");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [disclaimerAccepted, setDisclaimerAccepted] = useState(false);
+
+  if (!disclaimerAccepted) {
+    return <DisclaimerGate onAccept={() => setDisclaimerAccepted(true)} />;
+  }
+  
+  const navItems = [
+    { id: "home", label: "Inicio", icon: Home },
+    { id: "eligibility", label: "Elegibilidad", icon: Shield },
+    { id: "checklist", label: "Proceso", icon: ListChecks },
+    { id: "study", label: "Aprender", icon: BookOpen },
+    { id: "simulate", label: "Simulación", icon: MessageSquare },
+  ];
+
+  return (
+    <div style={{fontFamily: "'SF Pro Display', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif", background: "#F5F5F7", minHeight: "100vh", color: "#1d1d1f"}}>
+      {/* NAV */}
+      <nav style={{background: "rgba(255,255,255,0.72)", backdropFilter: "saturate(180%) blur(20px)", WebkitBackdropFilter: "saturate(180%) blur(20px)", borderBottom: "1px solid rgba(0,0,0,0.08)", position: "sticky", top: 0, zIndex: 100}}>
+        <div style={{maxWidth: 1200, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 52}}>
+          <div style={{display: "flex", alignItems: "center", gap: 10, cursor: "pointer"}} onClick={() => setCurrentView("home")}>
+            <div style={{width: 32, height: 32, borderRadius: 8, background: "linear-gradient(135deg, #0071E3, #34C759)", display: "flex", alignItems: "center", justifyContent: "center"}}>
+              <Globe size={18} color="#fff" strokeWidth={2.5} />
+            </div>
+            <span style={{fontWeight: 700, fontSize: 17, letterSpacing: "-0.02em"}}>Mi Ciudadanía</span>
+          </div>
+          {/* Desktop nav */}
+          <div style={{display: "flex", gap: 4}} className="desktop-nav">
+            {navItems.map(item => {
+              const Icon = item.icon;
+              const active = currentView === item.id;
+              return (
+                <button key={item.id} onClick={() => { setCurrentView(item.id); setMobileMenuOpen(false); }}
+                  style={{display: "flex", alignItems: "center", gap: 6, padding: "6px 14px", borderRadius: 20, border: "none", cursor: "pointer", fontSize: 13, fontWeight: active ? 600 : 400, background: active ? "#0071E3" : "transparent", color: active ? "#fff" : "#6e6e73", transition: "all 0.2s"}}>
+                  <Icon size={15} strokeWidth={active ? 2.5 : 2} />
+                  <span className="nav-label">{item.label}</span>
+                </button>
+              );
+            })}
+          </div>
+          {/* Mobile menu button */}
+          <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} style={{background: "none", border: "none", cursor: "pointer", padding: 8}}>
+            <Menu size={22} color="#1d1d1f" />
+          </button>
+        </div>
+        {/* Mobile dropdown */}
+        {mobileMenuOpen && (
+          <div style={{background: "rgba(255,255,255,0.96)", borderTop: "1px solid rgba(0,0,0,0.06)", padding: "12px 24px"}} className="mobile-dropdown">
+            {navItems.map(item => {
+              const Icon = item.icon;
+              const active = currentView === item.id;
+              return (
+                <button key={item.id} onClick={() => { setCurrentView(item.id); setMobileMenuOpen(false); }}
+                  style={{display: "flex", alignItems: "center", gap: 10, padding: "12px 0", border: "none", background: "none", cursor: "pointer", width: "100%", fontSize: 15, fontWeight: active ? 600 : 400, color: active ? "#0071E3" : "#1d1d1f"}}>
+                  <Icon size={18} />
+                  {item.label}
+                </button>
+              );
+            })}
+          </div>
+        )}
+      </nav>
+
+      <main style={{maxWidth: 1200, margin: "0 auto", padding: "0 24px 80px", paddingBottom: 120}}>
+        {currentView === "home" && <HomeView onNav={setCurrentView} />}
+        {currentView === "eligibility" && <EligibilityView onNav={setCurrentView} />}
+        {currentView === "checklist" && <ChecklistView onNav={setCurrentView} />}
+        {currentView === "study" && <StudyView onNav={setCurrentView} />}
+        {currentView === "simulate" && <SimulationView onNav={setCurrentView} />}
+      </main>
+
+      {/* Footer */}
+      <footer style={{borderTop: "1px solid rgba(0,0,0,0.06)", background: "rgba(255,255,255,0.72)", backdropFilter: "saturate(180%) blur(20px)", WebkitBackdropFilter: "saturate(180%) blur(20px)", padding: "20px 24px", textAlign: "center"}}>
+        <div style={{maxWidth: 1200, margin: "0 auto"}}>
+          <p style={{fontSize: 13, color: "#86868b", margin: "0 0 4px", lineHeight: 1.5}}>
+            Creado por <span style={{fontWeight: 600, color: "#1d1d1f"}}>Gustavo Valbuena</span> — Fundador de PeopleBot AI
+          </p>
+          <p style={{fontSize: 12, color: "#aeaeb2", margin: 0, lineHeight: 1.5}}>
+            Basado en fuentes oficiales de USCIS (uscis.gov). Esta herramienta es informativa y no constituye asesoría legal.
+          </p>
+        </div>
+      </footer>
+
+      <style>{`
+        .mobile-menu-btn { display: none !important; }
+        .mobile-dropdown { display: none !important; }
+        @media (max-width: 768px) {
+          .desktop-nav { display: none !important; }
+          .mobile-menu-btn { display: flex !important; }
+          .mobile-dropdown { display: block !important; }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function HomeView({ onNav }) {
+  const cards = [
+    { id: "eligibility", icon: Shield, title: "Verificar Elegibilidad", desc: "Responda preguntas para saber si califica para la naturalización.", color: "#0071E3", bg: "linear-gradient(135deg, #E3F0FF, #D1E8FF)" },
+    { id: "checklist", icon: ListChecks, title: "Proceso Paso a Paso", desc: "Guía completa desde la solicitud hasta la ceremonia de juramento.", color: "#34C759", bg: "linear-gradient(135deg, #E8F9ED, #D4F5DE)" },
+    { id: "study", icon: BookOpen, title: "Aprender Cívica", desc: "Estudie las 128 preguntas del examen cívico 2025 en español e inglés.", color: "#FF9500", bg: "linear-gradient(135deg, #FFF3E0, #FFE8CC)" },
+    { id: "simulate", icon: MessageSquare, title: "Simular Entrevista", desc: "Practique con una simulación realista del examen de naturalización.", color: "#AF52DE", bg: "linear-gradient(135deg, #F5E6FF, #EBD6FF)" },
+  ];
+
+  return (
+    <div>
+      <div style={{textAlign: "center", padding: "56px 0 40px"}}>
+        <div style={{width: 64, height: 64, borderRadius: 16, background: "linear-gradient(135deg, #0071E3, #34C759)", display: "inline-flex", alignItems: "center", justifyContent: "center", marginBottom: 20}}>
+          <Flag size={32} color="#fff" />
+        </div>
+        <h1 style={{fontSize: "clamp(28px, 5vw, 44px)", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.1, margin: "0 0 12px"}}>Su camino a la<br/>ciudadanía americana</h1>
+        <p style={{fontSize: "clamp(15px, 2.5vw, 19px)", color: "#6e6e73", maxWidth: 520, margin: "0 auto", lineHeight: 1.5}}>Guía completa en español para el proceso de naturalización. Basada en fuentes oficiales de USCIS.</p>
+      </div>
+
+      <div style={{display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16, marginBottom: 40}}>
+        {cards.map(card => {
+          const Icon = card.icon;
+          return (
+            <button key={card.id} onClick={() => onNav(card.id)} style={{background: card.bg, border: "1px solid rgba(0,0,0,0.04)", borderRadius: 20, padding: 28, textAlign: "left", cursor: "pointer", transition: "transform 0.2s, box-shadow 0.2s"}}>
+              <div style={{width: 44, height: 44, borderRadius: 12, background: card.color, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16}}>
+                <Icon size={22} color="#fff" />
+              </div>
+              <h3 style={{fontSize: 18, fontWeight: 600, margin: "0 0 6px", color: "#1d1d1f"}}>{card.title}</h3>
+              <p style={{fontSize: 14, color: "#6e6e73", margin: 0, lineHeight: 1.45}}>{card.desc}</p>
+            </button>
+          );
+        })}
+      </div>
+
+      <div style={{background: "#fff", borderRadius: 20, padding: 28, border: "1px solid rgba(0,0,0,0.06)"}}>
+        <div style={{display: "flex", alignItems: "center", gap: 10, marginBottom: 16}}>
+          <Info size={20} color="#0071E3" />
+          <h3 style={{fontSize: 17, fontWeight: 600, margin: 0}}>Sobre el examen cívico 2025</h3>
+        </div>
+        <div style={{display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16}}>
+          {[
+            { num: "128", label: "Preguntas totales para estudiar" },
+            { num: "20", label: "Preguntas en el examen" },
+            { num: "12", label: "Respuestas correctas para aprobar" },
+            { num: "20", label: "Preguntas marcadas con estrella (65/20)" },
+          ].map((s, i) => (
+            <div key={i} style={{textAlign: "center", padding: "16px 0"}}>
+              <div style={{fontSize: 32, fontWeight: 700, color: "#0071E3", letterSpacing: "-0.02em"}}>{s.num}</div>
+              <div style={{fontSize: 13, color: "#6e6e73", marginTop: 4}}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+        <p style={{fontSize: 13, color: "#86868b", margin: "12px 0 0", lineHeight: 1.5}}>
+          Fuente oficial: uscis.gov/citizenship — Las respuestas a ciertas preguntas pueden cambiar por elecciones o nombramientos. Visite uscis.gov/citizenship/testupdates para actualizaciones.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function EligibilityView({ onNav }) {
+  const [step, setStep] = useState(0);
+  const [answers, setAnswers] = useState({});
+  const [result, setResult] = useState(null); // "eligible" | "ineligible" | null
+
+  const current = ELIGIBILITY_QUESTIONS[step];
+  const total = ELIGIBILITY_QUESTIONS.length;
+
+  const handleAnswer = (answer) => {
+    const newAnswers = {...answers, [current.id]: answer};
+    setAnswers(newAnswers);
+    if (!answer) {
+      setResult("ineligible");
+    } else if (step + 1 >= total) {
+      setResult("eligible");
+    } else {
+      setStep(step + 1);
+    }
+  };
+
+  const restart = () => { setStep(0); setAnswers({}); setResult(null); };
+
+  if (result === "eligible") {
+    return (
+      <div style={{maxWidth: 640, margin: "48px auto 0"}}>
+        <div style={{background: "linear-gradient(135deg, #E8F9ED, #D4F5DE)", borderRadius: 24, padding: 40, textAlign: "center", border: "1px solid rgba(52,199,89,0.2)"}}>
+          <div style={{width: 64, height: 64, borderRadius: "50%", background: "#34C759", display: "inline-flex", alignItems: "center", justifyContent: "center", marginBottom: 20}}>
+            <CheckCircle2 size={32} color="#fff" />
+          </div>
+          <h2 style={{fontSize: 26, fontWeight: 700, margin: "0 0 12px", color: "#1d1d1f"}}>Usted parece ser elegible</h2>
+          <p style={{fontSize: 16, color: "#424245", lineHeight: 1.6, margin: "0 0 24px"}}>
+            Según sus respuestas, usted cumple los requisitos básicos para solicitar la naturalización. El siguiente paso es preparar sus documentos y llenar el formulario N-400.
+          </p>
+          <p style={{fontSize: 14, color: "#6e6e73", lineHeight: 1.5, margin: "0 0 28px"}}>
+            Esta evaluación es informativa y no constituye asesoría legal. Para una evaluación oficial, consulte con un abogado de inmigración o visite uscis.gov.
+          </p>
+          <div style={{display: "flex", flexDirection: "column", gap: 10}}>
+            <button onClick={() => onNav("checklist")} style={{width: "100%", padding: "14px 28px", borderRadius: 12, border: "none", background: "#0071E3", color: "#fff", fontSize: 16, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8}}>
+              <ListChecks size={18} /> Comenzar el proceso paso a paso
+            </button>
+            <div style={{display: "flex", gap: 10}}>
+              <button onClick={() => onNav("home")} style={{flex: 1, padding: "12px 20px", borderRadius: 12, border: "1px solid #D1D1D6", background: "#fff", color: "#1d1d1f", fontSize: 14, fontWeight: 500, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6}}>
+                <Home size={16} /> Volver al inicio
+              </button>
+              <button onClick={restart} style={{flex: 1, padding: "12px 20px", borderRadius: 12, border: "1px solid #D1D1D6", background: "#fff", color: "#1d1d1f", fontSize: 14, fontWeight: 500, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6}}>
+                <RotateCcw size={16} /> Evaluar de nuevo
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (result === "ineligible") {
+    return (
+      <div style={{maxWidth: 640, margin: "48px auto 0"}}>
+        <div style={{background: "linear-gradient(135deg, #FFF3E0, #FFE8CC)", borderRadius: 24, padding: 40, textAlign: "center", border: "1px solid rgba(255,149,0,0.2)"}}>
+          <div style={{width: 64, height: 64, borderRadius: "50%", background: "#FF9500", display: "inline-flex", alignItems: "center", justifyContent: "center", marginBottom: 20}}>
+            <AlertCircle size={32} color="#fff" />
+          </div>
+          <h2 style={{fontSize: 26, fontWeight: 700, margin: "0 0 12px", color: "#1d1d1f"}}>Aún no cumple este requisito</h2>
+          <div style={{background: "#fff", borderRadius: 16, padding: 20, margin: "0 0 24px", textAlign: "left"}}>
+            <p style={{fontSize: 15, fontWeight: 600, margin: "0 0 8px", color: "#1d1d1f"}}>{current.text}</p>
+            <p style={{fontSize: 14, color: "#424245", lineHeight: 1.6, margin: 0}}>{current.disqualifyMsg}</p>
+          </div>
+          <button onClick={restart} style={{padding: "12px 28px", borderRadius: 12, border: "none", background: "#FF9500", color: "#fff", fontSize: 15, fontWeight: 600, cursor: "pointer"}}>
+            Evaluar de nuevo
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{maxWidth: 640, margin: "48px auto 0"}}>
+      <div style={{marginBottom: 32}}>
+        <button onClick={() => onNav("home")} style={{display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", cursor: "pointer", fontSize: 14, color: "#0071E3", fontWeight: 500, padding: 0, marginBottom: 16}}>
+          <ArrowLeft size={16} /> Inicio
+        </button>
+        <h2 style={{fontSize: 28, fontWeight: 700, margin: "0 0 8px", letterSpacing: "-0.02em"}}>Verificar Elegibilidad</h2>
+        <p style={{fontSize: 15, color: "#6e6e73", margin: 0}}>Responda las siguientes preguntas para determinar si califica para la naturalización.</p>
+      </div>
+
+      {/* Progress */}
+      <div style={{marginBottom: 32}}>
+        <div style={{display: "flex", justifyContent: "space-between", fontSize: 13, color: "#86868b", marginBottom: 8}}>
+          <span>Pregunta {step + 1} de {total}</span>
+          <span>{Math.round(((step) / total) * 100)}%</span>
+        </div>
+        <div style={{height: 4, background: "#E5E5EA", borderRadius: 2}}>
+          <div style={{height: 4, background: "#0071E3", borderRadius: 2, width: `${(step / total) * 100}%`, transition: "width 0.4s ease"}} />
+        </div>
+      </div>
+
+      <div style={{background: "#fff", borderRadius: 20, padding: 32, border: "1px solid rgba(0,0,0,0.06)"}}>
+        <h3 style={{fontSize: 20, fontWeight: 600, margin: "0 0 12px", lineHeight: 1.35}}>{current.text}</h3>
+        <p style={{fontSize: 14, color: "#6e6e73", lineHeight: 1.5, margin: "0 0 28px"}}>{current.help}</p>
+        
+        <div style={{display: "flex", gap: 12}}>
+          <button onClick={() => handleAnswer(true)} style={{flex: 1, padding: "14px 24px", borderRadius: 12, border: "2px solid #34C759", background: "rgba(52,199,89,0.08)", color: "#1d1d1f", fontSize: 16, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8}}>
+            <Check size={18} color="#34C759" /> Sí
+          </button>
+          <button onClick={() => handleAnswer(false)} style={{flex: 1, padding: "14px 24px", borderRadius: 12, border: "2px solid #FF3B30", background: "rgba(255,59,48,0.06)", color: "#1d1d1f", fontSize: 16, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8}}>
+            <X size={18} color="#FF3B30" /> No
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ChecklistView({ onNav }) {
+  const [completed, setCompleted] = useState(() => {
+    try { return JSON.parse(window.sessionStorage?.getItem?.("cl") || "[]"); } catch { return []; }
+  });
+  const [expanded, setExpanded] = useState(null);
+
+  const toggle = (id) => {
+    const next = completed.includes(id) ? completed.filter(x => x !== id) : [...completed, id];
+    setCompleted(next);
+    try { window.sessionStorage?.setItem?.("cl", JSON.stringify(next)); } catch {}
+  };
+
+  const progress = Math.round((completed.length / PROCESS_STEPS.length) * 100);
+
+  return (
+    <div style={{maxWidth: 720, margin: "48px auto 0"}}>
+      <div style={{marginBottom: 32}}>
+        <button onClick={() => onNav("home")} style={{display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", cursor: "pointer", fontSize: 14, color: "#0071E3", fontWeight: 500, padding: 0, marginBottom: 16}}>
+          <ArrowLeft size={16} /> Inicio
+        </button>
+        <h2 style={{fontSize: 28, fontWeight: 700, margin: "0 0 8px", letterSpacing: "-0.02em"}}>Proceso de Naturalización</h2>
+        <p style={{fontSize: 15, color: "#6e6e73", margin: "0 0 20px"}}>10 pasos desde la verificación de elegibilidad hasta la ciudadanía. Marque cada paso completado.</p>
+        <div style={{display: "flex", alignItems: "center", gap: 12}}>
+          <div style={{flex: 1, height: 6, background: "#E5E5EA", borderRadius: 3}}>
+            <div style={{height: 6, background: "linear-gradient(90deg, #0071E3, #34C759)", borderRadius: 3, width: `${progress}%`, transition: "width 0.5s ease"}} />
+          </div>
+          <span style={{fontSize: 14, fontWeight: 600, color: "#0071E3", minWidth: 40}}>{progress}%</span>
+        </div>
+      </div>
+
+      <div style={{display: "flex", flexDirection: "column", gap: 8}}>
+        {PROCESS_STEPS.map((step, idx) => {
+          const done = completed.includes(step.id);
+          const isExpanded = expanded === step.id;
+          const Icon = IconMap[step.icon] || CircleDot;
+          return (
+            <div key={step.id} style={{background: "#fff", borderRadius: 16, border: `1px solid ${done ? "rgba(52,199,89,0.3)" : "rgba(0,0,0,0.06)"}`, overflow: "hidden", transition: "all 0.2s"}}>
+              <div style={{display: "flex", alignItems: "center", gap: 14, padding: "16px 20px", cursor: "pointer"}} onClick={() => setExpanded(isExpanded ? null : step.id)}>
+                <button onClick={(e) => { e.stopPropagation(); toggle(step.id); }} style={{width: 32, height: 32, borderRadius: "50%", border: done ? "none" : "2px solid #D1D1D6", background: done ? "#34C759" : "transparent", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", flexShrink: 0, transition: "all 0.2s"}}>
+                  {done && <Check size={16} color="#fff" strokeWidth={3} />}
+                </button>
+                <div style={{flex: 1, minWidth: 0}}>
+                  <div style={{display: "flex", alignItems: "center", gap: 8}}>
+                    <span style={{fontSize: 11, fontWeight: 700, color: "#86868b"}}>PASO {step.id}</span>
+                  </div>
+                  <h4 style={{fontSize: 16, fontWeight: 600, margin: "2px 0 0", color: done ? "#34C759" : "#1d1d1f", textDecoration: done ? "line-through" : "none"}}>{step.title}</h4>
+                </div>
+                <Icon size={18} color={done ? "#34C759" : "#86868b"} style={{flexShrink: 0}} />
+                {isExpanded ? <ChevronUp size={18} color="#86868b" /> : <ChevronDown size={18} color="#86868b" />}
+              </div>
+              {isExpanded && (
+                <div style={{padding: "0 20px 20px 66px", borderTop: "1px solid rgba(0,0,0,0.04)"}}>
+                  <p style={{fontSize: 14, color: "#424245", lineHeight: 1.6, margin: "16px 0 0"}}>{step.desc}</p>
+                  <p style={{fontSize: 13, color: "#6e6e73", lineHeight: 1.6, margin: "8px 0 0"}}>{step.details}</p>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function StudyView({ onNav }) {
+  const [filter, setFilter] = useState("all"); // all, starred, section
+  const [sectionFilter, setSectionFilter] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showAnswer, setShowAnswer] = useState({});
+  const [currentCard, setCurrentCard] = useState(0);
+  const [mode, setMode] = useState("browse"); // browse | flashcard
+
+  const sections = useMemo(() => [...new Set(CIVICS_QUESTIONS.map(q => q.section))], []);
+  
+  const filtered = useMemo(() => {
+    let qs = CIVICS_QUESTIONS;
+    if (filter === "starred") qs = qs.filter(q => q.starred);
+    if (sectionFilter) qs = qs.filter(q => q.section === sectionFilter);
+    if (searchTerm) {
+      const s = searchTerm.toLowerCase();
+      qs = qs.filter(q => q.q_es.toLowerCase().includes(s) || q.q_en.toLowerCase().includes(s) || q.answers_es.some(a => a.toLowerCase().includes(s)) || q.answers_en.some(a => a.toLowerCase().includes(s)));
+    }
+    return qs;
+  }, [filter, sectionFilter, searchTerm]);
+
+  const toggleAnswer = (id) => setShowAnswer(prev => ({...prev, [id]: !prev[id]}));
+
+  if (mode === "flashcard") {
+    const q = filtered[currentCard] || filtered[0];
+    if (!q) return <div style={{padding: 48, textAlign: "center"}}>No hay preguntas con estos filtros.</div>;
+    const shown = showAnswer[`fc_${q.id}`];
+    return (
+      <div style={{maxWidth: 640, margin: "48px auto 0"}}>
+        <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24}}>
+          <button onClick={() => setMode("browse")} style={{display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", cursor: "pointer", fontSize: 15, color: "#0071E3", fontWeight: 500}}>
+            <ArrowLeft size={18} /> Volver a lista
+          </button>
+          <span style={{fontSize: 14, color: "#86868b"}}>{currentCard + 1} / {filtered.length}</span>
+        </div>
+        <div style={{background: "#fff", borderRadius: 24, padding: 36, border: "1px solid rgba(0,0,0,0.06)", minHeight: 320, display: "flex", flexDirection: "column", justifyContent: "space-between"}}>
+          <div>
+            <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 16}}>
+              <span style={{fontSize: 12, fontWeight: 700, color: "#86868b"}}>PREGUNTA {q.id}</span>
+              {q.starred && <Star size={14} color="#FF9500" fill="#FF9500" />}
+            </div>
+            <p style={{fontSize: 18, fontWeight: 600, lineHeight: 1.4, margin: "0 0 8px", color: "#1d1d1f"}}>{q.q_en}</p>
+            <p style={{fontSize: 16, color: "#6e6e73", lineHeight: 1.4, margin: "0 0 24px"}}>{q.q_es}</p>
+          </div>
+          {shown ? (
+            <div style={{background: "rgba(52,199,89,0.06)", borderRadius: 12, padding: 16}}>
+              {q.answers_en.map((a, i) => (
+                <div key={i} style={{marginBottom: i < q.answers_en.length - 1 ? 8 : 0}}>
+                  <div style={{fontSize: 15, fontWeight: 500, color: "#1d1d1f"}}>{a}</div>
+                  <div style={{fontSize: 14, color: "#6e6e73"}}>{q.answers_es[i]}</div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <button onClick={() => setShowAnswer(p => ({...p, [`fc_${q.id}`]: true}))} style={{padding: "14px", borderRadius: 12, border: "2px dashed #D1D1D6", background: "transparent", cursor: "pointer", fontSize: 15, color: "#6e6e73"}}>
+              Toque para ver la respuesta
+            </button>
+          )}
+        </div>
+        <div style={{display: "flex", gap: 12, marginTop: 20}}>
+          <button disabled={currentCard === 0} onClick={() => { setCurrentCard(currentCard - 1); setShowAnswer(p => { const n = {...p}; delete n[`fc_${q.id}`]; return n; }); }} style={{flex: 1, padding: "14px", borderRadius: 12, border: "1px solid #D1D1D6", background: "#fff", cursor: currentCard === 0 ? "not-allowed" : "pointer", fontSize: 15, fontWeight: 500, opacity: currentCard === 0 ? 0.4 : 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 6}}>
+            <ArrowLeft size={16} /> Anterior
+          </button>
+          <button disabled={currentCard >= filtered.length - 1} onClick={() => { setCurrentCard(currentCard + 1); setShowAnswer(p => { const n = {...p}; delete n[`fc_${q.id}`]; return n; }); }} style={{flex: 1, padding: "14px", borderRadius: 12, border: "none", background: "#0071E3", color: "#fff", cursor: currentCard >= filtered.length - 1 ? "not-allowed" : "pointer", fontSize: 15, fontWeight: 500, opacity: currentCard >= filtered.length - 1 ? 0.4 : 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 6}}>
+            Siguiente <ArrowRight size={16} />
+          </button>
+        </div>
+        <button onClick={() => { const r = Math.floor(Math.random() * filtered.length); setCurrentCard(r); setShowAnswer({}); }} style={{width: "100%", padding: "14px", borderRadius: 12, border: "1px solid #D1D1D6", background: "#fff", cursor: "pointer", fontSize: 15, fontWeight: 500, marginTop: 8, display: "flex", alignItems: "center", justifyContent: "center", gap: 6}}>
+          <Shuffle size={16} /> Pregunta aleatoria
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{maxWidth: 800, margin: "48px auto 0"}}>
+      <div style={{marginBottom: 28}}>
+        <button onClick={() => onNav("home")} style={{display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", cursor: "pointer", fontSize: 14, color: "#0071E3", fontWeight: 500, padding: 0, marginBottom: 16}}>
+          <ArrowLeft size={16} /> Inicio
+        </button>
+        <h2 style={{fontSize: 28, fontWeight: 700, margin: "0 0 8px", letterSpacing: "-0.02em"}}>Aprender Educación Cívica</h2>
+        <p style={{fontSize: 15, color: "#6e6e73", margin: 0}}>128 preguntas del examen cívico 2025 — en inglés y español.</p>
+      </div>
+
+      {/* Controls */}
+      <div style={{display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 20}}>
+        <button onClick={() => setMode("flashcard")} style={{display: "flex", alignItems: "center", gap: 6, padding: "8px 16px", borderRadius: 10, border: "none", background: "#0071E3", color: "#fff", fontSize: 14, fontWeight: 600, cursor: "pointer"}}>
+          <Layers size={15} /> Modo Tarjetas
+        </button>
+        <button onClick={() => { setFilter(filter === "starred" ? "all" : "starred"); setSectionFilter(""); }} style={{display: "flex", alignItems: "center", gap: 6, padding: "8px 16px", borderRadius: 10, border: filter === "starred" ? "2px solid #FF9500" : "1px solid #D1D1D6", background: filter === "starred" ? "rgba(255,149,0,0.08)" : "#fff", fontSize: 14, fontWeight: 500, cursor: "pointer", color: "#1d1d1f"}}>
+          <Star size={14} color="#FF9500" fill={filter === "starred" ? "#FF9500" : "none"} /> 65/20 ({CIVICS_QUESTIONS.filter(q => q.starred).length})
+        </button>
+        <select value={sectionFilter} onChange={e => { setSectionFilter(e.target.value); setFilter("all"); }} style={{padding: "8px 12px", borderRadius: 10, border: "1px solid #D1D1D6", fontSize: 14, color: "#1d1d1f", background: "#fff"}}>
+          <option value="">Todas las secciones</option>
+          {sections.map(s => <option key={s} value={s}>{s}</option>)}
+        </select>
+      </div>
+
+      {/* Search */}
+      <div style={{position: "relative", marginBottom: 20}}>
+        <Search size={16} color="#86868b" style={{position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)"}} />
+        <input value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="Buscar pregunta o respuesta..." style={{width: "100%", padding: "12px 12px 12px 40px", borderRadius: 12, border: "1px solid #D1D1D6", fontSize: 15, outline: "none", boxSizing: "border-box", background: "#fff"}} />
+      </div>
+
+      <p style={{fontSize: 13, color: "#86868b", marginBottom: 16}}>Mostrando {filtered.length} de {CIVICS_QUESTIONS.length} preguntas</p>
+
+      <div style={{display: "flex", flexDirection: "column", gap: 8}}>
+        {filtered.map(q => {
+          const shown = showAnswer[q.id];
+          return (
+            <div key={q.id} style={{background: "#fff", borderRadius: 14, border: "1px solid rgba(0,0,0,0.06)", overflow: "hidden"}}>
+              <button onClick={() => toggleAnswer(q.id)} style={{width: "100%", display: "flex", alignItems: "flex-start", gap: 12, padding: "16px 20px", border: "none", background: "none", cursor: "pointer", textAlign: "left"}}>
+                <span style={{fontSize: 12, fontWeight: 700, color: "#86868b", minWidth: 28, paddingTop: 2}}>{q.id}</span>
+                <div style={{flex: 1}}>
+                  <p style={{fontSize: 15, fontWeight: 500, margin: 0, color: "#1d1d1f", lineHeight: 1.4}}>{q.q_en}</p>
+                  <p style={{fontSize: 14, margin: "4px 0 0", color: "#6e6e73", lineHeight: 1.4}}>{q.q_es}</p>
+                </div>
+                <div style={{display: "flex", alignItems: "center", gap: 6, flexShrink: 0}}>
+                  {q.starred && <Star size={14} color="#FF9500" fill="#FF9500" />}
+                  {shown ? <ChevronUp size={16} color="#86868b" /> : <ChevronDown size={16} color="#86868b" />}
+                </div>
+              </button>
+              {shown && (
+                <div style={{padding: "0 20px 16px 60px", borderTop: "1px solid rgba(0,0,0,0.04)"}}>
+                  <div style={{background: "rgba(0,113,227,0.04)", borderRadius: 10, padding: 14, marginTop: 12}}>
+                    {q.answers_en.map((a, i) => (
+                      <div key={i} style={{marginBottom: i < q.answers_en.length - 1 ? 10 : 0}}>
+                        <div style={{fontSize: 14, fontWeight: 500, color: "#0071E3"}}>{a}</div>
+                        <div style={{fontSize: 13, color: "#6e6e73"}}>{q.answers_es[i]}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function SimulationView({ onNav }) {
+  const [phase, setPhase] = useState("setup"); // setup | exam | result
+  const [questionCount, setQuestionCount] = useState(20);
+  const [onlyStarred, setOnlyStarred] = useState(false);
+  const [questions, setQuestions] = useState([]);
+  const [current, setCurrent] = useState(0);
+  const [userAnswers, setUserAnswers] = useState({});
+  const [showHint, setShowHint] = useState(false);
+  const [showResult, setShowResult] = useState(false);
+
+  const startExam = () => {
+    const pool = onlyStarred ? CIVICS_QUESTIONS.filter(q => q.starred) : CIVICS_QUESTIONS;
+    const shuffled = [...pool].sort(() => Math.random() - 0.5);
+    setQuestions(shuffled.slice(0, Math.min(questionCount, shuffled.length)));
+    setCurrent(0);
+    setUserAnswers({});
+    setShowHint(false);
+    setShowResult(false);
+    setPhase("exam");
+  };
+
+  const markAnswer = (qId, status) => {
+    setUserAnswers(prev => ({...prev, [qId]: status}));
+    setShowHint(false);
+    setShowResult(false);
+  };
+
+  const finish = () => {
+    setPhase("result");
+  };
+
+  const nextQ = () => {
+    setShowHint(false);
+    setShowResult(false);
+    if (current < questions.length - 1) setCurrent(current + 1);
+    else finish();
+  };
+
+  if (phase === "setup") {
+    return (
+      <div style={{maxWidth: 560, margin: "48px auto 0"}}>
+        <div style={{marginBottom: 32}}>
+          <button onClick={() => onNav("home")} style={{display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", cursor: "pointer", fontSize: 14, color: "#0071E3", fontWeight: 500, padding: 0, marginBottom: 16}}>
+            <ArrowLeft size={16} /> Inicio
+          </button>
+          <h2 style={{fontSize: 28, fontWeight: 700, margin: "0 0 8px", letterSpacing: "-0.02em"}}>Simulación de Entrevista</h2>
+          <p style={{fontSize: 15, color: "#6e6e73", margin: 0}}>Practique como en el examen real. El oficial de USCIS le hará preguntas oralmente.</p>
+        </div>
+        <div style={{background: "#fff", borderRadius: 20, padding: 32, border: "1px solid rgba(0,0,0,0.06)"}}>
+          <div style={{marginBottom: 24}}>
+            <label style={{fontSize: 14, fontWeight: 600, color: "#1d1d1f", display: "block", marginBottom: 8}}>Cantidad de preguntas</label>
+            <div style={{display: "flex", gap: 8}}>
+              {[10, 20, 30, 50].map(n => (
+                <button key={n} onClick={() => setQuestionCount(n)} style={{flex: 1, padding: "12px", borderRadius: 10, border: questionCount === n ? "2px solid #0071E3" : "1px solid #D1D1D6", background: questionCount === n ? "rgba(0,113,227,0.08)" : "#fff", fontSize: 15, fontWeight: 600, cursor: "pointer", color: questionCount === n ? "#0071E3" : "#1d1d1f"}}>{n}</button>
+              ))}
+            </div>
+          </div>
+          <div style={{marginBottom: 28}}>
+            <button onClick={() => setOnlyStarred(!onlyStarred)} style={{display: "flex", alignItems: "center", gap: 10, width: "100%", padding: "14px 16px", borderRadius: 12, border: onlyStarred ? "2px solid #FF9500" : "1px solid #D1D1D6", background: onlyStarred ? "rgba(255,149,0,0.06)" : "#fff", cursor: "pointer", textAlign: "left"}}>
+              <Star size={18} color="#FF9500" fill={onlyStarred ? "#FF9500" : "none"} />
+              <div>
+                <div style={{fontSize: 15, fontWeight: 500, color: "#1d1d1f"}}>Solo preguntas 65/20</div>
+                <div style={{fontSize: 13, color: "#6e6e73"}}>20 preguntas marcadas para mayores de 65 años con 20+ años de residencia</div>
+              </div>
+            </button>
+          </div>
+          <button onClick={startExam} style={{width: "100%", padding: "16px", borderRadius: 14, border: "none", background: "linear-gradient(135deg, #0071E3, #0077ED)", color: "#fff", fontSize: 17, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8}}>
+            <Zap size={20} /> Comenzar Simulación
+          </button>
+        </div>
+
+        <div style={{background: "#fff", borderRadius: 16, padding: 24, border: "1px solid rgba(0,0,0,0.06)", marginTop: 16}}>
+          <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 12}}>
+            <Lightbulb size={18} color="#FF9500" />
+            <span style={{fontSize: 15, fontWeight: 600}}>Cómo funciona el examen real</span>
+          </div>
+          <div style={{fontSize: 14, color: "#424245", lineHeight: 1.6}}>
+            <p style={{margin: "0 0 8px"}}>El oficial de USCIS le hará las preguntas en inglés de forma oral. Usted debe responder en inglés. En esta simulación:</p>
+            <p style={{margin: "0 0 4px"}}>1. Verá la pregunta en inglés (como la escucharía en la entrevista)</p>
+            <p style={{margin: "0 0 4px"}}>2. Verá la traducción al español para ayudarle a entender</p>
+            <p style={{margin: "0 0 4px"}}>3. Intente responder mentalmente antes de ver la respuesta</p>
+            <p style={{margin: "0"}}>4. Marque si acertó o falló para llevar su puntuación</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (phase === "result") {
+    const correct = Object.values(userAnswers).filter(v => v === "correct").length;
+    const incorrect = Object.values(userAnswers).filter(v => v === "incorrect").length;
+    const unanswered = questions.length - correct - incorrect;
+    const passed = questionCount <= 20 ? correct >= 12 : correct >= Math.ceil(questions.length * 0.6);
+    const percentage = Math.round((correct / questions.length) * 100);
+
+    return (
+      <div style={{maxWidth: 560, margin: "48px auto 0"}}>
+        <div style={{background: passed ? "linear-gradient(135deg, #E8F9ED, #D4F5DE)" : "linear-gradient(135deg, #FFE5E5, #FFD4D4)", borderRadius: 24, padding: 40, textAlign: "center", border: `1px solid ${passed ? "rgba(52,199,89,0.2)" : "rgba(255,59,48,0.2)"}`}}>
+          <div style={{width: 80, height: 80, borderRadius: "50%", background: passed ? "#34C759" : "#FF3B30", display: "inline-flex", alignItems: "center", justifyContent: "center", marginBottom: 20}}>
+            {passed ? <Award size={40} color="#fff" /> : <X size={40} color="#fff" />}
+          </div>
+          <h2 style={{fontSize: 28, fontWeight: 700, margin: "0 0 8px"}}>{passed ? "Aprobado" : "No aprobado"}</h2>
+          <p style={{fontSize: 48, fontWeight: 700, color: passed ? "#34C759" : "#FF3B30", margin: "0 0 8px"}}>{percentage}%</p>
+          <div style={{display: "flex", justifyContent: "center", gap: 24, margin: "20px 0"}}>
+            <div><div style={{fontSize: 24, fontWeight: 700, color: "#34C759"}}>{correct}</div><div style={{fontSize: 13, color: "#6e6e73"}}>Correctas</div></div>
+            <div><div style={{fontSize: 24, fontWeight: 700, color: "#FF3B30"}}>{incorrect}</div><div style={{fontSize: 13, color: "#6e6e73"}}>Incorrectas</div></div>
+            {unanswered > 0 && <div><div style={{fontSize: 24, fontWeight: 700, color: "#86868b"}}>{unanswered}</div><div style={{fontSize: 13, color: "#6e6e73"}}>Sin responder</div></div>}
+          </div>
+          <p style={{fontSize: 14, color: "#6e6e73", margin: "0 0 24px"}}>
+            {questionCount <= 20 ? "En el examen real necesita al menos 12 de 20 correctas (60%)." : `Necesitaba ${Math.ceil(questions.length * 0.6)} correctas para aprobar.`}
+          </p>
+          <div style={{display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap"}}>
+            <button onClick={() => setPhase("setup")} style={{padding: "14px 28px", borderRadius: 12, border: "none", background: passed ? "#34C759" : "#FF3B30", color: "#fff", fontSize: 15, fontWeight: 600, cursor: "pointer"}}>
+              Intentar de nuevo
+            </button>
+            <button onClick={() => onNav("home")} style={{padding: "14px 28px", borderRadius: 12, border: "1px solid #D1D1D6", background: "#fff", color: "#1d1d1f", fontSize: 15, fontWeight: 500, cursor: "pointer", display: "flex", alignItems: "center", gap: 6}}>
+              <Home size={16} /> Inicio
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Exam phase
+  const q = questions[current];
+  const answered = userAnswers[q.id];
+  const correct = Object.values(userAnswers).filter(v => v === "correct").length;
+  const incorrect = Object.values(userAnswers).filter(v => v === "incorrect").length;
+
+  return (
+    <div style={{maxWidth: 640, margin: "48px auto 0"}}>
+      {/* Header */}
+      <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20}}>
+        <button onClick={() => setPhase("setup")} style={{display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", cursor: "pointer", fontSize: 14, color: "#0071E3", fontWeight: 500}}>
+          <X size={16} /> Salir
+        </button>
+        <div style={{display: "flex", gap: 16, fontSize: 14, fontWeight: 600}}>
+          <span style={{color: "#34C759"}}>{correct} correctas</span>
+          <span style={{color: "#FF3B30"}}>{incorrect} incorrectas</span>
+        </div>
+      </div>
+
+      {/* Progress */}
+      <div style={{marginBottom: 24}}>
+        <div style={{display: "flex", justifyContent: "space-between", fontSize: 13, color: "#86868b", marginBottom: 6}}>
+          <span>Pregunta {current + 1} de {questions.length}</span>
+          <span>{Math.round(((current + 1) / questions.length) * 100)}%</span>
+        </div>
+        <div style={{height: 4, background: "#E5E5EA", borderRadius: 2}}>
+          <div style={{height: 4, background: "#0071E3", borderRadius: 2, width: `${((current + 1) / questions.length) * 100}%`, transition: "width 0.3s"}} />
+        </div>
+      </div>
+
+      {/* Question card */}
+      <div style={{background: "#fff", borderRadius: 20, padding: 32, border: "1px solid rgba(0,0,0,0.06)", marginBottom: 16}}>
+        <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 16}}>
+          <span style={{fontSize: 12, fontWeight: 700, color: "#86868b"}}>PREGUNTA {q.id}</span>
+          {q.starred && <Star size={14} color="#FF9500" fill="#FF9500" />}
+        </div>
+        
+        {/* English - what you'd hear */}
+        <div style={{background: "rgba(0,113,227,0.04)", borderRadius: 12, padding: 16, marginBottom: 12}}>
+          <div style={{fontSize: 11, fontWeight: 700, color: "#0071E3", marginBottom: 6, textTransform: "uppercase"}}>English (como lo escucharía)</div>
+          <p style={{fontSize: 18, fontWeight: 600, margin: 0, color: "#1d1d1f", lineHeight: 1.4}}>{q.q_en}</p>
+        </div>
+
+        {/* Spanish */}
+        <div style={{background: "rgba(255,149,0,0.04)", borderRadius: 12, padding: 16, marginBottom: 20}}>
+          <div style={{fontSize: 11, fontWeight: 700, color: "#FF9500", marginBottom: 6, textTransform: "uppercase"}}>Español (traducción)</div>
+          <p style={{fontSize: 16, margin: 0, color: "#424245", lineHeight: 1.4}}>{q.q_es}</p>
+        </div>
+
+        {/* Show answer */}
+        {!showResult ? (
+          <button onClick={() => setShowResult(true)} style={{width: "100%", padding: "14px", borderRadius: 12, border: "2px dashed #D1D1D6", background: "transparent", cursor: "pointer", fontSize: 15, color: "#6e6e73", display: "flex", alignItems: "center", justifyContent: "center", gap: 8}}>
+            <Eye size={18} /> Ver respuesta correcta
+          </button>
+        ) : (
+          <div>
+            <div style={{background: "rgba(52,199,89,0.06)", borderRadius: 12, padding: 16, marginBottom: 16}}>
+              <div style={{fontSize: 11, fontWeight: 700, color: "#34C759", marginBottom: 8, textTransform: "uppercase"}}>Respuestas aceptadas</div>
+              {q.answers_en.map((a, i) => (
+                <div key={i} style={{marginBottom: i < q.answers_en.length - 1 ? 10 : 0, padding: "6px 0"}}>
+                  <div style={{fontSize: 15, fontWeight: 500, color: "#1d1d1f"}}>{a}</div>
+                  <div style={{fontSize: 14, color: "#6e6e73"}}>{q.answers_es[i]}</div>
+                </div>
+              ))}
+            </div>
+            {!answered && (
+              <div style={{display: "flex", gap: 10}}>
+                <button onClick={() => markAnswer(q.id, "correct")} style={{flex: 1, padding: "14px", borderRadius: 12, border: "none", background: "#34C759", color: "#fff", fontSize: 15, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6}}>
+                  <Check size={18} /> Acerté
+                </button>
+                <button onClick={() => markAnswer(q.id, "incorrect")} style={{flex: 1, padding: "14px", borderRadius: 12, border: "none", background: "#FF3B30", color: "#fff", fontSize: 15, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6}}>
+                  <X size={18} /> Fallé
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Navigation */}
+      <div style={{display: "flex", gap: 10}}>
+        <button disabled={current === 0} onClick={() => { setCurrent(current - 1); setShowResult(false); }} style={{flex: 1, padding: "14px", borderRadius: 12, border: "1px solid #D1D1D6", background: "#fff", cursor: current === 0 ? "not-allowed" : "pointer", fontSize: 15, fontWeight: 500, opacity: current === 0 ? 0.4 : 1}}>
+          Anterior
+        </button>
+        {current < questions.length - 1 ? (
+          <button onClick={nextQ} style={{flex: 1, padding: "14px", borderRadius: 12, border: "none", background: "#0071E3", color: "#fff", cursor: "pointer", fontSize: 15, fontWeight: 600}}>
+            Siguiente
+          </button>
+        ) : (
+          <button onClick={finish} style={{flex: 1, padding: "14px", borderRadius: 12, border: "none", background: "linear-gradient(135deg, #34C759, #30D158)", color: "#fff", cursor: "pointer", fontSize: 15, fontWeight: 600}}>
+            Ver resultados
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(React.createElement(App));
+  </script>
+</body>
 </html>
