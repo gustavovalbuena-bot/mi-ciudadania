@@ -12,7 +12,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
     #root { min-height: 100vh; }
-    #loading { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #F5F5F7; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    #loading { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #F0F4FF; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
     #loading .spinner { width: 32px; height: 32px; border: 3px solid #E5E5EA; border-top-color: #0071E3; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 12px; }
     @keyframes spin { to { transform: rotate(360deg); } }
     #loading span { color: #6e6e73; font-size: 15px; }
@@ -561,15 +561,17 @@ function App() {
   ];
 
   return (
-    <div style={{fontFamily: "'SF Pro Display', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif", background: "#F5F5F7", minHeight: "100vh", color: "#1d1d1f"}}>
+    <div style={{fontFamily: "'SF Pro Display', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif", background: "#F0F4FF", minHeight: "100vh", color: "#1d1d1f"}}>
       {/* NAV */}
       <nav style={{background: "rgba(255,255,255,0.72)", backdropFilter: "saturate(180%) blur(20px)", WebkitBackdropFilter: "saturate(180%) blur(20px)", borderBottom: "1px solid rgba(0,0,0,0.08)", position: "sticky", top: 0, zIndex: 100}}>
         <div style={{maxWidth: 1200, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 52}}>
-          <div style={{display: "flex", alignItems: "center", gap: 10, cursor: "pointer"}} onClick={() => setCurrentView("home")}>
-            <div style={{width: 32, height: 32, borderRadius: 8, background: "linear-gradient(135deg, #0071E3, #34C759)", display: "flex", alignItems: "center", justifyContent: "center"}}>
-              <Globe size={18} color="#fff" strokeWidth={2.5} />
-            </div>
-            <span style={{fontWeight: 700, fontSize: 17, letterSpacing: "-0.02em"}}>Mi Ciudadanía</span>
+          <div style={{display: "flex", alignItems: "center", gap: 9, cursor: "pointer"}} onClick={() => setCurrentView("home")}>
+            <svg width="30" height="33" viewBox="0 0 88 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs><linearGradient id="navShGrad" x1="8" y1="2" x2="80" y2="94" gradientUnits="userSpaceOnUse"><stop offset="0%" stopColor="#1a5ccc"/><stop offset="100%" stopColor="#001f6e"/></linearGradient></defs>
+              <path d="M44 3 L80 17 L80 52 C80 72 64 86 44 94 C24 86 8 72 8 52 L8 17 Z" fill="url(#navShGrad)"/>
+              <path d="M44 20 L47.8 32.2 L60.5 32.2 L50.4 39.8 L54.1 52 L44 45.2 L33.9 52 L37.6 39.8 L27.5 32.2 L40.2 32.2 Z" fill="#FFD700"/>
+            </svg>
+            <span style={{fontWeight: 800, fontSize: 17, letterSpacing: "-0.03em", color: "#002868"}}>Mi Ciudadanía</span>
           </div>
           {/* Desktop nav */}
           <div style={{display: "flex", gap: 4}} className="desktop-nav">
@@ -619,16 +621,17 @@ function App() {
       {/* Footer */}
       <footer style={{borderTop: "1px solid rgba(0,0,0,0.06)", background: "rgba(255,255,255,0.72)", backdropFilter: "saturate(180%) blur(20px)", WebkitBackdropFilter: "saturate(180%) blur(20px)", padding: "20px 24px", textAlign: "center"}}>
         <div style={{maxWidth: 1200, margin: "0 auto"}}>
-          <p style={{fontSize: 13, color: "#86868b", margin: "0 0 4px", lineHeight: 1.5}}>
-            Creado por <span style={{fontWeight: 600, color: "#1d1d1f"}}>Gustavo Valbuena</span> — Fundador de PeopleBot AI
+          <p style={{fontSize: 13, color: "#424245", margin: "0 0 4px", lineHeight: 1.5}}>
+            Creado por <span style={{fontWeight: 700, color: "#002868"}}>Gustavo Valbuena</span> — Fundador de PeopleBot AI
           </p>
-          <p style={{fontSize: 12, color: "#aeaeb2", margin: 0, lineHeight: 1.5}}>
+          <p style={{fontSize: 12, color: "#6e6e73", margin: 0, lineHeight: 1.5}}>
             Basado en fuentes oficiales de USCIS (uscis.gov). Esta herramienta es informativa y no constituye asesoría legal.
           </p>
         </div>
       </footer>
 
       <style>{`
+        /* ── Responsive nav ── */
         .mobile-menu-btn { display: none !important; }
         .mobile-dropdown { display: none !important; }
         @media (max-width: 768px) {
@@ -636,6 +639,43 @@ function App() {
           .mobile-menu-btn { display: flex !important; }
           .mobile-dropdown { display: block !important; }
         }
+
+        /* ── Feature card hover lift ── */
+        .feature-card { transition: transform 0.22s ease, box-shadow 0.22s ease !important; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+        .feature-card:hover { transform: translateY(-5px) !important; box-shadow: 0 16px 40px rgba(0,0,0,0.13) !important; }
+        .feature-card:active { transform: translateY(-2px) !important; }
+
+        /* ── Flashcard 3-D flip ── */
+        .flip-container { perspective: 1000px; }
+        .flip-card { position: relative; min-height: 280px; transition: transform 0.55s cubic-bezier(0.4,0,0.2,1); transform-style: preserve-3d; }
+        .flip-card.flipped { transform: rotateY(180deg); }
+        .flip-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+        .flip-back { position: absolute; top: 0; left: 0; width: 100%; height: 100%; transform: rotateY(180deg); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+
+        /* ── Confetti animation ── */
+        @keyframes confettiFall {
+          0%   { transform: translateY(-10px) rotate(0deg);   opacity: 1; }
+          80%  { opacity: 1; }
+          100% { transform: translateY(340px) rotate(720deg); opacity: 0; }
+        }
+        .confetti-bit { position: absolute; border-radius: 2px; animation: confettiFall linear forwards; }
+
+        /* ── Button micro-interaction ── */
+        button:active { transform: scale(0.97); transition: transform 0.08s; }
+
+        /* ── Accessibility: better muted text ── */
+        .text-muted { color: #6e6e73 !important; }
+
+        /* ── Eligibility Yes/No buttons ── */
+        .answer-btn { transition: transform 0.18s ease, box-shadow 0.18s ease !important; }
+        .answer-btn:hover { transform: translateY(-3px) !important; }
+        .answer-btn:active { transform: scale(0.96) !important; }
+
+        /* ── Section sticky header ── */
+        .section-sticky { position: sticky; top: 52px; z-index: 10; }
+
+        /* ── Phase labels ── */
+        .phase-label { text-transform: uppercase; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; }
       `}</style>
     </div>
   );
@@ -652,18 +692,41 @@ function HomeView({ onNav }) {
   return (
     <div>
       <div style={{textAlign: "center", padding: "56px 0 40px"}}>
-        <div style={{width: 64, height: 64, borderRadius: 16, background: "linear-gradient(135deg, #0071E3, #34C759)", display: "inline-flex", alignItems: "center", justifyContent: "center", marginBottom: 20}}>
-          <Flag size={32} color="#fff" />
+        <div style={{marginBottom: 20, display: "inline-block"}}>
+          <svg width="72" height="80" viewBox="0 0 88 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="heroShGrad" x1="8" y1="2" x2="80" y2="94" gradientUnits="userSpaceOnUse"><stop offset="0%" stopColor="#1a5ccc"/><stop offset="100%" stopColor="#001f6e"/></linearGradient></defs>
+            <path d="M44 3 L80 17 L80 52 C80 72 64 86 44 94 C24 86 8 72 8 52 L8 17 Z" fill="url(#heroShGrad)"/>
+            <path d="M44 3 L80 17 L80 52 C80 72 64 86 44 94 C24 86 8 72 8 52 L8 17 Z" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="2"/>
+            <path d="M44 20 L47.8 32.2 L60.5 32.2 L50.4 39.8 L54.1 52 L44 45.2 L33.9 52 L37.6 39.8 L27.5 32.2 L40.2 32.2 Z" fill="#FFD700"/>
+            <rect x="41.5" y="57" width="5" height="18" rx="2.5" fill="rgba(255,255,255,0.8)"/>
+            <path d="M44 50 C41 54 38 57 39 60 C40 63 44 60 44 60 C44 60 48 63 49 60 C50 57 47 54 44 50Z" fill="#FF8C00"/>
+            <path d="M44 52 C43 55 41 57 42 59 C43 61 44 60 44 60 C44 60 45 61 46 59 C47 57 45 55 44 52Z" fill="#FFD700"/>
+          </svg>
         </div>
-        <h1 style={{fontSize: "clamp(28px, 5vw, 44px)", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.1, margin: "0 0 12px"}}>Su camino a la<br/>ciudadanía americana</h1>
-        <p style={{fontSize: "clamp(15px, 2.5vw, 19px)", color: "#6e6e73", maxWidth: 520, margin: "0 auto", lineHeight: 1.5}}>Guía completa en español para el proceso de naturalización. Basada en fuentes oficiales de USCIS.</p>
+        <h1 style={{fontSize: "clamp(30px, 5vw, 46px)", fontWeight: 800, letterSpacing: "-0.04em", lineHeight: 1.1, margin: "0 0 14px", color: "#001f6e"}}>Tu camino a la<br/>ciudadanía americana</h1>
+        <p style={{fontSize: "clamp(15px, 2.5vw, 18px)", color: "#6e6e73", maxWidth: 520, margin: "0 auto 24px", lineHeight: 1.5}}>Guía completa en español para el proceso de naturalización. Basada en fuentes oficiales de USCIS.</p>
+        <div style={{display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 8, marginBottom: 28}}>
+          {[
+            {icon: "📋", label: "128 Preguntas Cívicas"},
+            {icon: "🎯", label: "Simulación Realista"},
+            {icon: "✅", label: "Verificar Elegibilidad"},
+            {icon: "🆓", label: "100% Gratuito"},
+          ].map((b, i) => (
+            <span key={i} style={{background: "rgba(0,56,168,0.07)", border: "1px solid rgba(0,56,168,0.15)", borderRadius: 20, padding: "6px 14px", fontSize: 13, color: "#002868", fontWeight: 500}}>
+              {b.icon} {b.label}
+            </span>
+          ))}
+        </div>
+        <button onClick={() => onNav("eligibility")} style={{display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 28px", borderRadius: 14, border: "none", background: "linear-gradient(135deg, #002868, #0038a8)", color: "#fff", fontSize: 16, fontWeight: 700, cursor: "pointer", letterSpacing: "-0.01em", boxShadow: "0 6px 24px rgba(0,40,104,0.3)"}}>
+          <Shield size={18} /> Verificar mi elegibilidad →
+        </button>
       </div>
 
       <div style={{display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16, marginBottom: 40}}>
         {cards.map(card => {
           const Icon = card.icon;
           return (
-            <button key={card.id} onClick={() => onNav(card.id)} style={{background: card.bg, border: "1px solid rgba(0,0,0,0.04)", borderRadius: 20, padding: 28, textAlign: "left", cursor: "pointer", transition: "transform 0.2s, box-shadow 0.2s"}}>
+            <button key={card.id} onClick={() => onNav(card.id)} className="feature-card" style={{background: card.bg, border: "1px solid rgba(0,0,0,0.06)", borderRadius: 20, padding: 28, textAlign: "left", cursor: "pointer"}}>
               <div style={{width: 44, height: 44, borderRadius: 12, background: card.color, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16}}>
                 <Icon size={22} color="#fff" />
               </div>
@@ -799,12 +862,14 @@ function EligibilityView({ onNav }) {
         <h3 style={{fontSize: 20, fontWeight: 600, margin: "0 0 12px", lineHeight: 1.35}}>{current.text}</h3>
         <p style={{fontSize: 14, color: "#6e6e73", lineHeight: 1.5, margin: "0 0 28px"}}>{current.help}</p>
         
-        <div style={{display: "flex", gap: 12}}>
-          <button onClick={() => handleAnswer(true)} style={{flex: 1, padding: "14px 24px", borderRadius: 12, border: "2px solid #34C759", background: "rgba(52,199,89,0.08)", color: "#1d1d1f", fontSize: 16, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8}}>
-            <Check size={18} color="#34C759" /> Sí
+        <div style={{display: "flex", gap: 14}}>
+          <button onClick={() => handleAnswer(true)} className="answer-btn" style={{flex: 1, padding: "22px 24px", borderRadius: 16, border: "none", background: "linear-gradient(135deg, #34C759, #30D158)", color: "#fff", fontSize: 20, fontWeight: 700, cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 8, boxShadow: "0 6px 24px rgba(52,199,89,0.35)"}}>
+            <Check size={32} color="#fff" strokeWidth={3} />
+            Sí
           </button>
-          <button onClick={() => handleAnswer(false)} style={{flex: 1, padding: "14px 24px", borderRadius: 12, border: "2px solid #FF3B30", background: "rgba(255,59,48,0.06)", color: "#1d1d1f", fontSize: 16, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8}}>
-            <X size={18} color="#FF3B30" /> No
+          <button onClick={() => handleAnswer(false)} className="answer-btn" style={{flex: 1, padding: "22px 24px", borderRadius: 16, border: "none", background: "linear-gradient(135deg, #FF3B30, #FF2D20)", color: "#fff", fontSize: 20, fontWeight: 700, cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 8, boxShadow: "0 6px 24px rgba(255,59,48,0.35)"}}>
+            <X size={32} color="#fff" strokeWidth={3} />
+            No
           </button>
         </div>
       </div>
@@ -842,36 +907,50 @@ function ChecklistView({ onNav }) {
         </div>
       </div>
 
-      <div style={{display: "flex", flexDirection: "column", gap: 8}}>
-        {PROCESS_STEPS.map((step, idx) => {
-          const done = completed.includes(step.id);
-          const isExpanded = expanded === step.id;
-          const Icon = IconMap[step.icon] || CircleDot;
-          return (
-            <div key={step.id} style={{background: "#fff", borderRadius: 16, border: `1px solid ${done ? "rgba(52,199,89,0.3)" : "rgba(0,0,0,0.06)"}`, overflow: "hidden", transition: "all 0.2s"}}>
-              <div style={{display: "flex", alignItems: "center", gap: 14, padding: "16px 20px", cursor: "pointer"}} onClick={() => setExpanded(isExpanded ? null : step.id)}>
-                <button onClick={(e) => { e.stopPropagation(); toggle(step.id); }} style={{width: 32, height: 32, borderRadius: "50%", border: done ? "none" : "2px solid #D1D1D6", background: done ? "#34C759" : "transparent", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", flexShrink: 0, transition: "all 0.2s"}}>
-                  {done && <Check size={16} color="#fff" strokeWidth={3} />}
-                </button>
-                <div style={{flex: 1, minWidth: 0}}>
-                  <div style={{display: "flex", alignItems: "center", gap: 8}}>
-                    <span style={{fontSize: 11, fontWeight: 700, color: "#86868b"}}>PASO {step.id}</span>
-                  </div>
-                  <h4 style={{fontSize: 16, fontWeight: 600, margin: "2px 0 0", color: done ? "#34C759" : "#1d1d1f", textDecoration: done ? "line-through" : "none"}}>{step.title}</h4>
-                </div>
-                <Icon size={18} color={done ? "#34C759" : "#86868b"} style={{flexShrink: 0}} />
-                {isExpanded ? <ChevronUp size={18} color="#86868b" /> : <ChevronDown size={18} color="#86868b" />}
-              </div>
-              {isExpanded && (
-                <div style={{padding: "0 20px 20px 66px", borderTop: "1px solid rgba(0,0,0,0.04)"}}>
-                  <p style={{fontSize: 14, color: "#424245", lineHeight: 1.6, margin: "16px 0 0"}}>{step.desc}</p>
-                  <p style={{fontSize: 13, color: "#6e6e73", lineHeight: 1.6, margin: "8px 0 0"}}>{step.details}</p>
-                </div>
-              )}
+      {[
+        { label: "Fase 1 — Preparación", color: "#0038a8", bg: "rgba(0,56,168,0.06)", steps: PROCESS_STEPS.filter(s => s.id <= 3) },
+        { label: "Fase 2 — Solicitud y Examen", color: "#FF9500", bg: "rgba(255,149,0,0.06)", steps: PROCESS_STEPS.filter(s => s.id >= 4 && s.id <= 7) },
+        { label: "Fase 3 — Resultado y Ceremonia", color: "#34C759", bg: "rgba(52,199,89,0.06)", steps: PROCESS_STEPS.filter(s => s.id >= 8) },
+      ].map(phase => (
+        <div key={phase.label} style={{marginBottom: 28}}>
+          <div className="section-sticky" style={{background: "#F0F4FF", paddingBottom: 8}}>
+            <div style={{background: phase.bg, border: `1px solid ${phase.color}22`, borderRadius: 10, padding: "8px 16px", display: "inline-flex", alignItems: "center", gap: 8}}>
+              <span className="phase-label" style={{color: phase.color}}>{phase.label}</span>
+              <span style={{fontSize: 12, color: phase.color, fontWeight: 600, background: `${phase.color}18`, borderRadius: 6, padding: "2px 8px"}}>
+                {phase.steps.filter(s => completed.includes(s.id)).length}/{phase.steps.length}
+              </span>
             </div>
-          );
-        })}
-      </div>
+          </div>
+          <div style={{display: "flex", flexDirection: "column", gap: 8, marginTop: 8}}>
+            {phase.steps.map((step) => {
+              const done = completed.includes(step.id);
+              const isExpanded = expanded === step.id;
+              const Icon = IconMap[step.icon] || CircleDot;
+              return (
+                <div key={step.id} style={{background: "#fff", borderRadius: 16, border: `1px solid ${done ? "rgba(52,199,89,0.3)" : "rgba(0,0,0,0.06)"}`, overflow: "hidden", transition: "all 0.2s"}}>
+                  <div style={{display: "flex", alignItems: "center", gap: 14, padding: "16px 20px", cursor: "pointer"}} onClick={() => setExpanded(isExpanded ? null : step.id)}>
+                    <button onClick={(e) => { e.stopPropagation(); toggle(step.id); }} style={{width: 32, height: 32, borderRadius: "50%", border: done ? "none" : "2px solid #D1D1D6", background: done ? "#34C759" : "transparent", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", flexShrink: 0, transition: "all 0.2s"}}>
+                      {done && <Check size={16} color="#fff" strokeWidth={3} />}
+                    </button>
+                    <div style={{flex: 1, minWidth: 0}}>
+                      <span style={{fontSize: 11, fontWeight: 700, color: "#86868b"}}>PASO {step.id}</span>
+                      <h4 style={{fontSize: 16, fontWeight: 600, margin: "2px 0 0", color: done ? "#34C759" : "#1d1d1f", textDecoration: done ? "line-through" : "none"}}>{step.title}</h4>
+                    </div>
+                    <Icon size={18} color={done ? "#34C759" : "#86868b"} style={{flexShrink: 0}} />
+                    {isExpanded ? <ChevronUp size={18} color="#86868b" /> : <ChevronDown size={18} color="#86868b" />}
+                  </div>
+                  {isExpanded && (
+                    <div style={{padding: "0 20px 20px 66px", borderTop: "1px solid rgba(0,0,0,0.04)"}}>
+                      <p style={{fontSize: 14, color: "#424245", lineHeight: 1.6, margin: "16px 0 0"}}>{step.desc}</p>
+                      <p style={{fontSize: 13, color: "#6e6e73", lineHeight: 1.6, margin: "8px 0 0"}}>{step.details}</p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -902,44 +981,67 @@ function StudyView({ onNav }) {
   if (mode === "flashcard") {
     const q = filtered[currentCard] || filtered[0];
     if (!q) return <div style={{padding: 48, textAlign: "center"}}>No hay preguntas con estos filtros.</div>;
-    const shown = showAnswer[`fc_${q.id}`];
+    const flipped = !!showAnswer[`fc_${q.id}`];
+    const goNext = () => { setCurrentCard(currentCard + 1); setShowAnswer(p => { const n = {...p}; delete n[`fc_${q.id}`]; return n; }); };
+    const goPrev = () => { setCurrentCard(currentCard - 1); setShowAnswer(p => { const n = {...p}; delete n[`fc_${q.id}`]; return n; }); };
     return (
       <div style={{maxWidth: 640, margin: "48px auto 0"}}>
-        <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24}}>
-          <button onClick={() => setMode("browse")} style={{display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", cursor: "pointer", fontSize: 15, color: "#0071E3", fontWeight: 500}}>
+        <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20}}>
+          <button onClick={() => setMode("browse")} style={{display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", cursor: "pointer", fontSize: 15, color: "#0038a8", fontWeight: 500}}>
             <ArrowLeft size={18} /> Volver a lista
           </button>
-          <span style={{fontSize: 14, color: "#86868b"}}>{currentCard + 1} / {filtered.length}</span>
-        </div>
-        <div style={{background: "#fff", borderRadius: 24, padding: 36, border: "1px solid rgba(0,0,0,0.06)", minHeight: 320, display: "flex", flexDirection: "column", justifyContent: "space-between"}}>
-          <div>
-            <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 16}}>
-              <span style={{fontSize: 12, fontWeight: 700, color: "#86868b"}}>PREGUNTA {q.id}</span>
-              {q.starred && <Star size={14} color="#FF9500" fill="#FF9500" />}
-            </div>
-            <p style={{fontSize: 18, fontWeight: 600, lineHeight: 1.4, margin: "0 0 8px", color: "#1d1d1f"}}>{q.q_en}</p>
-            <p style={{fontSize: 16, color: "#6e6e73", lineHeight: 1.4, margin: "0 0 24px"}}>{q.q_es}</p>
+          <div style={{display: "flex", alignItems: "center", gap: 8}}>
+            <span style={{fontSize: 13, color: "#6e6e73", fontWeight: 500}}>{currentCard + 1} / {filtered.length}</span>
+            {flipped && <span style={{fontSize: 12, background: "rgba(52,199,89,0.1)", color: "#34C759", borderRadius: 6, padding: "2px 8px", fontWeight: 600}}>Respuesta</span>}
           </div>
-          {shown ? (
-            <div style={{background: "rgba(52,199,89,0.06)", borderRadius: 12, padding: 16}}>
-              {q.answers_en.map((a, i) => (
-                <div key={i} style={{marginBottom: i < q.answers_en.length - 1 ? 8 : 0}}>
-                  <div style={{fontSize: 15, fontWeight: 500, color: "#1d1d1f"}}>{a}</div>
-                  <div style={{fontSize: 14, color: "#6e6e73"}}>{q.answers_es[i]}</div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <button onClick={() => setShowAnswer(p => ({...p, [`fc_${q.id}`]: true}))} style={{padding: "14px", borderRadius: 12, border: "2px dashed #D1D1D6", background: "transparent", cursor: "pointer", fontSize: 15, color: "#6e6e73"}}>
-              Toque para ver la respuesta
-            </button>
-          )}
         </div>
-        <div style={{display: "flex", gap: 12, marginTop: 20}}>
-          <button disabled={currentCard === 0} onClick={() => { setCurrentCard(currentCard - 1); setShowAnswer(p => { const n = {...p}; delete n[`fc_${q.id}`]; return n; }); }} style={{flex: 1, padding: "14px", borderRadius: 12, border: "1px solid #D1D1D6", background: "#fff", cursor: currentCard === 0 ? "not-allowed" : "pointer", fontSize: 15, fontWeight: 500, opacity: currentCard === 0 ? 0.4 : 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 6}}>
+
+        {/* Flip card container */}
+        <div className="flip-container" style={{marginBottom: 16}} onClick={() => setShowAnswer(p => ({...p, [`fc_${q.id}`]: !flipped}))}>
+          <div className={`flip-card${flipped ? " flipped" : ""}`}>
+            {/* Front: question */}
+            <div className="flip-face" style={{background: "#fff", borderRadius: 24, padding: "36px 32px", border: "1px solid rgba(0,0,0,0.06)", minHeight: 280, display: "flex", flexDirection: "column", justifyContent: "space-between", cursor: "pointer"}}>
+              <div>
+                <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 16}}>
+                  <span style={{fontSize: 11, fontWeight: 700, color: "#86868b"}}>PREGUNTA {q.id}</span>
+                  {q.starred && <Star size={14} color="#FF9500" fill="#FF9500" />}
+                  <span style={{marginLeft: "auto", fontSize: 12, color: "#aeaeb2"}}>toca para voltear</span>
+                </div>
+                <p style={{fontSize: 19, fontWeight: 600, lineHeight: 1.4, margin: "0 0 10px", color: "#1d1d1f"}}>{q.q_en}</p>
+                <p style={{fontSize: 16, color: "#6e6e73", lineHeight: 1.4, margin: 0}}>{q.q_es}</p>
+              </div>
+              <div style={{textAlign: "center", marginTop: 24}}>
+                <span style={{display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, color: "#0038a8", fontWeight: 500, background: "rgba(0,56,168,0.06)", borderRadius: 10, padding: "8px 16px", border: "1px solid rgba(0,56,168,0.12)"}}>
+                  <Eye size={14} /> Ver respuesta
+                </span>
+              </div>
+            </div>
+            {/* Back: answer */}
+            <div className="flip-back" style={{background: "linear-gradient(135deg, #E8F9ED, #D4F5DE)", borderRadius: 24, padding: "36px 32px", border: "1px solid rgba(52,199,89,0.2)", minHeight: 280, display: "flex", flexDirection: "column", justifyContent: "space-between", cursor: "pointer"}}>
+              <div>
+                <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 16}}>
+                  <CheckCircle2 size={16} color="#34C759" />
+                  <span style={{fontSize: 11, fontWeight: 700, color: "#34C759"}}>RESPUESTAS ACEPTADAS</span>
+                </div>
+                {q.answers_en.map((a, i) => (
+                  <div key={i} style={{marginBottom: i < q.answers_en.length - 1 ? 12 : 0}}>
+                    <div style={{fontSize: 16, fontWeight: 600, color: "#1d1d1f"}}>{a}</div>
+                    <div style={{fontSize: 14, color: "#6e6e73"}}>{q.answers_es[i]}</div>
+                  </div>
+                ))}
+              </div>
+              <div style={{textAlign: "center", marginTop: 16}}>
+                <span style={{fontSize: 13, color: "#34C759", fontWeight: 500}}>toca para volver a la pregunta</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style={{display: "flex", gap: 12, marginTop: 4}}>
+          <button disabled={currentCard === 0} onClick={goPrev} style={{flex: 1, padding: "14px", borderRadius: 12, border: "1px solid #D1D1D6", background: "#fff", cursor: currentCard === 0 ? "not-allowed" : "pointer", fontSize: 15, fontWeight: 500, opacity: currentCard === 0 ? 0.4 : 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 6}}>
             <ArrowLeft size={16} /> Anterior
           </button>
-          <button disabled={currentCard >= filtered.length - 1} onClick={() => { setCurrentCard(currentCard + 1); setShowAnswer(p => { const n = {...p}; delete n[`fc_${q.id}`]; return n; }); }} style={{flex: 1, padding: "14px", borderRadius: 12, border: "none", background: "#0071E3", color: "#fff", cursor: currentCard >= filtered.length - 1 ? "not-allowed" : "pointer", fontSize: 15, fontWeight: 500, opacity: currentCard >= filtered.length - 1 ? 0.4 : 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 6}}>
+          <button disabled={currentCard >= filtered.length - 1} onClick={goNext} style={{flex: 1, padding: "14px", borderRadius: 12, border: "none", background: "#0038a8", color: "#fff", cursor: currentCard >= filtered.length - 1 ? "not-allowed" : "pointer", fontSize: 15, fontWeight: 500, opacity: currentCard >= filtered.length - 1 ? 0.4 : 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 6}}>
             Siguiente <ArrowRight size={16} />
           </button>
         </div>
@@ -980,40 +1082,59 @@ function StudyView({ onNav }) {
         <input value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="Buscar pregunta o respuesta..." style={{width: "100%", padding: "12px 12px 12px 40px", borderRadius: 12, border: "1px solid #D1D1D6", fontSize: 15, outline: "none", boxSizing: "border-box", background: "#fff"}} />
       </div>
 
-      <p style={{fontSize: 13, color: "#86868b", marginBottom: 16}}>Mostrando {filtered.length} de {CIVICS_QUESTIONS.length} preguntas</p>
+      <p style={{fontSize: 13, color: "#6e6e73", marginBottom: 16}}>Mostrando {filtered.length} de {CIVICS_QUESTIONS.length} preguntas</p>
 
-      <div style={{display: "flex", flexDirection: "column", gap: 8}}>
-        {filtered.map(q => {
-          const shown = showAnswer[q.id];
-          return (
-            <div key={q.id} style={{background: "#fff", borderRadius: 14, border: "1px solid rgba(0,0,0,0.06)", overflow: "hidden"}}>
-              <button onClick={() => toggleAnswer(q.id)} style={{width: "100%", display: "flex", alignItems: "flex-start", gap: 12, padding: "16px 20px", border: "none", background: "none", cursor: "pointer", textAlign: "left"}}>
-                <span style={{fontSize: 12, fontWeight: 700, color: "#86868b", minWidth: 28, paddingTop: 2}}>{q.id}</span>
-                <div style={{flex: 1}}>
-                  <p style={{fontSize: 15, fontWeight: 500, margin: 0, color: "#1d1d1f", lineHeight: 1.4}}>{q.q_en}</p>
-                  <p style={{fontSize: 14, margin: "4px 0 0", color: "#6e6e73", lineHeight: 1.4}}>{q.q_es}</p>
+      {(() => {
+        const sectionColors = {"Gobierno Americano": "#0038a8", "Historia Americana": "#BF0A30", "Geografía y Símbolos": "#34C759", "Integración Cívica": "#FF9500"};
+        const grouped = !sectionFilter && !searchTerm
+          ? sections.map(sec => ({ sec, qs: filtered.filter(q => q.section === sec) })).filter(g => g.qs.length > 0)
+          : [{ sec: null, qs: filtered }];
+        return grouped.map(({ sec, qs }) => (
+          <div key={sec || "all"} style={{marginBottom: sec ? 24 : 0}}>
+            {sec && (
+              <div className="section-sticky" style={{background: "#F0F4FF", paddingBottom: 8}}>
+                <div style={{display: "flex", alignItems: "center", gap: 10, background: `${sectionColors[sec] || "#0038a8"}10`, border: `1px solid ${sectionColors[sec] || "#0038a8"}25`, borderRadius: 10, padding: "8px 14px", width: "fit-content"}}>
+                  <div style={{width: 8, height: 8, borderRadius: "50%", background: sectionColors[sec] || "#0038a8"}} />
+                  <span className="phase-label" style={{color: sectionColors[sec] || "#0038a8"}}>{sec}</span>
+                  <span style={{fontSize: 12, fontWeight: 600, color: sectionColors[sec] || "#0038a8", opacity: 0.7}}>{qs.length} preguntas</span>
                 </div>
-                <div style={{display: "flex", alignItems: "center", gap: 6, flexShrink: 0}}>
-                  {q.starred && <Star size={14} color="#FF9500" fill="#FF9500" />}
-                  {shown ? <ChevronUp size={16} color="#86868b" /> : <ChevronDown size={16} color="#86868b" />}
-                </div>
-              </button>
-              {shown && (
-                <div style={{padding: "0 20px 16px 60px", borderTop: "1px solid rgba(0,0,0,0.04)"}}>
-                  <div style={{background: "rgba(0,113,227,0.04)", borderRadius: 10, padding: 14, marginTop: 12}}>
-                    {q.answers_en.map((a, i) => (
-                      <div key={i} style={{marginBottom: i < q.answers_en.length - 1 ? 10 : 0}}>
-                        <div style={{fontSize: 14, fontWeight: 500, color: "#0071E3"}}>{a}</div>
-                        <div style={{fontSize: 13, color: "#6e6e73"}}>{q.answers_es[i]}</div>
+              </div>
+            )}
+            <div style={{display: "flex", flexDirection: "column", gap: 8, marginTop: sec ? 8 : 0}}>
+              {qs.map(q => {
+                const shown = showAnswer[q.id];
+                return (
+                  <div key={q.id} style={{background: "#fff", borderRadius: 14, border: "1px solid rgba(0,0,0,0.06)", overflow: "hidden"}}>
+                    <button onClick={() => toggleAnswer(q.id)} style={{width: "100%", display: "flex", alignItems: "flex-start", gap: 12, padding: "16px 20px", border: "none", background: "none", cursor: "pointer", textAlign: "left"}}>
+                      <span style={{fontSize: 12, fontWeight: 700, color: "#86868b", minWidth: 28, paddingTop: 2}}>{q.id}</span>
+                      <div style={{flex: 1}}>
+                        <p style={{fontSize: 15, fontWeight: 500, margin: 0, color: "#1d1d1f", lineHeight: 1.4}}>{q.q_en}</p>
+                        <p style={{fontSize: 14, margin: "4px 0 0", color: "#6e6e73", lineHeight: 1.4}}>{q.q_es}</p>
                       </div>
-                    ))}
+                      <div style={{display: "flex", alignItems: "center", gap: 6, flexShrink: 0}}>
+                        {q.starred && <Star size={14} color="#FF9500" fill="#FF9500" />}
+                        {shown ? <ChevronUp size={16} color="#86868b" /> : <ChevronDown size={16} color="#86868b" />}
+                      </div>
+                    </button>
+                    {shown && (
+                      <div style={{padding: "0 20px 16px 60px", borderTop: "1px solid rgba(0,0,0,0.04)"}}>
+                        <div style={{background: "rgba(0,56,168,0.04)", borderRadius: 10, padding: 14, marginTop: 12}}>
+                          {q.answers_en.map((a, i) => (
+                            <div key={i} style={{marginBottom: i < q.answers_en.length - 1 ? 10 : 0}}>
+                              <div style={{fontSize: 14, fontWeight: 500, color: "#0038a8"}}>{a}</div>
+                              <div style={{fontSize: 13, color: "#6e6e73"}}>{q.answers_es[i]}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
-                </div>
-              )}
+                );
+              })}
             </div>
-          );
-        })}
-      </div>
+          </div>
+        ));
+      })()}
     </div>
   );
 }
@@ -1112,30 +1233,80 @@ function SimulationView({ onNav }) {
     const unanswered = questions.length - correct - incorrect;
     const passed = questionCount <= 20 ? correct >= 12 : correct >= Math.ceil(questions.length * 0.6);
     const percentage = Math.round((correct / questions.length) * 100);
+    const confettiColors = ["#FFD700","#0038a8","#BF0A30","#34C759","#FF9500","#fff","#AF52DE"];
+    const confettiBits = passed ? Array.from({length: 30}, (_, i) => ({
+      id: i,
+      color: confettiColors[i % confettiColors.length],
+      left: `${Math.random() * 100}%`,
+      delay: `${Math.random() * 1.2}s`,
+      duration: `${1.8 + Math.random() * 1.2}s`,
+      size: Math.random() > 0.5 ? 10 : 7,
+      rotate: Math.random() > 0.5 ? "3px" : "0",
+    })) : [];
 
     return (
       <div style={{maxWidth: 560, margin: "48px auto 0"}}>
-        <div style={{background: passed ? "linear-gradient(135deg, #E8F9ED, #D4F5DE)" : "linear-gradient(135deg, #FFE5E5, #FFD4D4)", borderRadius: 24, padding: 40, textAlign: "center", border: `1px solid ${passed ? "rgba(52,199,89,0.2)" : "rgba(255,59,48,0.2)"}`}}>
-          <div style={{width: 80, height: 80, borderRadius: "50%", background: passed ? "#34C759" : "#FF3B30", display: "inline-flex", alignItems: "center", justifyContent: "center", marginBottom: 20}}>
-            {passed ? <Award size={40} color="#fff" /> : <X size={40} color="#fff" />}
-          </div>
-          <h2 style={{fontSize: 28, fontWeight: 700, margin: "0 0 8px"}}>{passed ? "Aprobado" : "No aprobado"}</h2>
-          <p style={{fontSize: 48, fontWeight: 700, color: passed ? "#34C759" : "#FF3B30", margin: "0 0 8px"}}>{percentage}%</p>
-          <div style={{display: "flex", justifyContent: "center", gap: 24, margin: "20px 0"}}>
-            <div><div style={{fontSize: 24, fontWeight: 700, color: "#34C759"}}>{correct}</div><div style={{fontSize: 13, color: "#6e6e73"}}>Correctas</div></div>
-            <div><div style={{fontSize: 24, fontWeight: 700, color: "#FF3B30"}}>{incorrect}</div><div style={{fontSize: 13, color: "#6e6e73"}}>Incorrectas</div></div>
-            {unanswered > 0 && <div><div style={{fontSize: 24, fontWeight: 700, color: "#86868b"}}>{unanswered}</div><div style={{fontSize: 13, color: "#6e6e73"}}>Sin responder</div></div>}
-          </div>
-          <p style={{fontSize: 14, color: "#6e6e73", margin: "0 0 24px"}}>
-            {questionCount <= 20 ? "En el examen real necesita al menos 12 de 20 correctas (60%)." : `Necesitaba ${Math.ceil(questions.length * 0.6)} correctas para aprobar.`}
-          </p>
-          <div style={{display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap"}}>
-            <button onClick={() => setPhase("setup")} style={{padding: "14px 28px", borderRadius: 12, border: "none", background: passed ? "#34C759" : "#FF3B30", color: "#fff", fontSize: 15, fontWeight: 600, cursor: "pointer"}}>
-              Intentar de nuevo
-            </button>
-            <button onClick={() => onNav("home")} style={{padding: "14px 28px", borderRadius: 12, border: "1px solid #D1D1D6", background: "#fff", color: "#1d1d1f", fontSize: 15, fontWeight: 500, cursor: "pointer", display: "flex", alignItems: "center", gap: 6}}>
-              <Home size={16} /> Inicio
-            </button>
+        <div style={{position: "relative", background: passed ? "linear-gradient(135deg, #E8F9ED, #D4F5DE)" : "linear-gradient(135deg, #FFF3E0, #FFE8CC)", borderRadius: 24, padding: 40, textAlign: "center", border: `1px solid ${passed ? "rgba(52,199,89,0.2)" : "rgba(255,149,0,0.2)"}`, overflow: "hidden"}}>
+          {/* Confetti for pass */}
+          {confettiBits.map(b => (
+            <div key={b.id} className="confetti-bit" style={{
+              left: b.left, top: 0, width: b.size, height: b.size,
+              background: b.color, borderRadius: b.rotate,
+              animationDuration: b.duration, animationDelay: b.delay,
+            }} />
+          ))}
+
+          <div style={{position: "relative", zIndex: 1}}>
+            <div style={{width: 88, height: 88, borderRadius: "50%", background: passed ? "linear-gradient(135deg, #34C759, #30D158)" : "linear-gradient(135deg, #FF9500, #FF8000)", display: "inline-flex", alignItems: "center", justifyContent: "center", marginBottom: 20, boxShadow: passed ? "0 8px 32px rgba(52,199,89,0.4)" : "0 8px 32px rgba(255,149,0,0.35)"}}>
+              {passed ? <Award size={44} color="#fff" /> : <BookOpen size={44} color="#fff" />}
+            </div>
+            <h2 style={{fontSize: 28, fontWeight: 800, margin: "0 0 4px", letterSpacing: "-0.02em"}}>
+              {passed ? "¡Felicidades! Aprobado 🎉" : "Sigue practicando"}
+            </h2>
+            <p style={{fontSize: 15, color: passed ? "#424245" : "#6e6e73", margin: "0 0 8px", lineHeight: 1.5}}>
+              {passed
+                ? "¡Excelente trabajo! Estás listo/a para el examen real."
+                : "Cada intento te acerca más a tu ciudadanía. No te rindas."}
+            </p>
+            <p style={{fontSize: 52, fontWeight: 800, color: passed ? "#34C759" : "#FF9500", margin: "8px 0", letterSpacing: "-0.03em"}}>{percentage}%</p>
+            <div style={{display: "flex", justifyContent: "center", gap: 20, margin: "16px 0 20px"}}>
+              <div style={{background: "rgba(52,199,89,0.1)", borderRadius: 12, padding: "12px 20px"}}>
+                <div style={{fontSize: 26, fontWeight: 700, color: "#34C759"}}>{correct}</div>
+                <div style={{fontSize: 12, color: "#6e6e73", fontWeight: 500}}>Correctas</div>
+              </div>
+              <div style={{background: "rgba(255,59,48,0.08)", borderRadius: 12, padding: "12px 20px"}}>
+                <div style={{fontSize: 26, fontWeight: 700, color: "#FF3B30"}}>{incorrect}</div>
+                <div style={{fontSize: 12, color: "#6e6e73", fontWeight: 500}}>Incorrectas</div>
+              </div>
+              {unanswered > 0 && (
+                <div style={{background: "rgba(134,134,139,0.08)", borderRadius: 12, padding: "12px 20px"}}>
+                  <div style={{fontSize: 26, fontWeight: 700, color: "#86868b"}}>{unanswered}</div>
+                  <div style={{fontSize: 12, color: "#6e6e73", fontWeight: 500}}>Sin resp.</div>
+                </div>
+              )}
+            </div>
+            <p style={{fontSize: 13, color: "#6e6e73", margin: "0 0 24px", lineHeight: 1.5}}>
+              {questionCount <= 20 ? "Necesitas al menos 12 de 20 correctas (60%) para aprobar." : `Necesitabas ${Math.ceil(questions.length * 0.6)} correctas para aprobar.`}
+            </p>
+            {!passed && (
+              <div style={{background: "rgba(0,56,168,0.06)", border: "1px solid rgba(0,56,168,0.12)", borderRadius: 14, padding: "14px 18px", marginBottom: 20, textAlign: "left"}}>
+                <p style={{fontSize: 13, fontWeight: 600, color: "#0038a8", margin: "0 0 4px"}}>💡 Consejo para mejorar</p>
+                <p style={{fontSize: 13, color: "#424245", margin: 0, lineHeight: 1.5}}>Usa el modo Flashcard para repasar las preguntas que fallaste. Enfócate en las marcadas con ⭐ (65/20) primero.</p>
+              </div>
+            )}
+            <div style={{display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap"}}>
+              <button onClick={() => setPhase("setup")} style={{padding: "14px 28px", borderRadius: 12, border: "none", background: passed ? "linear-gradient(135deg, #34C759, #30D158)" : "linear-gradient(135deg, #0038a8, #0050c8)", color: "#fff", fontSize: 15, fontWeight: 600, cursor: "pointer", boxShadow: passed ? "0 4px 16px rgba(52,199,89,0.3)" : "0 4px 16px rgba(0,56,168,0.3)"}}>
+                {passed ? "Intentar de nuevo" : "Volver a intentar"}
+              </button>
+              {!passed && (
+                <button onClick={() => onNav("study")} style={{padding: "14px 24px", borderRadius: 12, border: "none", background: "#FF9500", color: "#fff", fontSize: 15, fontWeight: 600, cursor: "pointer"}}>
+                  <BookOpen size={16} style={{display: "inline", marginRight: 6}} />Estudiar más
+                </button>
+              )}
+              <button onClick={() => onNav("home")} style={{padding: "14px 24px", borderRadius: 12, border: "1px solid #D1D1D6", background: "#fff", color: "#1d1d1f", fontSize: 15, fontWeight: 500, cursor: "pointer", display: "flex", alignItems: "center", gap: 6}}>
+                <Home size={16} /> Inicio
+              </button>
+            </div>
           </div>
         </div>
       </div>
