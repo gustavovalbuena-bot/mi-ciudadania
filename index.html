@@ -7,7 +7,7 @@
   <meta name="keywords" content="ciudadanía, naturalización, USCIS, examen cívico 2025, inmigración, español" />
   <meta name="author" content="Gustavo Valbuena - Fundador de PeopleBot AI" />
   <title>Mi Ciudadanía — Guía de Naturalización a EE.UU.</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🇺🇸</text></svg>" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 88 96'><defs><linearGradient id='g' x1='0' y1='0' x2='88' y2='96' gradientUnits='userSpaceOnUse'><stop offset='0%25' stop-color='%231a5ccc'/><stop offset='100%25' stop-color='%23001f6e'/></linearGradient></defs><path d='M44 3 L80 17 L80 52 C80 72 64 86 44 94 C24 86 8 72 8 52 L8 17 Z' fill='url(%23g)'/><path d='M44 20 L47.8 32.2 L60.5 32.2 L50.4 39.8 L54.1 52 L44 45.2 L33.9 52 L37.6 39.8 L27.5 32.2 L40.2 32.2 Z' fill='%23FFD700'/></svg>" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
@@ -277,33 +277,94 @@ function DisclaimerGate({ onAccept }) {
   const [lang, setLang] = useState("es"); // es | en
 
   return (
-    <div style={{fontFamily: "'SF Pro Display', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif", background: "#F5F5F7", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, color: "#1d1d1f"}}>
-      <div style={{maxWidth: 680, width: "100%"}}>
-        {/* Header */}
-        <div style={{textAlign: "center", marginBottom: 32}}>
-          <div style={{width: 56, height: 56, borderRadius: 14, background: "linear-gradient(135deg, #0071E3, #34C759)", display: "inline-flex", alignItems: "center", justifyContent: "center", marginBottom: 16}}>
-            <Scale size={28} color="#fff" />
-          </div>
-          <h1 style={{fontSize: "clamp(24px, 4vw, 32px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 8px"}}>Mi Ciudadanía</h1>
-          <p style={{fontSize: 14, color: "#6e6e73", margin: 0}}>Creado por Gustavo Valbuena — Fundador de PeopleBot AI</p>
+    <div style={{fontFamily: "'SF Pro Display', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif", minHeight: "100vh", color: "#1d1d1f", background: "linear-gradient(160deg, #001845 0%, #002868 50%, #0038a8 100%)", overflowX: "hidden"}}>
+
+      {/* Hero Section */}
+      <div style={{textAlign: "center", padding: "clamp(40px, 8vw, 72px) 24px 36px", position: "relative"}}>
+        {/* Subtle star dots */}
+        <div style={{position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none"}}>
+          {[["10%","15%"],["85%","22%"],["20%","72%"],["75%","60%"],["50%","42%"],["35%","85%"],["65%","8%"],["90%","78%"],["5%","55%"]].map(([l,t], i) => (
+            <div key={i} style={{position: "absolute", left: l, top: t, width: i % 2 === 0 ? 3 : 2, height: i % 2 === 0 ? 3 : 2, borderRadius: "50%", background: "#fff", opacity: 0.2}} />
+          ))}
         </div>
 
+        {/* Logo — Shield with star and torch */}
+        <div style={{marginBottom: 22, display: "inline-block"}}>
+          <svg width="88" height="96" viewBox="0 0 88 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="shGrad" x1="8" y1="2" x2="80" y2="94" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stopColor="#1a5ccc" />
+                <stop offset="100%" stopColor="#001f6e" />
+              </linearGradient>
+            </defs>
+            {/* Shield body */}
+            <path d="M44 3 L80 17 L80 52 C80 72 64 86 44 94 C24 86 8 72 8 52 L8 17 Z" fill="url(#shGrad)" />
+            <path d="M44 3 L80 17 L80 52 C80 72 64 86 44 94 C24 86 8 72 8 52 L8 17 Z" fill="none" stroke="rgba(255,255,255,0.22)" strokeWidth="2" />
+            {/* Gold 5-pointed star */}
+            <path d="M44 20 L47.8 32.2 L60.5 32.2 L50.4 39.8 L54.1 52 L44 45.2 L33.9 52 L37.6 39.8 L27.5 32.2 L40.2 32.2 Z" fill="#FFD700" />
+            {/* Torch handle */}
+            <rect x="41.5" y="57" width="5" height="20" rx="2.5" fill="rgba(255,255,255,0.85)" />
+            {/* Torch base cap */}
+            <rect x="39" y="75" width="10" height="3" rx="1.5" fill="rgba(255,255,255,0.5)" />
+            {/* Flame outer */}
+            <path d="M44 50 C41 54 37.5 57 38.5 61 C39.5 65 44 61.5 44 61.5 C44 61.5 48.5 65 49.5 61 C50.5 57 47 54 44 50Z" fill="#FF8C00" />
+            {/* Flame inner */}
+            <path d="M44 53 C43 56 41 58 42 60 C43 62 44 60.5 44 60.5 C44 60.5 45 62 46 60 C47 58 45 56 44 53Z" fill="#FFD700" />
+          </svg>
+        </div>
+
+        <h1 style={{fontSize: "clamp(38px, 6vw, 58px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.04em", margin: "0 0 12px", textShadow: "0 4px 30px rgba(0,10,60,0.5)"}}>
+          Mi Ciudadanía
+        </h1>
+        <p style={{fontSize: "clamp(15px, 2.5vw, 18px)", color: "rgba(255,255,255,0.80)", margin: "0 auto 28px", fontWeight: 400, lineHeight: 1.5, maxWidth: 460}}>
+          {lang === "es"
+            ? "Tu guía completa para la naturalización en los Estados Unidos"
+            : "Your complete guide to U.S. naturalization"}
+        </p>
+
+        {/* Feature badges */}
+        <div style={{display: "flex", justifyContent: "center", flexWrap: "wrap", gap: 8, marginBottom: 10}}>
+          {(lang === "es" ? [
+            "📋 128 Preguntas Cívicas 2025",
+            "🎯 Simulación de Entrevista",
+            "✅ Verificación de Elegibilidad",
+            "🆓 100% Gratuito"
+          ] : [
+            "📋 128 Civics Questions 2025",
+            "🎯 Interview Simulation",
+            "✅ Eligibility Check",
+            "🆓 100% Free"
+          ]).map((label, i) => (
+            <span key={i} style={{background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.22)", borderRadius: 20, padding: "6px 14px", fontSize: 13, color: "#fff", fontWeight: 500}}>
+              {label}
+            </span>
+          ))}
+        </div>
+
+        <p style={{fontSize: 12, color: "rgba(255,255,255,0.42)", marginTop: 14, marginBottom: 0}}>
+          {lang === "es" ? "Por Gustavo Valbuena · Fundador de PeopleBot AI" : "By Gustavo Valbuena · Founder of PeopleBot AI"}
+        </p>
+      </div>
+
+      {/* Disclaimer section */}
+      <div style={{maxWidth: 680, margin: "0 auto", padding: "0 16px 48px"}}>
+
         {/* Language toggle */}
-        <div style={{display: "flex", justifyContent: "center", gap: 4, marginBottom: 20}}>
-          <button onClick={() => setLang("es")} style={{padding: "6px 16px", borderRadius: 8, border: "none", fontSize: 13, fontWeight: 600, cursor: "pointer", background: lang === "es" ? "#0071E3" : "#E5E5EA", color: lang === "es" ? "#fff" : "#6e6e73"}}>Español</button>
-          <button onClick={() => setLang("en")} style={{padding: "6px 16px", borderRadius: 8, border: "none", fontSize: 13, fontWeight: 600, cursor: "pointer", background: lang === "en" ? "#0071E3" : "#E5E5EA", color: lang === "en" ? "#fff" : "#6e6e73"}}>English</button>
+        <div style={{display: "flex", justifyContent: "center", gap: 6, marginBottom: 16}}>
+          <button onClick={() => setLang("es")} style={{padding: "8px 20px", borderRadius: 10, border: "2px solid " + (lang === "es" ? "#fff" : "rgba(255,255,255,0.2)"), fontSize: 13, fontWeight: 600, cursor: "pointer", background: lang === "es" ? "#fff" : "transparent", color: lang === "es" ? "#002868" : "rgba(255,255,255,0.75)", transition: "all 0.2s"}}>🇪🇸 Español</button>
+          <button onClick={() => setLang("en")} style={{padding: "8px 20px", borderRadius: 10, border: "2px solid " + (lang === "en" ? "#fff" : "rgba(255,255,255,0.2)"), fontSize: 13, fontWeight: 600, cursor: "pointer", background: lang === "en" ? "#fff" : "transparent", color: lang === "en" ? "#002868" : "rgba(255,255,255,0.75)", transition: "all 0.2s"}}>🇺🇸 English</button>
         </div>
 
         {/* Disclaimer card */}
-        <div style={{background: "#fff", borderRadius: 20, border: "1px solid rgba(0,0,0,0.08)", overflow: "hidden"}}>
+        <div style={{background: "#fff", borderRadius: 24, overflow: "hidden", boxShadow: "0 24px 80px rgba(0,0,40,0.5)"}}>
           {/* Title bar */}
-          <div style={{background: "linear-gradient(135deg, #1d1d1f, #2c2c2e)", padding: "16px 24px", display: "flex", alignItems: "center", gap: 10}}>
-            <Shield size={18} color="#FF9500" />
-            <span style={{fontSize: 15, fontWeight: 600, color: "#fff"}}>{lang === "es" ? "Aviso Legal Importante" : "Important Legal Notice"}</span>
+          <div style={{background: "linear-gradient(135deg, #BF0A30 0%, #8B0000 100%)", padding: "18px 24px", display: "flex", alignItems: "center", gap: 10}}>
+            <Shield size={20} color="#FFD700" fill="#FFD700" />
+            <span style={{fontSize: 15, fontWeight: 700, color: "#fff"}}>{lang === "es" ? "⚖️ Aviso Legal Importante" : "⚖️ Important Legal Notice"}</span>
           </div>
 
           {/* Content */}
-          <div style={{padding: "24px 28px", maxHeight: 420, overflowY: "auto"}}>
+          <div style={{padding: "24px 28px", maxHeight: 360, overflowY: "auto"}}>
             {lang === "es" ? (
               <div style={{fontSize: 14, color: "#424245", lineHeight: 1.7}}>
                 <p style={{fontWeight: 700, fontSize: 15, color: "#1d1d1f", margin: "0 0 16px"}}>
@@ -450,13 +511,13 @@ function DisclaimerGate({ onAccept }) {
           </div>
 
           {/* Checkbox and button */}
-          <div style={{padding: "20px 28px 28px", borderTop: "1px solid rgba(0,0,0,0.06)"}}>
+          <div style={{padding: "20px 28px 28px", borderTop: "1px solid rgba(0,0,0,0.06)", background: "#FAFBFF"}}>
             <label style={{display: "flex", alignItems: "flex-start", gap: 12, cursor: "pointer", marginBottom: 20}} onClick={() => setChecked(!checked)}>
-              <div style={{width: 24, height: 24, borderRadius: 6, border: checked ? "none" : "2px solid #D1D1D6", background: checked ? "#0071E3" : "#fff", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1, transition: "all 0.2s"}}>
+              <div style={{width: 24, height: 24, borderRadius: 6, border: checked ? "none" : "2px solid #D1D1D6", background: checked ? "#002868" : "#fff", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1, transition: "all 0.2s"}}>
                 {checked && <Check size={14} color="#fff" strokeWidth={3} />}
               </div>
               <span style={{fontSize: 14, color: "#1d1d1f", lineHeight: 1.5}}>
-                {lang === "es" 
+                {lang === "es"
                   ? "He leído, comprendo y acepto este aviso legal en su totalidad. Entiendo que esta aplicación es únicamente una herramienta informativa y educativa gratuita, que no constituye asesoría legal, que no establece relación abogado-cliente, que su creador no es abogado ni consultor de inmigración autorizado, y que debo consultar con un abogado de inmigración con licencia o un representante acreditado por el DOJ (conforme a 8 CFR § 292.1) antes de tomar decisiones sobre mi proceso migratorio."
                   : "I have read, understand, and accept this legal notice in its entirety. I understand that this application is solely a free informational and educational tool, that it does not constitute legal advice, that it does not establish an attorney-client relationship, that its creator is not an attorney or authorized immigration consultant, and that I should consult with a licensed immigration attorney or DOJ-accredited representative (pursuant to 8 CFR § 292.1) before making decisions about my immigration process."
                 }
@@ -464,15 +525,15 @@ function DisclaimerGate({ onAccept }) {
             </label>
 
             <button onClick={onAccept} disabled={!checked}
-              style={{width: "100%", padding: "16px", borderRadius: 14, border: "none", background: checked ? "linear-gradient(135deg, #0071E3, #0077ED)" : "#E5E5EA", color: checked ? "#fff" : "#aeaeb2", fontSize: 16, fontWeight: 600, cursor: checked ? "pointer" : "not-allowed", transition: "all 0.3s", display: "flex", alignItems: "center", justifyContent: "center", gap: 8}}>
+              style={{width: "100%", padding: "16px", borderRadius: 14, border: "none", background: checked ? "linear-gradient(135deg, #002868, #0038a8)" : "#E5E5EA", color: checked ? "#fff" : "#aeaeb2", fontSize: 16, fontWeight: 700, cursor: checked ? "pointer" : "not-allowed", transition: "all 0.3s", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, letterSpacing: "-0.01em"}}>
               {checked && <ArrowRight size={18} />}
-              {lang === "es" ? "Aceptar y continuar" : "Accept and continue"}
+              {lang === "es" ? "Aceptar y comenzar mi camino →" : "Accept and start my journey →"}
             </button>
           </div>
         </div>
 
-        <p style={{textAlign: "center", fontSize: 12, color: "#aeaeb2", marginTop: 16}}>
-          {lang === "es" 
+        <p style={{textAlign: "center", fontSize: 12, color: "rgba(255,255,255,0.38)", marginTop: 16}}>
+          {lang === "es"
             ? "Fuente oficial: uscis.gov — Reporte fraude: uscis.gov/avoid-scams — Línea USCIS: 1-800-375-5283"
             : "Official source: uscis.gov — Report fraud: uscis.gov/avoid-scams — USCIS Contact: 1-800-375-5283"
           }
