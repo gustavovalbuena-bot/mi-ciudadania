@@ -1,30 +1,44 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-
 # Dependencies
 node_modules/
+package-lock.json
+yarn.lock
+
+# Build
 dist/
-dist-ssr/
+build/
+.next/
+out/
 
 # Environment
 .env
 .env.local
 .env.*.local
 
-# Editor
+# IDE
 .vscode/
 .idea/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# OS
+*.swp
+*.swo
+*~
 .DS_Store
 Thumbs.db
 
-# Confidential — excluded from repo
+# Logs
+*.log
+npm-debug.log*
+
+# Coverage
+coverage/
+
+# Confidential
 MiCiudadania_BusinessPlan.docx
+generate_plan.js
+GITHUB_SETUP_GUIDE.md
+
+# Intermediate build artifacts
+data_block.jsx
+ui_block.jsx
+build-html.js
+used_tags.txt
+DEPLOY.md
+actualizar-repo.sh

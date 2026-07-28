@@ -1,23 +1,38 @@
 {
   "name": "mi-ciudadania",
-  "private": true,
-  "version": "1.1.0",
-  "type": "module",
+  "version": "2.0.1",
+  "description": "Guía interactiva en español para el proceso de naturalización a ciudadano estadounidense",
+  "author": "Gustavo Valbuena <peoplebotai@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "keywords": [
+    "citizenship",
+    "naturalization",
+    "uscis",
+    "civics-test",
+    "immigration",
+    "spanish",
+    "bilingual",
+    "react"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gvalbuena/mi-ciudadania.git"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@babel/core": "^8.0.1",
+    "@babel/preset-react": "^8.0.1",
+    "lucide-react": "^0.383.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@types/react": "^18.3.1",
-    "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.1",
-    "eslint": "^9.9.0",
-    "vite": "^5.4.1"
+    "vite": "^5.4.0"
   }
 }
