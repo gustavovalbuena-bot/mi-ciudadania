@@ -17,7 +17,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/gvalbuena/mi-ciudadania.git"
+    "url": "https://github.com/gustavovalbuena-bot/mi-ciudadania.git"
   },
   "scripts": {
     "dev": "vite",
