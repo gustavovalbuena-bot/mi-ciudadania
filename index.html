@@ -44,18 +44,21 @@ nav{position:sticky;top:0;z-index:60;background:rgba(245,247,250,.88);backdrop-f
 .brand b{font-family:Archivo;font-size:16.5px;font-weight:600;letter-spacing:-.028em;display:block;line-height:1}
 .brand span{font-size:8.5px;letter-spacing:.17em;color:var(--faint);margin-top:3px;display:block;font-weight:600}
 .nlinks{display:flex;gap:26px;align-items:center}
-.nlinks a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500}
-.nlinks a:hover{color:var(--text)}
+.nlinks a:not(.btn){color:var(--muted);text-decoration:none;font-size:14px;font-weight:500}
+.nlinks a:not(.btn):hover{color:var(--text)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;
   border-radius:var(--r-sm);font-weight:600;font-size:14.5px;text-decoration:none;
   transition:background .16s,box-shadow .16s,transform .1s,border-color .16s;white-space:nowrap}
 .btn:active{transform:translateY(1px)}
-.b-pri{background:var(--blue);color:#fff;box-shadow:var(--sh-1)}
-.b-pri:hover{background:#164191}
-.b-out{border:1px solid var(--line);background:var(--surface);color:var(--text);box-shadow:var(--sh-1)}
-.b-out:hover{border-color:#C8D2E0;background:var(--raised)}
-.b-gold{background:var(--gold);color:#fff}
-.b-gold:hover{background:#B8922F}
+/* Las variantes se escriben .btn.X (0,2,0) a propósito: así ninguna regla
+   contextual de enlace —.nlinks a, footer a:hover (0,1,1)— puede robarles
+   el color del texto. Es el mismo defecto que rompió los títulos en v2.0.1. */
+.btn.b-pri{background:var(--blue);color:#fff;box-shadow:var(--sh-1)}
+.btn.b-pri:hover{background:#164191;color:#fff}
+.btn.b-out{border:1px solid var(--line);background:var(--surface);color:var(--text);box-shadow:var(--sh-1)}
+.btn.b-out:hover{border-color:#C8D2E0;background:var(--raised);color:var(--text)}
+.btn.b-gold{background:var(--gold);color:#fff}
+.btn.b-gold:hover{background:#B8922F;color:#fff}
 .b-lg{padding:15px 28px;font-size:16px}
 .burger{display:none;font-size:22px;padding:6px;color:var(--text)}
 
