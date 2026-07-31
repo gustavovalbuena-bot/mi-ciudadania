@@ -1,10 +1,21 @@
-# Mi Ciudadanía 🇺🇸
+# Mi Ciudadanía
 
 **Guía interactiva en español para el proceso de naturalización a ciudadano estadounidense.**
 
 Creado por **Gustavo Valbuena** — Fundador de PeopleBot AI
 
 ---
+
+## Deploys activos
+
+- **OpenAI Pages:** https://mi-ciudadania-redesign.gusvaltor.chatgpt.site
+- **Vercel:** https://mi-ciudadania.vercel.app
+
+Este repositorio mantiene el artefacto estático funcional que Vercel sirve desde
+la raíz del proyecto. La configuración actual de `vercel.json` usa
+`outputDirectory: "."`, por lo que `index.html`, `app.html`,
+`mi-ciudadania.html` y `assets/` deben permanecer sincronizados con el build
+validado.
 
 ## Descripción
 
