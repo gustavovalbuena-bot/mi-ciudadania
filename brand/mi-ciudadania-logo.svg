@@ -1,0 +1,9 @@
+<svg width="228" height="64" viewBox="0 0 228 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Mi Ciudadania</title>
+  <desc id="desc">Logo de Mi Ciudadania con una puerta civica y una marca de verificacion.</desc>
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#FBF7EF" stroke="#D9CDBB" stroke-width="2"/>
+  <path d="M18 47V22.5L32 14L46 22.5V47" stroke="#1F6F8B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M23 47H41" stroke="#1F6F8B" stroke-width="4" stroke-linecap="round"/>
+  <path d="M25 33L30.5 38.5L42 27" stroke="#4B9F68" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="75" y="39" fill="#152336" font-family="Inter, Arial, Helvetica, sans-serif" font-size="22" font-weight="800" letter-spacing="0">Mi Ciudadania</text>
+</svg>
