@@ -360,6 +360,7 @@ footer a:hover{color:var(--text)}
     <div class="nlinks" id="nl">
       <a href="#herramientas">Herramientas</a>
       <a href="#precio">Precio</a>
+      <a href="estudio.html">Estudio</a>
       <a href="#abogados">Para abogados</a>
       <a href="#preguntas">Preguntas</a>
       <a class="btn b-pri" href="#empezar">Abrir la aplicación</a>
@@ -545,6 +546,7 @@ footer a:hover{color:var(--text)}
             <p class="q-en" id="qe"></p>
             <div class="q-opts" id="qo"></div>
             <div class="q-fb" id="qf"></div>
+            <a class="btn b-out" style="margin-top:18px" href="estudio.html">Ver las 128 agrupadas por tipo de memoria →</a>
           </div>
         </div>
 
@@ -741,7 +743,7 @@ footer a:hover{color:var(--text)}
     </p>
     <div style="margin-top:32px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
       <a class="btn b-pri b-lg" href="app.html">Abrir la aplicación</a>
-      <a class="btn b-out b-lg" href="#herramientas">Ver las herramientas</a>
+      <a class="btn b-out b-lg" href="estudio.html">Estudiar el examen</a>
     </div>
   </div>
 </section>
@@ -904,7 +906,7 @@ function pickQ(i){
     else{
       f.className='q-fb on good';
       f.innerHTML='Acertó <strong>'+qs+' de '+BANK.length+'</strong>. El banco completo tiene 128 preguntas y en la entrevista le hacen 20.';
-      $('qo').innerHTML='<a class="btn b-pri" style="width:100%" href="app.html">Practicar las 128 preguntas</a>';
+      $('qo').innerHTML='<a class="btn b-pri" style="width:100%" href="estudio.html">Estudiar las 128 con ganchos de memoria</a>';
     }
   },1800);
 }
