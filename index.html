@@ -192,6 +192,16 @@ h2{font-size:clamp(29px,3.6vw,42px);font-weight:600}
 .v-wait p{color:#173B7D}
 
 /* examen */
+.gmini{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
+.gm{display:flex;align-items:center;gap:9px;padding:10px 11px;border:1px solid var(--line);
+  border-radius:var(--r-sm);background:var(--surface)}
+.gm .rg{flex:0 0 30px;height:30px;position:relative}
+.gm .rg svg{transform:rotate(-90deg)}
+.gm .rg span{position:absolute;inset:0;display:grid;place-items:center;font-size:8.5px;font-weight:700}
+.gm .nm{font-size:11.5px;font-weight:600;line-height:1.2}
+.gm .ct{font-size:10px;color:var(--faint);margin-top:1px}
+.vzhint{display:flex;align-items:center;gap:9px;padding:12px 15px;background:var(--gold-soft);
+  border:1px solid #EBDCB6;border-radius:var(--r-sm);margin-top:14px;font-size:13.5px;color:var(--gold-ink)}
 .ex-meta{display:flex;gap:0;background:var(--ground);border:1px solid var(--line);
   border-radius:var(--r-sm);overflow:hidden;margin-bottom:22px}
 .ex-meta div{flex:1;padding:14px 16px;border-right:1px solid var(--line)}
@@ -485,7 +495,7 @@ footer a:hover{color:var(--text)}
         </button>
         <button class="modbtn" role="tab" aria-selected="false" data-m="3">
           <span class="modn" style="background:#B4762A">3</span>
-          <span><h3>Estudio del examen</h3><p>Practique el banco oficial de 128 preguntas, en español y en inglés.</p></span>
+          <span><h3>Estudio visual</h3><p>Las 128 preguntas en nueve grupos de memoria, con gráficos que anclan las respuestas.</p></span>
         </button>
         <button class="modbtn" role="tab" aria-selected="false" data-m="4">
           <span class="modn" style="background:#5B4B9E">4</span>
@@ -537,6 +547,23 @@ footer a:hover{color:var(--text)}
             <span class="pane-tag" style="background:var(--amber-soft);color:var(--amber)">PRUEBE UNA PREGUNTA</span>
           </div>
           <div class="pane-body">
+            <div class="gmini">
+              <div class="gm"><span class="rg"><svg width="30" height="30" viewBox="0 0 30 30">
+                <circle cx="15" cy="15" r="12" fill="none" stroke="#E3E8EF" stroke-width="4"/>
+                <circle cx="15" cy="15" r="12" fill="none" stroke="#1B4FB0" stroke-width="4" stroke-linecap="round"
+                  stroke-dasharray="75.4" stroke-dashoffset="18.8"/></svg><span style="color:#1B4FB0">75%</span></span>
+                <span><span class="nm">Números</span><span class="ct">12 preguntas</span></span></div>
+              <div class="gm"><span class="rg"><svg width="30" height="30" viewBox="0 0 30 30">
+                <circle cx="15" cy="15" r="12" fill="none" stroke="#E3E8EF" stroke-width="4"/>
+                <circle cx="15" cy="15" r="12" fill="none" stroke="#5B4B9E" stroke-width="4" stroke-linecap="round"
+                  stroke-dasharray="75.4" stroke-dashoffset="50.3"/></svg><span style="color:#5B4B9E">33%</span></span>
+                <span><span class="nm">Enmiendas</span><span class="ct">6 preguntas</span></span></div>
+              <div class="gm"><span class="rg"><svg width="30" height="30" viewBox="0 0 30 30">
+                <circle cx="15" cy="15" r="12" fill="none" stroke="#E3E8EF" stroke-width="4"/>
+                <circle cx="15" cy="15" r="12" fill="none" stroke="#B4762A" stroke-width="4" stroke-linecap="round"
+                  stroke-dasharray="75.4" stroke-dashoffset="37.7"/></svg><span style="color:#B4762A">50%</span></span>
+                <span><span class="nm">Personas</span><span class="ct">14 preguntas</span></span></div>
+            </div>
             <div class="ex-meta">
               <div><b class="tnum">128</b><span>preguntas tiene el banco oficial</span></div>
               <div><b class="tnum">20</b><span>le hacen en la entrevista</span></div>
@@ -546,7 +573,12 @@ footer a:hover{color:var(--text)}
             <p class="q-en" id="qe"></p>
             <div class="q-opts" id="qo"></div>
             <div class="q-fb" id="qf"></div>
-            <a class="btn b-out" style="margin-top:18px" href="estudio.html">Ver las 128 agrupadas por tipo de memoria →</a>
+            <div class="vzhint">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 18h4V8H4zM10 18h4V4h-4zM16 18h4v-6h-4z"/></svg>
+              <span><strong>33 respuestas traen un gráfico</strong> que las ancla en la memoria visual</span>
+            </div>
+            <a class="btn b-pri" style="margin-top:16px" href="estudio.html">Abrir el estudio visual →</a>
           </div>
         </div>
 
