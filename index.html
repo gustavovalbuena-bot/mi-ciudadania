@@ -3,814 +3,686 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mi Ciudadanía — Haga su trámite de ciudadanía usted mismo</title>
-<meta name="description" content="Cuatro herramientas en español para su proceso de naturalización: sepa si califica, lleve el control del trámite, prepare el examen y practique la entrevista. En su teléfono y en su computadora.">
-  <link rel="canonical" href="https://mi-ciudadania.vercel.app/" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Mi Ciudadanía" />
-  <meta property="og:locale" content="es_US" />
-  <meta property="og:url" content="https://mi-ciudadania.vercel.app/" />
-  <meta property="og:title" content="Mi Ciudadanía — Su ciudadanía, en la palma de la mano" />
-  <meta property="og:description" content="Cuatro herramientas en español: sepa si califica, lleve el control de su trámite, prepare el examen cívico y practique la entrevista." />
-  <meta property="og:image" content="https://mi-ciudadania.vercel.app/og.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Mi Ciudadanía — su ciudadanía, en la palma de la mano" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Mi Ciudadanía — Su ciudadanía, en la palma de la mano" />
-  <meta name="twitter:description" content="Cuatro herramientas en español: sepa si califica, lleve el control de su trámite, prepare el examen cívico y practique la entrevista." />
-  <meta name="twitter:image" content="https://mi-ciudadania.vercel.app/og.png" />
-  <meta name="theme-color" content="#1B4FB0" />
+<title>Mi Ciudadanía: haga su trámite de ciudadanía usted mismo</title>
+<meta name="description" content="Cuatro herramientas en español para su naturalización: sepa si califica, lleve el control del trámite, prepare el examen cívico y practique la entrevista. En su teléfono y su computadora.">
+<link rel="canonical" href="https://mi-ciudadania.vercel.app/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Mi Ciudadanía" />
+<meta property="og:locale" content="es_US" />
+<meta property="og:url" content="https://mi-ciudadania.vercel.app/" />
+<meta property="og:title" content="Mi Ciudadanía: su ciudadanía, en la palma de la mano" />
+<meta property="og:description" content="Cuatro herramientas en español: sepa si califica, lleve el control de su trámite, prepare el examen cívico y practique la entrevista." />
+<meta property="og:image" content="https://mi-ciudadania.vercel.app/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Mi Ciudadanía, su ciudadanía en la palma de la mano" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Mi Ciudadanía: su ciudadanía, en la palma de la mano" />
+<meta name="twitter:description" content="Cuatro herramientas en español para hacer su trámite de naturalización usted mismo." />
+<meta name="twitter:image" content="https://mi-ciudadania.vercel.app/og.png" />
+<meta name="theme-color" content="#0B1220" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F4F6F8" media="(prefers-color-scheme: light)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="img/hero.jpg">
 <style>
+/* ───────── tokens: sistema del proyecto (docs/DESIGN.md) ───────── */
 :root{
-  --ground:#F5F7FA; --surface:#FFFFFF; --raised:#FBFCFE;
-  --text:#101828; --muted:#5B6779; --faint:#8A94A6; --line:#E3E8EF; --line-soft:#EFF3F8;
-  --blue:#1B4FB0; --blue-mid:#2F6FE4; --blue-soft:#EAF1FE; --blue-tint:#F5F9FF;
-  --gold:#C8A24A; --gold-soft:#FBF4E4; --gold-ink:#6B5210;
-  --green:#0E7C4A; --green-soft:#E8F6EF;
-  --amber:#B4762A; --amber-soft:#FDF4E7;
-  --red:#A8324A; --red-soft:#FCEDF0;
-  --teal:#0E7C7B; --purple:#5B4B9E;
-  --r:12px; --r-sm:8px;
-  --sh-1:0 1px 2px rgba(16,24,40,.05);
-  --sh-2:0 4px 16px rgba(16,24,40,.07);
-  --sh-3:0 18px 48px rgba(16,24,40,.12);
-  --wrap:1160px;
+  --ink:#0B1220; --ink2:#131D30; --paper:#F4F6F8; --card:#FFFFFF;
+  --gold:#C8A24A; --muted:#5B6779; --faint:#8A94A6; --line:#E1E6EC;
+  --azur:#2F6FE4; --azur-deep:#1B4FB0; --azur-soft:#E8F0FE;
+  --teal:#12776A; --ocher:#B26B12; --crim:#A32F42; --plum:#5B4B9E;
+  --ok:#0E7C4A; --ok-soft:#E4F2EA;
+
+  --bg:var(--paper); --surf:var(--card); --surf-2:#FBFCFD;
+  --tx:var(--ink); --tx-2:var(--muted); --tx-3:var(--faint);
+  --rule:var(--line); --accent:var(--azur-deep); --accent-soft:var(--azur-soft);
+
+  --r:4px; --r-lg:10px;
+  --sh:0 1px 2px rgba(11,18,32,.06), 0 6px 18px -8px rgba(11,18,32,.14);
+  --sh-lift:0 2px 4px rgba(11,18,32,.07), 0 18px 44px -14px rgba(11,18,32,.26);
+  --wrap:1180px;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#070C14; --surf:#101A2A; --surf-2:#0C1420;
+    --tx:#EAEEF4; --tx-2:#9FACBE; --tx-3:#75839A;
+    --rule:#1E2B40; --accent:#7FB0FF; --accent-soft:#132544;
+    --azur-soft:#132544; --ok-soft:#10301F;
+    --sh:0 1px 2px rgba(0,0,0,.4), 0 6px 18px -8px rgba(0,0,0,.6);
+    --sh-lift:0 2px 4px rgba(0,0,0,.45), 0 18px 44px -14px rgba(0,0,0,.7);
+  }
 }
 *,*::before,*::after{box-sizing:border-box}
-body,h1,h2,h3,h4,p,ul,ol,li,figure{margin:0;padding:0;list-style:none}
-html{scroll-behavior:smooth}
-body{font-family:Inter,-apple-system,BlinkMacSystemFont,sans-serif;background:var(--ground);
-  color:var(--text);line-height:1.55;-webkit-font-smoothing:antialiased}
-h1,h2,h3{font-family:Archivo,Inter,sans-serif;letter-spacing:-.032em;line-height:1.06;text-wrap:balance}
-button{font-family:inherit;color:inherit;cursor:pointer;border:none;background:none}
+body,h1,h2,h3,h4,p,ul,ol,li,figure,dl,dd,dt{margin:0;padding:0;list-style:none}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:Inter,-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--tx);
+  line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3{font-family:Archivo,Inter,sans-serif;letter-spacing:-.04em;line-height:1.02;text-wrap:balance}
+button{font:inherit;color:inherit;cursor:pointer;border:none;background:none}
 a{color:inherit}
-:focus-visible{outline:2px solid var(--blue-mid);outline-offset:3px;border-radius:4px}
-.wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
-.tnum{font-variant-numeric:tabular-nums}
+img{display:block;max-width:100%;height:auto}
 
-/* ---------- NAV ---------- */
-nav{position:sticky;top:0;z-index:60;background:rgba(245,247,250,.88);backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--line)}
-.nav-in{display:flex;align-items:center;gap:30px;height:66px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:auto}
-.brand b{font-family:Archivo;font-size:16.5px;font-weight:600;letter-spacing:-.028em;display:block;line-height:1}
-.brand span{font-size:8.5px;letter-spacing:.17em;color:var(--faint);margin-top:3px;display:block;font-weight:600}
-.nlinks{display:flex;gap:26px;align-items:center}
-.nlinks a:not(.btn){color:var(--muted);text-decoration:none;font-size:14px;font-weight:500}
-.nlinks a:not(.btn):hover{color:var(--text)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;
-  border-radius:var(--r-sm);font-weight:600;font-size:14.5px;text-decoration:none;
-  transition:background .16s,box-shadow .16s,transform .1s,border-color .16s;white-space:nowrap}
+/* superficies del navegador: las partes que no dibujé también llevan el diseño */
+::selection{background:var(--accent);color:#fff}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:2px}
+html{scrollbar-color:var(--tx-3) transparent;caret-color:var(--accent)}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--tx-3);border:3px solid var(--bg);border-radius:99px}
+::-webkit-scrollbar-thumb:hover{background:var(--tx-2)}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 26px}
+.lede{font-size:clamp(17px,1.5vw,19px);color:var(--tx-2);max-width:62ch}
+p{max-width:70ch}
+
+/* ───────── nav ───────── */
+nav{position:sticky;top:0;z-index:80;background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:saturate(1.6) blur(14px);border-bottom:1px solid var(--rule)}
+.nv{display:flex;align-items:center;gap:30px;height:68px}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;margin-right:auto}
+.brand b{display:block;font-family:Archivo;font-size:16.5px;font-weight:600;letter-spacing:-.03em;line-height:1}
+.brand span{display:block;font-size:8.5px;letter-spacing:.17em;color:var(--tx-3);margin-top:3.5px;font-weight:600}
+.nl{display:flex;gap:28px;align-items:center}
+.nl a:not(.btn){color:var(--tx-2);text-decoration:none;font-size:14.5px;font-weight:500;
+  text-underline-offset:5px;transition:color .18s}
+.nl a:not(.btn):hover{color:var(--tx);text-decoration:underline;text-decoration-thickness:1px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:12px 22px;
+  border-radius:var(--r);font-weight:600;font-size:14.5px;text-decoration:none;white-space:nowrap;
+  transition:background .2s var(--ease),border-color .2s,transform .12s var(--ease),box-shadow .2s}
 .btn:active{transform:translateY(1px)}
-/* Las variantes se escriben .btn.X (0,2,0) a propósito: así ninguna regla
-   contextual de enlace —.nlinks a, footer a:hover (0,1,1)— puede robarles
-   el color del texto. Es el mismo defecto que rompió los títulos en v2.0.1. */
-.btn.b-pri{background:var(--blue);color:#fff;box-shadow:var(--sh-1)}
-.btn.b-pri:hover{background:#164191;color:#fff}
-.btn.b-out{border:1px solid var(--line);background:var(--surface);color:var(--text);box-shadow:var(--sh-1)}
-.btn.b-out:hover{border-color:#C8D2E0;background:var(--raised);color:var(--text)}
-.btn.b-gold{background:var(--gold);color:#fff}
-.btn.b-gold:hover{background:#B8922F;color:#fff}
-.b-lg{padding:15px 28px;font-size:16px}
-.burger{display:none;font-size:22px;padding:6px;color:var(--text)}
+.btn.pri{background:var(--accent);color:#fff;box-shadow:var(--sh)}
+.btn.pri:hover{background:color-mix(in srgb,var(--accent) 86%,#000);color:#fff;box-shadow:var(--sh-lift)}
+.btn.ghost{border:1px solid var(--rule);background:var(--surf);color:var(--tx)}
+.btn.ghost:hover{border-color:var(--tx-3);color:var(--tx)}
+.btn.lg{padding:15px 30px;font-size:16px}
+.burger{display:none;padding:8px;color:var(--tx)}
 
-/* ---------- HERO ---------- */
-.hero{padding:72px 0 84px;position:relative;overflow:hidden}
-.hero::before{content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(920px 460px at 88% -8%,rgba(47,111,228,.09),transparent 62%),
-             radial-gradient(680px 380px at -4% 106%,rgba(200,162,74,.10),transparent 66%)}
-.hero-in{position:relative;display:grid;grid-template-columns:1.02fr .98fr;gap:56px;align-items:center}
-.pill{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:600;letter-spacing:.09em;
-  color:var(--blue);background:var(--blue-soft);border:1px solid #D3E2FB;padding:7px 14px;
-  border-radius:100px;margin-bottom:22px}
-.pill i{width:6px;height:6px;border-radius:50%;background:var(--blue-mid);font-style:normal}
-h1{font-size:clamp(38px,4.9vw,60px);font-weight:700}
-h1 em{font-style:normal;color:var(--blue)}
-.sub{font-size:18.5px;color:var(--muted);margin-top:22px;max-width:32em}
-.cta{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
-.micro{font-size:13px;color:var(--faint);margin-top:18px;display:flex;gap:18px;flex-wrap:wrap}
-.micro span{display:flex;align-items:center;gap:6px}
-.micro b{color:var(--green);font-weight:700}
+/* ───────── hero: split asimétrico con imagen y dato flotante ───────── */
+.hero{padding:clamp(48px,6vw,88px) 0 clamp(64px,7vw,104px);position:relative}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;
+  background:radial-gradient(900px 440px at 84% 4%,color-mix(in srgb,var(--azur) 9%,transparent),transparent 64%)}
+.hgrid{display:grid;grid-template-columns:1.12fr .88fr;gap:clamp(34px,4.6vw,66px);align-items:center}
+h1{font-size:clamp(34px,4vw,47px);font-weight:800}
+h1 i{font-style:normal;color:var(--accent)}
+.hsub{font-size:clamp(17px,1.7vw,20px);color:var(--tx-2);margin-top:22px;max-width:30ch}
+.hcta{display:flex;gap:13px;margin-top:32px;flex-wrap:wrap}
+.hnote{margin-top:20px;font-size:13.5px;color:var(--tx-3);display:flex;gap:7px;align-items:baseline}
+.hnote b{color:var(--ok);font-weight:700}
 
-/* devices */
-.devices{position:relative;display:flex;justify-content:center;align-items:flex-end;gap:0}
-.laptop{width:100%;max-width:430px}
-.lid{background:#1B2433;border-radius:11px 11px 0 0;padding:9px 9px 0;box-shadow:var(--sh-3)}
-.lscreen{background:var(--surface);border-radius:6px 6px 0 0;overflow:hidden;aspect-ratio:16/10.4}
-.lbase{height:11px;background:linear-gradient(180deg,#2A3444,#1B2433);border-radius:0 0 12px 12px;
-  position:relative;box-shadow:var(--sh-2)}
-.lbase::after{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
-  width:62px;height:4px;background:rgba(255,255,255,.14);border-radius:0 0 5px 5px}
-.phone{width:142px;margin-left:-58px;margin-bottom:-14px;background:#1B2433;border-radius:19px;
-  padding:6px;box-shadow:var(--sh-3);position:relative;z-index:3}
-.pscreen{background:var(--surface);border-radius:14px;overflow:hidden;aspect-ratio:9/18.6;display:flex;flex-direction:column}
+.shot{position:relative}
+.shot .frame{border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh-lift);
+  border:1px solid var(--rule);background:var(--surf)}
+.shot img{width:100%;aspect-ratio:16/10;object-fit:cover;object-position:52% 42%}
+/* el dato flotante: cifra real, no adorno */
+.float{position:absolute;background:var(--surf);border:1px solid var(--rule);border-radius:var(--r-lg);
+  box-shadow:var(--sh-lift);padding:16px 19px}
+.float.a{left:-30px;bottom:12px;width:min(222px,54%)}
+.float .k{font-size:10.5px;letter-spacing:.14em;color:var(--tx-3);font-weight:700}
+.float .v{font-family:Archivo;font-size:30px;font-weight:700;letter-spacing:-.045em;margin-top:5px;line-height:1}
+.float .d{font-size:12.5px;color:var(--tx-2);margin-top:5px;line-height:1.45}
+.float.b{right:-20px;top:28px;padding:13px 16px;display:flex;align-items:center;gap:11px}
+.float.b .ring{flex:0 0 38px;height:38px;position:relative}
+.float.b .ring svg{transform:rotate(-90deg)}
+.float.b .ring i{position:absolute;inset:0;display:grid;place-items:center;font-size:10.5px;
+  font-weight:700;font-style:normal;color:var(--ok)}
+.float.b .t{font-size:12px;color:var(--tx-2);line-height:1.35;max-width:14ch}
 
-/* app chrome */
-.appbar{background:var(--surface);border-bottom:1px solid var(--line-soft);padding:8px 11px;
-  display:flex;align-items:center;gap:7px}
-.appbar .dot{width:7px;height:7px;border-radius:50%;background:#E3E8EF}
-.appbar .ttl{font-size:8.5px;font-weight:600;color:var(--muted);margin-left:4px}
-.appbody{padding:12px;flex:1;display:flex;flex-direction:column;gap:9px;background:var(--raised)}
-.mini-tabs{display:flex;gap:4px}
-.mini-tab{flex:1;font-size:6.5px;font-weight:600;text-align:center;padding:5px 3px;border-radius:5px;
-  background:var(--surface);color:var(--faint);border:1px solid var(--line-soft)}
-.mini-tab.on{background:var(--blue);color:#fff;border-color:var(--blue)}
-.mcard{background:var(--surface);border:1px solid var(--line-soft);border-radius:7px;padding:9px}
-.mcard .lab{font-size:6px;letter-spacing:.11em;color:var(--faint);font-weight:700}
-.mcard .q{font-family:Archivo;font-size:9px;font-weight:600;line-height:1.2;margin-top:4px}
-.mopt{font-size:7px;padding:5px 6px;border:1px solid var(--line);border-radius:4px;margin-top:4px;color:var(--muted)}
-.mopt.ok{background:var(--green-soft);border-color:var(--green);color:var(--green);font-weight:600}
-.mbar{height:4px;background:var(--line-soft);border-radius:100px;overflow:hidden}
-.mbar i{display:block;height:100%;background:var(--blue-mid);border-radius:100px}
-.mstep{display:flex;align-items:center;gap:6px;font-size:7px;color:var(--muted)}
-.mstep .tick{width:11px;height:11px;border-radius:50%;display:grid;place-items:center;font-size:6px;flex:0 0 auto}
-.tick.done{background:var(--green);color:#fff}
-.tick.now{background:var(--blue-soft);border:1.5px solid var(--blue-mid);color:var(--blue)}
-.tick.wait{background:var(--line-soft);color:var(--faint)}
+/* ───────── banda de postura ───────── */
+.stance{border-block:1px solid var(--rule);background:var(--surf);padding:28px 0}
+.stance p{font-size:clamp(15.5px,1.4vw,17px);color:var(--tx-2);max-width:none;text-align:center;margin:0 auto}
+.stance b{color:var(--tx);font-weight:600}
 
-/* ---------- BANDA DE POSICIÓN ---------- */
-.stance{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:30px 0}
-.stance-in{display:flex;gap:22px;align-items:center;justify-content:center;flex-wrap:wrap;text-align:center}
-.stance p{font-size:16.5px;color:var(--muted);max-width:64em}
-.stance b{color:var(--text);font-weight:600}
+/* ───────── secciones ───────── */
+section{padding:clamp(60px,7vw,104px) 0}
+h2{font-size:clamp(28px,3.5vw,42px);font-weight:700}
+.shead{max-width:46ch;margin-bottom:clamp(34px,4vw,52px)}
+.shead .lede{margin-top:15px}
 
-/* ---------- SECCIONES ---------- */
-section{padding:88px 0}
-.head{max-width:46em;margin-bottom:46px}
-.kick{font-size:11.5px;font-weight:700;letter-spacing:.15em;color:var(--blue);margin-bottom:14px}
-h2{font-size:clamp(29px,3.6vw,42px);font-weight:600}
-.lede{font-size:17.5px;color:var(--muted);margin-top:16px}
+/* 1 · las cuatro herramientas: progresión numerada, no cuatro tarjetas iguales */
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,4vw,58px);align-items:start}
+.steps{display:grid}
+.step{display:grid;grid-template-columns:auto 1fr;gap:20px;padding:22px 0;border-top:1px solid var(--rule);
+  align-items:start}
+.step:last-child{border-bottom:1px solid var(--rule)}
+.step .n{font-family:Archivo;font-size:13px;font-weight:700;color:var(--sc);padding-top:3px;
+  font-variant-numeric:tabular-nums}
+.step h3{font-size:19px;font-weight:600}
+.step p{font-size:14.5px;color:var(--tx-2);margin-top:6px;max-width:46ch}
+.aside-shot{position:relative;align-self:center}
+.aside-shot .frame{border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--rule);box-shadow:var(--sh-lift)}
+.aside-shot img{width:100%;aspect-ratio:7/6;object-fit:cover}
+.float.c{right:-18px;bottom:-20px;width:min(228px,70%);padding:15px 17px}
 
-/* módulos interactivos */
-.mods{display:grid;grid-template-columns:340px 1fr;gap:28px;align-items:start}
-.modlist{display:grid;gap:10px}
-.modbtn{text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
-  padding:20px 22px;display:flex;gap:16px;align-items:flex-start;transition:border-color .16s,box-shadow .16s,transform .16s;
-  box-shadow:var(--sh-1);width:100%}
-.modbtn:hover{border-color:#C8D2E0;transform:translateX(2px)}
-.modbtn.on{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft),var(--sh-2)}
-.modn{flex:0 0 40px;height:40px;border-radius:10px;display:grid;place-items:center;color:#fff;
-  font-family:Archivo;font-weight:700;font-size:15px}
-.modbtn h3{font-size:17px;font-weight:600}
-.modbtn p{font-size:13.5px;color:var(--muted);margin-top:4px;line-height:1.45}
-.modpane{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
-  box-shadow:var(--sh-2);overflow:hidden;min-height:452px}
-.pane-top{padding:20px 26px;border-bottom:1px solid var(--line-soft);display:flex;
-  justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
-.pane-top h4{font-family:Archivo;font-size:19px;font-weight:600}
-.pane-tag{font-size:10.5px;font-weight:700;letter-spacing:.1em;padding:5px 11px;border-radius:100px}
-.pane-body{padding:26px}
-.pane{display:none}
-.pane.on{display:block;animation:fade .28s ease}
-@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+/* 2 · estudio: tarjetas de grupo dinámicas con gráfico flotante */
+.study{background:var(--surf);border-block:1px solid var(--rule)}
+.gwrap{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+@media (max-width:1060px){.gwrap{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:780px){.gwrap{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.gwrap{grid-template-columns:1fr}}
+/* el flotante de la última columna se ancla a la derecha para no salirse */
+@media (min-width:1061px){.gcard:nth-child(4n) .pop{left:auto;right:0;transform-origin:top right}}
+@media (max-width:1060px) and (min-width:781px){.gcard:nth-child(3n) .pop{left:auto;right:0;transform-origin:top right}}
+@media (max-width:780px) and (min-width:521px){.gcard:nth-child(2n) .pop{left:auto;right:0;transform-origin:top right}}
+/* sin cursor no hay hover: la tarjeta navega al estudio, que es el destino real */
+@media (hover:none){.pop{display:none}}
+.gcard{position:relative;background:var(--bg);border:1px solid var(--rule);border-radius:var(--r-lg);
+  padding:19px;text-align:left;display:flex;gap:14px;align-items:center;overflow:visible;
+  transition:transform .32s var(--ease),box-shadow .32s var(--ease),border-color .2s}
+.gcard:hover,.gcard:focus-visible{transform:translateY(-4px);box-shadow:var(--sh-lift);border-color:var(--gc);z-index:40}
+.gcard .ring{flex:0 0 46px;height:46px;position:relative}
+.gcard .ring svg{transform:rotate(-90deg)}
+.gcard .ring i{position:absolute;inset:0;display:grid;place-items:center;font-size:13px;font-weight:700;
+  font-style:normal;color:var(--gc);font-variant-numeric:tabular-nums}
+.gcard>span:nth-of-type(2){display:flex;flex-direction:column;min-width:0}
+.gcard .nm{display:block;font-family:Archivo;font-size:15.5px;font-weight:600;letter-spacing:-.025em;line-height:1.18}
+.gcard .ct{display:block;font-size:12px;color:var(--tx-3);margin-top:3px;font-variant-numeric:tabular-nums}
+/* la imagen flotante: el gráfico de memoria del grupo, que sale al pasar el cursor */
+.pop{position:absolute;left:0;top:calc(100% + 10px);transform:translateY(-8px) scale(.97);transform-origin:top left;
+  width:300px;max-width:84vw;background:var(--surf);border:1px solid var(--rule);border-radius:var(--r-lg);
+  box-shadow:var(--sh-lift);padding:11px;opacity:0;pointer-events:none;z-index:30;
+  transition:opacity .28s var(--ease),transform .34s var(--ease)}
+.gcard:hover .pop,.gcard:focus-visible .pop{opacity:1;transform:translateY(0) scale(1)}
+.pop svg{display:block;width:100%;height:auto}
+.pop .cap{font-size:11.5px;color:var(--tx-2);margin-top:7px;padding:0 3px;line-height:1.4}
+.gnote{margin-top:24px;display:flex;gap:13px;align-items:flex-start;padding:17px 20px;
+  background:color-mix(in srgb,var(--gold) 9%,var(--bg));border:1px solid color-mix(in srgb,var(--gold) 34%,transparent);
+  border-radius:var(--r-lg)}
+.gnote p{font-size:14.5px;color:var(--tx-2);max-width:68ch}
+.gnote b{color:var(--tx)}
 
-/* chequeo elegibilidad */
-.chk-q{font-family:Archivo;font-size:21px;font-weight:600;line-height:1.25}
-.chk-hint{font-size:13.5px;color:var(--faint);margin-top:8px}
-.chk-opts{display:grid;gap:9px;margin-top:20px}
-.chk-opt{text-align:left;padding:15px 18px;border:1.5px solid var(--line);border-radius:var(--r-sm);
-  background:var(--surface);font-size:15px;font-weight:500;transition:all .15s;width:100%}
-.chk-opt:hover{border-color:var(--blue-mid);background:var(--blue-tint)}
-.chk-prog{display:flex;gap:5px;margin-bottom:22px}
-.chk-prog i{flex:1;height:4px;border-radius:100px;background:var(--line)}
-.chk-prog i.on{background:var(--blue-mid)}
-.verdict{border-radius:var(--r);padding:26px;border:1px solid}
-.verdict h5{font-family:Archivo;font-size:22px;font-weight:600;margin-bottom:10px}
-.verdict p{font-size:14.5px;line-height:1.6}
-.v-ok{background:var(--green-soft);border-color:#B6E2CC}
-.v-ok h5{color:var(--green)}
-.v-ok p{color:#155F3E}
-.v-law{background:var(--amber-soft);border-color:#EED9B8}
-.v-law h5{color:var(--amber)}
-.v-law p{color:#6B4A10}
-.v-wait{background:var(--blue-soft);border-color:#D3E2FB}
-.v-wait h5{color:var(--blue)}
-.v-wait p{color:#173B7D}
+/* 3 · el examen: figura de datos a todo lo ancho */
+.figure{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.86fr);gap:clamp(30px,4.4vw,62px);align-items:center}
+.dots{display:grid;grid-template-columns:repeat(16,1fr);gap:7px;max-width:470px}
+.dots i{aspect-ratio:1;border-radius:50%;background:var(--rule);display:block}
+.dots i.asked{background:transparent;box-shadow:inset 0 0 0 2px var(--gold)}
+.dots i.right{background:var(--gold)}
+.legend{display:grid;gap:13px;margin-top:26px}
+.legend div{display:flex;gap:11px;align-items:baseline;font-size:14px;color:var(--tx-2)}
+.legend b{font-family:Archivo;font-size:21px;font-weight:700;color:var(--tx);min-width:2.6ch;
+  font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+.cost{margin-top:30px;border-top:1px solid var(--rule);padding-top:24px}
+.bars{display:grid;gap:13px;margin-top:15px}
+.bar{display:grid;grid-template-columns:8.5ch 1fr auto;gap:13px;align-items:center;font-size:13.5px}
+.bar .lab{color:var(--tx-2)}
+.bar .tr{height:9px;border-radius:99px;background:var(--rule);overflow:hidden}
+.bar .tr span{display:block;height:100%;border-radius:99px}
+.bar .vl{font-family:Archivo;font-weight:700;color:var(--tx);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 
-/* examen */
-.gmini{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
-.gm{display:flex;align-items:center;gap:9px;padding:10px 11px;border:1px solid var(--line);
-  border-radius:var(--r-sm);background:var(--surface)}
-.gm .rg{flex:0 0 30px;height:30px;position:relative}
-.gm .rg svg{transform:rotate(-90deg)}
-.gm .rg span{position:absolute;inset:0;display:grid;place-items:center;font-size:8.5px;font-weight:700}
-.gm .nm{font-size:11.5px;font-weight:600;line-height:1.2}
-.gm .ct{font-size:10px;color:var(--faint);margin-top:1px}
-.vzhint{display:flex;align-items:center;gap:9px;padding:12px 15px;background:var(--gold-soft);
-  border:1px solid #EBDCB6;border-radius:var(--r-sm);margin-top:14px;font-size:13.5px;color:var(--gold-ink)}
-.ex-meta{display:flex;gap:0;background:var(--ground);border:1px solid var(--line);
-  border-radius:var(--r-sm);overflow:hidden;margin-bottom:22px}
-.ex-meta div{flex:1;padding:14px 16px;border-right:1px solid var(--line)}
-.ex-meta div:last-child{border-right:none}
-.ex-meta b{font-family:Archivo;font-size:24px;font-weight:600;display:block;letter-spacing:-.03em}
-.ex-meta span{font-size:11.5px;color:var(--muted);display:block;margin-top:3px;line-height:1.35}
-.q-txt{font-family:Archivo;font-size:20px;font-weight:600;line-height:1.25}
-.q-en{font-size:13.5px;color:var(--faint);margin-top:7px;font-style:italic}
-.q-opts{display:grid;gap:8px;margin-top:18px}
-.q-opt{text-align:left;padding:13px 16px;border:1.5px solid var(--line);border-radius:var(--r-sm);
-  background:var(--surface);font-size:14.5px;font-weight:500;transition:all .15s;width:100%}
-.q-opt:hover:not(:disabled){border-color:var(--blue-mid);background:var(--blue-tint)}
-.q-opt:disabled{cursor:default}
-.q-opt.right{border-color:var(--green);background:var(--green-soft);color:var(--green)}
-.q-opt.wrong{border-color:var(--red);background:var(--red-soft);color:var(--red)}
-.q-opt i{float:right;font-style:normal;font-weight:700}
-.q-fb{margin-top:14px;padding:13px 16px;border-radius:var(--r-sm);font-size:14px;display:none}
-.q-fb.on{display:block}
-.q-fb.good{background:var(--green-soft);color:#155F3E}
-.q-fb.bad{background:var(--red-soft);color:#7D2236}
+/* 4 · límites, con fotografía */
+.limits{background:var(--surf);border-block:1px solid var(--rule)}
+.lgrid{display:grid;grid-template-columns:.84fr 1.16fr;gap:clamp(30px,4.4vw,60px);align-items:center}
+.lshot .frame{border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--rule);box-shadow:var(--sh-lift)}
+.lshot img{width:100%;aspect-ratio:4/5;object-fit:cover}
+.lcols{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.lcols h3{font-size:15px;font-weight:600;margin-bottom:15px;display:flex;align-items:center;gap:9px;
+  letter-spacing:-.01em}
+.lcols li{font-size:14.5px;color:var(--tx-2);padding-left:24px;position:relative;margin-bottom:13px;line-height:1.5}
+.lcols li b{color:var(--tx);font-weight:600}
+.yes li::before{content:"";position:absolute;left:0;top:.52em;width:11px;height:6px;
+  border-left:2px solid var(--ok);border-bottom:2px solid var(--ok);transform:rotate(-45deg)}
+.no li::before{content:"";position:absolute;left:1px;top:.46em;width:11px;height:11px;
+  background:linear-gradient(currentColor,currentColor) center/100% 2px no-repeat,
+             linear-gradient(currentColor,currentColor) center/2px 100% no-repeat;
+  color:var(--crim);transform:rotate(45deg)}
+.yes h3{color:var(--ok)} .no h3{color:var(--crim)}
 
-/* proceso */
-.timeline{display:grid;gap:0}
-.tstep{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--line-soft)}
-.tstep:last-child{border-bottom:none}
-.tdot{flex:0 0 30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700}
-.td-done{background:var(--green);color:#fff}
-.td-now{background:var(--blue-soft);border:2px solid var(--blue-mid);color:var(--blue)}
-.td-wait{background:var(--ground);border:1px solid var(--line);color:var(--faint)}
-.tstep b{font-size:15.5px;font-weight:600;display:block}
-.tstep p{font-size:13.5px;color:var(--muted);margin-top:3px}
-.tstep .when{margin-left:auto;font-size:12px;color:var(--faint);white-space:nowrap;padding-top:3px}
+/* 5 · abogados: panel invertido (único cambio de tema de la página) */
+.law{background:var(--ink);color:#fff}
+.law h2{color:#fff} .law .lede{color:rgba(255,255,255,.72)}
+.lwgrid{display:grid;grid-template-columns:1.04fr .96fr;gap:clamp(30px,4.4vw,58px);align-items:center}
+.lwlist{display:grid;gap:17px;margin-top:28px}
+.lwlist div{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
+.lwlist .n{font-family:Archivo;font-size:12.5px;font-weight:700;color:var(--gold);padding-top:3px;
+  font-variant-numeric:tabular-nums}
+.lwlist b{display:block;font-size:15.5px;font-weight:600}
+.lwlist p{font-size:13.5px;color:rgba(255,255,255,.6);margin-top:3px;max-width:44ch}
+.triage{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:var(--r-lg);padding:22px}
+.trow{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:11px 0;
+  border-bottom:1px solid rgba(255,255,255,.1);font-size:13.5px;color:rgba(255,255,255,.76)}
+.trow:last-of-type{border-bottom:none}
+.tag{font-size:10px;font-weight:700;letter-spacing:.09em;padding:3px 9px;border-radius:99px;white-space:nowrap}
+.tag.s{background:rgba(14,124,74,.3);color:#7FE0AC} .tag.l{background:rgba(200,162,74,.22);color:var(--gold)}
+.tfoot{font-size:12px;color:rgba(255,255,255,.5);margin-top:15px;line-height:1.55}
 
-/* entrevista */
-.iv-card{background:var(--ground);border:1px solid var(--line);border-radius:var(--r);padding:24px;text-align:center}
-.iv-prompt{font-size:12px;color:var(--muted);letter-spacing:.06em;font-weight:600}
-.iv-line{font-family:Archivo;font-size:24px;font-weight:600;margin-top:12px;line-height:1.3}
-.iv-mic{width:62px;height:62px;border-radius:50%;background:var(--blue);color:#fff;display:grid;
-  place-items:center;margin:20px auto 0;font-size:24px;box-shadow:0 0 0 0 rgba(47,111,228,.4);
-  animation:pulse 2.4s infinite}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(47,111,228,.34)}70%{box-shadow:0 0 0 16px rgba(47,111,228,0)}100%{box-shadow:0 0 0 0 rgba(47,111,228,0)}}
-.iv-note{font-size:13px;color:var(--faint);margin-top:14px}
-.iv-list{display:grid;gap:10px;margin-top:20px}
-.iv-item{display:flex;gap:12px;align-items:center;padding:13px 16px;background:var(--surface);
-  border:1px solid var(--line-soft);border-radius:var(--r-sm);font-size:14px}
-.iv-item .n{flex:0 0 22px;height:22px;border-radius:50%;background:var(--blue-soft);color:var(--blue);
-  display:grid;place-items:center;font-size:11px;font-weight:700}
+/* 6 · precio: comparación, no tres tarjetas iguales */
+.price{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule);border-radius:var(--r-lg);
+  overflow:hidden;background:var(--surf)}
+.tier{padding:clamp(26px,3vw,36px)}
+.tier+.tier{border-left:1px solid var(--rule)}
+.tier.hi{background:var(--bg)}
+.tier h3{font-size:19px;font-weight:600}
+.tier .who{font-size:13px;color:var(--tx-3);margin-top:4px}
+.tier .amt{font-family:Archivo;font-size:clamp(38px,4.4vw,52px);font-weight:700;letter-spacing:-.05em;
+  margin:18px 0 2px;font-variant-numeric:tabular-nums}
+.tier .amt small{font-size:15px;font-weight:500;color:var(--tx-2);letter-spacing:0}
+.tier .per{font-size:12.5px;color:var(--tx-3)}
+.tier ul{margin:22px 0 26px;display:grid;gap:10px}
+.tier li{font-size:14px;color:var(--tx-2);padding-left:22px;position:relative;line-height:1.45}
+.tier li::before{content:"";position:absolute;left:0;top:.5em;width:10px;height:5px;
+  border-left:2px solid var(--ok);border-bottom:2px solid var(--ok);transform:rotate(-45deg)}
+.lawline{margin-top:22px;padding:18px 22px;border:1px solid var(--rule);border-radius:var(--r-lg);
+  background:var(--surf);display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.lawline p{font-size:14px;color:var(--tx-2);max-width:56ch}
+.lawline b{color:var(--tx)}
 
-/* precio */
-.pricing{background:var(--surface);border-top:1px solid var(--line)}
-.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.plan{border:1px solid var(--line);border-radius:var(--r);padding:30px;background:var(--raised);
-  display:flex;flex-direction:column;box-shadow:var(--sh-1)}
-.plan.feat{border:2px solid var(--blue);background:var(--surface);position:relative;box-shadow:var(--sh-2)}
-.plan.feat::after{content:"RECOMENDADO";position:absolute;top:-11px;left:28px;background:var(--blue);
-  color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.11em;padding:4px 11px;border-radius:100px}
-.plan h3{font-size:18px;font-weight:600}
-.plan .who{font-size:12.5px;color:var(--faint);margin-top:4px}
-.price{font-family:Archivo;font-size:40px;font-weight:600;letter-spacing:-.04em;margin:18px 0 2px}
-.price small{font-size:15px;font-weight:500;color:var(--muted);letter-spacing:0}
-.plan ul{margin:20px 0 26px;display:grid;gap:10px;flex:1}
-.plan li{font-size:13.5px;color:var(--muted);padding-left:22px;position:relative;line-height:1.45}
-.plan li::before{content:"✓";position:absolute;left:0;color:var(--green);font-weight:700}
-.plan li.x::before{content:"–";color:var(--faint)}
+/* 7 · preguntas */
+.faq{border-top:1px solid var(--rule)}
+.fi{border-bottom:1px solid var(--rule)}
+.fq{width:100%;text-align:left;padding:23px 0;font-size:clamp(16px,1.5vw,17.5px);font-weight:600;
+  display:flex;justify-content:space-between;gap:22px;align-items:center;letter-spacing:-.015em}
+.fq .pm{flex:0 0 15px;height:15px;position:relative}
+.fq .pm::before,.fq .pm::after{content:"";position:absolute;background:var(--accent);
+  transition:transform .3s var(--ease),opacity .3s}
+.fq .pm::before{left:0;top:6.5px;width:15px;height:2px}
+.fq .pm::after{left:6.5px;top:0;width:2px;height:15px}
+.fi.on .fq .pm::after{transform:scaleY(0);opacity:0}
+.fa{max-height:0;overflow:hidden;transition:max-height .36s var(--ease)}
+.fa p{padding:0 0 24px;font-size:15px;color:var(--tx-2);max-width:72ch;line-height:1.68}
 
-/* abogados */
-.law{background:linear-gradient(165deg,#12305F,#0B1F3F);color:#fff;border-radius:16px;padding:48px;
-  display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:center}
-.law h2{color:#fff;font-size:clamp(26px,3vw,36px)}
-.law .lede{color:rgba(255,255,255,.72)}
-.law-list{display:grid;gap:14px;margin-top:26px}
-.law-item{display:flex;gap:13px;align-items:flex-start}
-.law-item .ic{flex:0 0 26px;height:26px;border-radius:7px;background:rgba(200,162,74,.22);
-  color:var(--gold);display:grid;place-items:center;font-size:13px;font-weight:700}
-.law-item b{font-size:15px;font-weight:600;display:block}
-.law-item p{font-size:13.5px;color:rgba(255,255,255,.62);margin-top:3px;line-height:1.5}
-.law-panel{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);
-  border-radius:var(--r);padding:26px;backdrop-filter:blur(6px)}
-.law-panel .lab{font-size:10px;letter-spacing:.13em;color:var(--gold);font-weight:700;margin-bottom:16px}
-.lp-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;
-  border-bottom:1px solid rgba(255,255,255,.1);font-size:14px}
-.lp-row:last-child{border-bottom:none}
-.lp-row span{color:rgba(255,255,255,.68)}
-.lp-row b{font-weight:600}
-.lp-tag{font-size:10.5px;padding:3px 9px;border-radius:100px;font-weight:700}
-.t-simple{background:rgba(14,124,74,.28);color:#6FD8A0}
-.t-law{background:rgba(200,162,74,.22);color:var(--gold)}
+/* 8 · cierre */
+.close{text-align:center;background:var(--surf);border-top:1px solid var(--rule)}
+.close h2{max-width:17ch;margin:0 auto}
+.close .lede{margin:16px auto 0;text-align:center}
 
-/* límites */
-.limits{display:grid;grid-template-columns:1fr 1fr;gap:24px}
-.lcol{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:30px;box-shadow:var(--sh-1)}
-.lcol h3{font-size:18px;font-weight:600;margin-bottom:18px;display:flex;align-items:center;gap:10px}
-.lcol h3 .b{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;font-size:14px;font-weight:700}
-.lcol li{font-size:14.5px;color:var(--muted);padding-left:24px;position:relative;margin-bottom:13px;line-height:1.5}
-.lcol li b{color:var(--text);font-weight:600}
-.yes-c .b{background:var(--green-soft);color:var(--green)}
-.yes-c li::before{content:"✓";position:absolute;left:0;color:var(--green);font-weight:700}
-.no-c .b{background:var(--red-soft);color:var(--red)}
-.no-c li::before{content:"✕";position:absolute;left:0;color:var(--red);font-weight:700}
-.legal-note{margin-top:24px;background:var(--gold-soft);border:1px solid #EBDCB6;border-radius:var(--r);padding:24px}
-.legal-note h4{font-size:12px;letter-spacing:.11em;color:var(--gold-ink);font-weight:700;margin-bottom:10px}
-.legal-note p{font-size:14px;color:#6B5210;line-height:1.6;margin-bottom:9px}
-.legal-note p:last-child{margin-bottom:0}
-
-/* faq */
-.faq{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
-.fi{background:var(--surface)}
-.fq{width:100%;text-align:left;padding:21px 26px;font-size:16px;font-weight:600;
-  display:flex;justify-content:space-between;gap:20px;align-items:center}
-.fq i{color:var(--blue);font-size:19px;font-style:normal;transition:transform .2s;flex:0 0 auto}
-.fi.open .fq i{transform:rotate(45deg)}
-.fa{max-height:0;overflow:hidden;transition:max-height .3s ease}
-.fa p{padding:0 26px 22px;font-size:14.5px;color:var(--muted);line-height:1.65}
-
-/* cierre */
-.close{background:linear-gradient(170deg,var(--blue-tint),var(--ground));border-top:1px solid var(--line);text-align:center}
-.close h2{max-width:16em;margin:0 auto}
-.close .lede{max-width:38em;margin-left:auto;margin-right:auto}
-
-footer{background:var(--surface);border-top:1px solid var(--line);padding:52px 0 40px;font-size:13.5px;color:var(--muted)}
-.f-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;padding-bottom:32px;border-bottom:1px solid var(--line-soft)}
-footer h5{font-size:10.5px;letter-spacing:.13em;color:var(--faint);margin-bottom:14px;font-weight:700}
+footer{background:var(--bg);border-top:1px solid var(--rule);padding:52px 0 42px;font-size:13.5px;color:var(--tx-2)}
+.fg{display:grid;grid-template-columns:2.1fr 1fr 1fr;gap:42px;padding-bottom:32px;border-bottom:1px solid var(--rule)}
+footer h4{font-size:10.5px;letter-spacing:.14em;color:var(--tx-3);margin-bottom:14px;font-weight:700}
 footer li{margin-bottom:9px}
-footer a{text-decoration:none}
-footer a:hover{color:var(--text)}
-.f-legal{margin-top:26px;font-size:12px;color:var(--faint);line-height:1.65}
-.f-legal strong{color:var(--muted)}
+footer a{text-decoration:none;text-underline-offset:4px}
+footer a:hover{color:var(--tx);text-decoration:underline}
+.flegal{margin-top:26px;font-size:12px;color:var(--tx-3);line-height:1.7;max-width:96ch}
+.flegal b{color:var(--tx-2)}
 
-@media(max-width:1000px){
-  .hero-in{grid-template-columns:1fr;gap:46px}
-  .devices{margin-top:8px}
-  .mods{grid-template-columns:1fr}
-  .law{grid-template-columns:1fr;padding:34px}
-  .plans{grid-template-columns:1fr}
-  .limits,.f-grid{grid-template-columns:1fr}
-  .nlinks{display:none}
-  .nlinks.open{display:flex;position:absolute;top:66px;left:0;right:0;background:var(--surface);
-    flex-direction:column;padding:22px 24px;gap:18px;border-bottom:1px solid var(--line);box-shadow:var(--sh-2)}
+/* motion: un momento autorado, no una entrada idéntica en cada sección */
+.rise{opacity:0;transform:translateY(18px);transition:opacity .75s var(--ease),transform .75s var(--ease)}
+.rise.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  *{transition-duration:.01ms!important;animation-duration:.01ms!important}
+  html{scroll-behavior:auto}
+  .rise{opacity:1;transform:none}
+  .pop{display:none}
+}
+
+@media (max-width:1000px){
+  .hgrid,.tools,.figure,.lgrid,.lwgrid{grid-template-columns:1fr}
+  .shot{order:-1}
+  .float.a{left:-10px;bottom:-22px} .float.b{right:-8px;top:-18px}
+  .float.c{right:-8px;bottom:-18px}
+  .aside-shot{max-width:460px}
+  .lshot{max-width:380px}
+  .nl{display:none}
+  .nl.open{display:flex;position:absolute;top:68px;left:0;right:0;background:var(--surf);
+    flex-direction:column;align-items:stretch;padding:22px 26px;gap:19px;border-bottom:1px solid var(--rule);
+    box-shadow:var(--sh-lift)}
   .burger{display:block}
-  section{padding:64px 0}
+  .price{grid-template-columns:1fr}
+  .tier+.tier{border-left:none;border-top:1px solid var(--rule)}
 }
-@media(max-width:600px){
-  .phone{display:none}
-  .ex-meta{flex-direction:column}
-  .ex-meta div{border-right:none;border-bottom:1px solid var(--line)}
+@media (max-width:620px){
+  .lcols,.fg{grid-template-columns:1fr}
+  .dots{grid-template-columns:repeat(8,1fr);max-width:300px}
+  .float.a,.float.b,.float.c{position:static;width:auto;margin-top:13px;box-shadow:var(--sh)}
+  .shot .frame{margin-bottom:0}
 }
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="wrap nav-in">
+  <div class="wrap nv">
     <a class="brand" href="#top">
-      <svg width="32" height="32" viewBox="0 0 64 64" aria-hidden="true">
-        <g fill="#C8A24A">
-          <rect x="8" y="40" width="8" height="14" rx="2.5" opacity=".4"/>
-          <rect x="20" y="33" width="8" height="21" rx="2.5" opacity=".6"/>
-          <rect x="32" y="26" width="8" height="28" rx="2.5" opacity=".8"/>
-          <rect x="44" y="22" width="8" height="32" rx="2.5"/>
-          <path d="M48 5 L49.572 9.837 L54.657 9.837 L50.543 12.826 L52.115 17.663 L48 14.674 L43.885 17.663 L45.457 12.826 L41.343 9.837 L46.428 9.837 Z"/>
-        </g>
-      </svg>
+      <svg width="32" height="32" viewBox="0 0 64 64" aria-hidden="true"><g fill="#C8A24A">
+        <rect x="8" y="40" width="8" height="14" rx="2.5" opacity=".4"/><rect x="20" y="33" width="8" height="21" rx="2.5" opacity=".6"/>
+        <rect x="32" y="26" width="8" height="28" rx="2.5" opacity=".8"/><rect x="44" y="22" width="8" height="32" rx="2.5"/>
+        <path d="M48 5 L49.572 9.837 L54.657 9.837 L50.543 12.826 L52.115 17.663 L48 14.674 L43.885 17.663 L45.457 12.826 L41.343 9.837 L46.428 9.837 Z"/>
+      </g></svg>
       <span><b>Mi Ciudadanía</b><span>SU TRÁMITE, PASO A PASO</span></span>
     </a>
-    <div class="nlinks" id="nl">
+    <div class="nl" id="nl">
       <a href="#herramientas">Herramientas</a>
+      <a href="#estudio">Estudio</a>
       <a href="#precio">Precio</a>
-      <a href="estudio.html">Estudio</a>
       <a href="#abogados">Para abogados</a>
-      <a href="#preguntas">Preguntas</a>
-      <a class="btn b-pri" href="#empezar">Abrir la aplicación</a>
+      <a class="btn pri" href="app.html">Abrir la aplicación</a>
     </div>
-    <button class="burger" id="bg" aria-label="Menú" aria-expanded="false">☰</button>
+    <button class="burger" id="bg" aria-label="Abrir menú" aria-expanded="false" aria-controls="nl">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
   </div>
 </nav>
 
 <header class="hero" id="top">
-  <div class="wrap hero-in">
+  <div class="wrap hgrid">
     <div>
-      <p class="pill"><i></i>ACTUALIZADO AL EXAMEN CÍVICO DE 2025</p>
-      <h1>Su ciudadanía,<br><em>en la palma de la mano.</em></h1>
-      <p class="sub">
-        Cuatro herramientas en español para hacer su trámite de naturalización
-        usted mismo: saber si califica, llevar el control del proceso, preparar
-        el examen y practicar la entrevista.
-      </p>
-      <div class="cta">
-        <a class="btn b-pri b-lg" href="#empezar">Empezar ahora</a>
-        <a class="btn b-out b-lg" href="#herramientas">Ver cómo funciona</a>
+      <h1>Su ciudadanía,<br><i>en la palma de la mano.</i></h1>
+      <p class="hsub">Cuatro herramientas en español para hacer su trámite de naturalización usted mismo.</p>
+      <div class="hcta">
+        <a class="btn pri lg" href="app.html">Empezar ahora</a>
+        <a class="btn ghost lg" href="#herramientas">Ver cómo funciona</a>
       </div>
-      <p class="micro">
-        <span><b>✓</b> Funciona en su teléfono y su computadora</span>
-        <span><b>✓</b> Sin instalar nada</span>
-        <span><b>✓</b> En español</span>
-      </p>
+      <p class="hnote"><b>Gratis</b><span>Sin registro, sin instalar nada. En su teléfono y su computadora.</span></p>
     </div>
 
-    <div class="devices">
-      <div class="laptop">
-        <div class="lid">
-          <div class="lscreen">
-            <div class="appbar">
-              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-              <span class="ttl">Mi Ciudadanía — Mi proceso</span>
-            </div>
-            <div class="appbody">
-              <div class="mini-tabs">
-                <span class="mini-tab">Requisitos</span>
-                <span class="mini-tab on">Mi proceso</span>
-                <span class="mini-tab">Estudio</span>
-                <span class="mini-tab">Entrevista</span>
-              </div>
-              <div class="mcard">
-                <p class="lab">AVANCE GENERAL</p>
-                <div class="mbar" style="margin-top:6px"><i style="width:58%"></i></div>
-                <p style="font-size:6.5px;color:var(--faint);margin-top:4px">4 de 7 pasos completados</p>
-              </div>
-              <div class="mcard" style="display:grid;gap:6px">
-                <div class="mstep"><span class="tick done">✓</span> Reuní mis documentos</div>
-                <div class="mstep"><span class="tick done">✓</span> Verifiqué mi elegibilidad</div>
-                <div class="mstep"><span class="tick done">✓</span> Envié el Formulario N-400</div>
-                <div class="mstep"><span class="tick now">4</span> <b style="color:var(--blue)">Cita de datos biométricos</b></div>
-                <div class="mstep"><span class="tick wait">5</span> Entrevista y examen</div>
-                <div class="mstep"><span class="tick wait">6</span> Juramento</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="lbase"></div>
+    <figure class="shot">
+      <div class="frame">
+        <img src="img/hero.jpg" width="1760" height="1100" fetchpriority="high"
+             alt="Una mujer estudia para el examen de ciudadanía en su teléfono, en la mesa de su cocina, con un cuaderno de apuntes al lado.">
       </div>
-
-      <div class="phone">
-        <div class="pscreen">
-          <div class="appbody" style="padding:10px;gap:7px">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <span style="font-size:6px;letter-spacing:.1em;color:var(--amber);font-weight:700">ESTUDIO</span>
-              <span style="font-size:6px;color:var(--faint)">14 de 128</span>
-            </div>
-            <div class="mbar"><i style="width:11%;background:var(--amber)"></i></div>
-            <div class="mcard">
-              <p class="q">¿Cuál es la ley suprema de la nación?</p>
-              <div class="mopt ok">La Constitución ✓</div>
-              <div class="mopt">La Declaración de Independencia</div>
-              <div class="mopt">El Acta de Derechos Civiles</div>
-            </div>
-            <div style="background:var(--green-soft);border-radius:6px;padding:7px;font-size:6.5px;color:var(--green);font-weight:600">
-              Correcto. Lleva 12 seguidas.
-            </div>
-            <div style="margin-top:auto;background:var(--blue);border-radius:6px;padding:7px;text-align:center;font-size:7.5px;font-weight:700;color:#fff">
-              Siguiente pregunta
-            </div>
-          </div>
-        </div>
+      <div class="float a">
+        <p class="k">ELEGIBLES HOY</p>
+        <p class="v num">8.5 M</p>
+        <p class="d">residentes permanentes pueden solicitar. Solo 820 mil lo hacen al año.</p>
       </div>
-    </div>
+      <div class="float b">
+        <span class="ring">
+          <svg width="38" height="38" viewBox="0 0 38 38" aria-hidden="true">
+            <circle cx="19" cy="19" r="16" fill="none" stroke="var(--rule)" stroke-width="4"/>
+            <circle cx="19" cy="19" r="16" fill="none" stroke="var(--ok)" stroke-width="4"
+                    stroke-linecap="round" stroke-dasharray="100.5" stroke-dashoffset="40.2"/>
+          </svg><i class="num">60%</i>
+        </span>
+        <span class="t">para aprobar el examen cívico</span>
+      </div>
+    </figure>
   </div>
 </header>
 
 <div class="stance">
-  <div class="wrap stance-in">
-    <p>
-      <b>Esto no reemplaza a un abogado.</b> Si su caso es sencillo —y la mayoría
-      lo son— usted puede hacer el trámite por su cuenta y ahorrarse ese costo.
-      Si su caso tiene complicaciones, se lo decimos y le ayudamos a buscar
-      quién lo represente.
-    </p>
+  <div class="wrap">
+    <p><b>Esto no reemplaza a un abogado.</b> Si su caso es sencillo, y la mayoría lo son, usted puede hacer el trámite
+    por su cuenta. Si tiene complicaciones, se lo decimos y le ayudamos a buscar quién lo represente.</p>
   </div>
 </div>
 
 <section id="herramientas">
   <div class="wrap">
-    <div class="head">
-      <p class="kick">LAS CUATRO HERRAMIENTAS</p>
-      <h2>Todo lo que necesita, en un solo lugar</h2>
-      <p class="lede">
-        Toque cada herramienta para verla funcionando. Es la aplicación real, no
-        una imagen.
-      </p>
+    <div class="shead rise">
+      <h2>El trámite tiene cuatro preguntas. Esto responde las cuatro.</h2>
+      <p class="lede">Los demás productos solo preparan el examen. El examen es la tercera.</p>
     </div>
-
-    <div class="mods">
-      <div class="modlist" role="tablist">
-        <button class="modbtn on" role="tab" aria-selected="true" data-m="1">
-          <span class="modn" style="background:#2F6FE4">1</span>
-          <span><h3>¿Califica usted?</h3><p>Responda unas preguntas y sepa si puede solicitar hoy o qué le falta.</p></span>
-        </button>
-        <button class="modbtn" role="tab" aria-selected="false" data-m="2">
-          <span class="modn" style="background:#0E7C7B">2</span>
-          <span><h3>Mi proceso</h3><p>Lleve el control de cada paso, del formulario al juramento.</p></span>
-        </button>
-        <button class="modbtn" role="tab" aria-selected="false" data-m="3">
-          <span class="modn" style="background:#B4762A">3</span>
-          <span><h3>Estudio visual</h3><p>Las 128 preguntas en nueve grupos de memoria, con gráficos que anclan las respuestas.</p></span>
-        </button>
-        <button class="modbtn" role="tab" aria-selected="false" data-m="4">
-          <span class="modn" style="background:#5B4B9E">4</span>
-          <span><h3>Practicar la entrevista</h3><p>Ensaye en voz alta la lectura, la escritura y las preguntas del oficial.</p></span>
-        </button>
+    <div class="tools">
+      <div class="steps rise">
+        <article class="step" style="--sc:var(--azur)">
+          <span class="n num">01</span>
+          <div><h3>¿Califica usted?</h3>
+          <p>Unas preguntas y sabe si puede solicitar hoy, qué le falta, o si su caso necesita abogado.</p></div>
+        </article>
+        <article class="step" style="--sc:var(--teal)">
+          <span class="n num">02</span>
+          <div><h3>Mi proceso</h3>
+          <p>Los siete pasos del trámite con seguimiento y recordatorios, del formulario al juramento.</p></div>
+        </article>
+        <article class="step" style="--sc:var(--ocher)">
+          <span class="n num">03</span>
+          <div><h3>Estudio del examen</h3>
+          <p>El banco oficial de 128 preguntas, agrupado por tipo de memoria y con gráficos que anclan las respuestas.</p></div>
+        </article>
+        <article class="step" style="--sc:var(--crim)">
+          <span class="n num">04</span>
+          <div><h3>Practicar la entrevista</h3>
+          <p>Lectura en voz alta, escritura al dictado y las preguntas sobre su propia solicitud.</p></div>
+        </article>
       </div>
 
-      <div class="modpane">
-        <!-- 1 -->
-        <div class="pane on" id="p1">
-          <div class="pane-top">
-            <h4>¿Califica usted?</h4>
-            <span class="pane-tag" style="background:var(--blue-soft);color:var(--blue)">DEMOSTRACIÓN REAL</span>
-          </div>
-          <div class="pane-body">
-            <div id="chk">
-              <div class="chk-prog" id="cprog"></div>
-              <p class="chk-q" id="cq"></p>
-              <p class="chk-hint" id="chint"></p>
-              <div class="chk-opts" id="copts"></div>
-            </div>
-            <div id="cres"></div>
-          </div>
+      <figure class="aside-shot rise">
+        <div class="frame">
+          <img src="img/escritorio.jpg" width="720" height="620" loading="lazy"
+               alt="Vista cenital de un cuaderno de apuntes, un lápiz y un teléfono sobre una mesa clara.">
         </div>
-
-        <!-- 2 -->
-        <div class="pane" id="p2">
-          <div class="pane-top">
-            <h4>Mi proceso</h4>
-            <span class="pane-tag" style="background:var(--green-soft);color:var(--green)">4 DE 7 PASOS</span>
-          </div>
-          <div class="pane-body">
-            <div class="timeline">
-              <div class="tstep"><span class="tdot td-done">✓</span><span><b>Reunir sus documentos</b><p>Tarjeta de residente, pasaportes, historial de viajes y declaraciones de impuestos.</p></span><span class="when">Completado</span></div>
-              <div class="tstep"><span class="tdot td-done">✓</span><span><b>Verificar su elegibilidad</b><p>Residencia continua, presencia física y buen carácter moral.</p></span><span class="when">Completado</span></div>
-              <div class="tstep"><span class="tdot td-done">✓</span><span><b>Enviar el Formulario N-400</b><p>En línea o en papel. Guarde su número de recibo.</p></span><span class="when">Completado</span></div>
-              <div class="tstep"><span class="tdot td-now">4</span><span><b style="color:var(--blue)">Cita de datos biométricos</b><p>Le toman huellas y fotografía. Lleve su tarjeta de residente y la cita impresa.</p></span><span class="when">En curso</span></div>
-              <div class="tstep"><span class="tdot td-wait">5</span><span><b>Entrevista y examen</b><p>Inglés, educación cívica y preguntas sobre su solicitud.</p></span><span class="when">Pendiente</span></div>
-              <div class="tstep"><span class="tdot td-wait">6</span><span><b>Decisión</b><p>Aprobación, continuación o denegación.</p></span><span class="when">Pendiente</span></div>
-              <div class="tstep"><span class="tdot td-wait">7</span><span><b>Juramento de lealtad</b><p>La ceremonia. Ese día recibe su certificado.</p></span><span class="when">Pendiente</span></div>
-            </div>
-          </div>
+        <div class="float c">
+          <p class="k">TIEMPO DE RESPUESTA</p>
+          <p class="v num">3 min</p>
+          <p class="d">es lo que toma saber si usted ya califica.</p>
         </div>
-
-        <!-- 3 -->
-        <div class="pane" id="p3">
-          <div class="pane-top">
-            <h4>Estudio del examen</h4>
-            <span class="pane-tag" style="background:var(--amber-soft);color:var(--amber)">PRUEBE UNA PREGUNTA</span>
-          </div>
-          <div class="pane-body">
-            <div class="gmini">
-              <div class="gm"><span class="rg"><svg width="30" height="30" viewBox="0 0 30 30">
-                <circle cx="15" cy="15" r="12" fill="none" stroke="#E3E8EF" stroke-width="4"/>
-                <circle cx="15" cy="15" r="12" fill="none" stroke="#1B4FB0" stroke-width="4" stroke-linecap="round"
-                  stroke-dasharray="75.4" stroke-dashoffset="18.8"/></svg><span style="color:#1B4FB0">75%</span></span>
-                <span><span class="nm">Números</span><span class="ct">12 preguntas</span></span></div>
-              <div class="gm"><span class="rg"><svg width="30" height="30" viewBox="0 0 30 30">
-                <circle cx="15" cy="15" r="12" fill="none" stroke="#E3E8EF" stroke-width="4"/>
-                <circle cx="15" cy="15" r="12" fill="none" stroke="#5B4B9E" stroke-width="4" stroke-linecap="round"
-                  stroke-dasharray="75.4" stroke-dashoffset="50.3"/></svg><span style="color:#5B4B9E">33%</span></span>
-                <span><span class="nm">Enmiendas</span><span class="ct">6 preguntas</span></span></div>
-              <div class="gm"><span class="rg"><svg width="30" height="30" viewBox="0 0 30 30">
-                <circle cx="15" cy="15" r="12" fill="none" stroke="#E3E8EF" stroke-width="4"/>
-                <circle cx="15" cy="15" r="12" fill="none" stroke="#B4762A" stroke-width="4" stroke-linecap="round"
-                  stroke-dasharray="75.4" stroke-dashoffset="37.7"/></svg><span style="color:#B4762A">50%</span></span>
-                <span><span class="nm">Personas</span><span class="ct">14 preguntas</span></span></div>
-            </div>
-            <div class="ex-meta">
-              <div><b class="tnum">128</b><span>preguntas tiene el banco oficial</span></div>
-              <div><b class="tnum">20</b><span>le hacen en la entrevista</span></div>
-              <div><b class="tnum">12</b><span>debe contestar bien para aprobar</span></div>
-            </div>
-            <p class="q-txt" id="qt"></p>
-            <p class="q-en" id="qe"></p>
-            <div class="q-opts" id="qo"></div>
-            <div class="q-fb" id="qf"></div>
-            <div class="vzhint">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M4 18h4V8H4zM10 18h4V4h-4zM16 18h4v-6h-4z"/></svg>
-              <span><strong>33 respuestas traen un gráfico</strong> que las ancla en la memoria visual</span>
-            </div>
-            <a class="btn b-pri" style="margin-top:16px" href="estudio.html">Abrir el estudio visual →</a>
-          </div>
-        </div>
-
-        <!-- 4 -->
-        <div class="pane" id="p4">
-          <div class="pane-top">
-            <h4>Practicar la entrevista</h4>
-            <span class="pane-tag" style="background:#EFECF9;color:#5B4B9E">SIMULACIÓN</span>
-          </div>
-          <div class="pane-body">
-            <div class="iv-card">
-              <p class="iv-prompt">EL OFICIAL LE PIDE QUE LEA EN VOZ ALTA</p>
-              <p class="iv-line">“Who was the first President<br>of the United States?”</p>
-              <div class="iv-mic">🎙</div>
-              <p class="iv-note">Toque para grabar y compare su pronunciación</p>
-            </div>
-            <div class="iv-list">
-              <div class="iv-item"><span class="n">1</span><span>Lectura en voz alta de una oración en inglés</span></div>
-              <div class="iv-item"><span class="n">2</span><span>Escritura al dictado de una oración en inglés</span></div>
-              <div class="iv-item"><span class="n">3</span><span>Preguntas de educación cívica</span></div>
-              <div class="iv-item"><span class="n">4</span><span>Preguntas sobre los datos de su propia solicitud</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
+      </figure>
     </div>
   </div>
 </section>
 
-<section class="pricing" id="precio">
+<section class="study" id="estudio">
   <div class="wrap">
-    <div class="head">
-      <p class="kick">PRECIO</p>
-      <h2>Cuesta menos que una hora de consulta</h2>
-      <p class="lede">
-        Un abogado cobra entre 500 y 2 500 dólares por acompañar un trámite de
-        naturalización. Si su caso es sencillo, ese gasto es evitable.
-      </p>
+    <div class="shead rise">
+      <h2>Las 128 preguntas, agrupadas por cómo se recuerdan.</h2>
+      <p class="lede">USCIS las ordena por tema, que sirve para clasificar y no para aprender. Pase el cursor por un grupo
+      para ver su gráfico de memoria.</p>
     </div>
-    <div class="plans">
-      <div class="plan">
-        <h3>Gratis</h3>
-        <p class="who">Para empezar y ver si califica</p>
-        <div class="price">$0</div>
-        <p class="per" style="font-size:12.5px;color:var(--faint)">para siempre</p>
-        <ul>
-          <li>Verificación de requisitos completa</li>
-          <li>Guía del proceso paso a paso</li>
-          <li>Las 128 preguntas para consultar</li>
-          <li class="x">Sin seguimiento de su avance</li>
-          <li class="x">Sin práctica de entrevista</li>
-        </ul>
-        <a class="btn b-out" href="#empezar">Empezar gratis</a>
-      </div>
-      <div class="plan feat">
-        <h3>Completo</h3>
-        <p class="who">Para hacer el trámite de principio a fin</p>
-        <div class="price">$29 <small>una vez</small></div>
-        <p class="per" style="font-size:12.5px;color:var(--faint)">sin suscripción, sin renovación</p>
-        <ul>
-          <li>Todo lo del plan gratis</li>
-          <li>Seguimiento de sus 7 pasos con recordatorios</li>
-          <li>Práctica que insiste en las preguntas que falla</li>
-          <li>Simulación completa de la entrevista</li>
-          <li>Audio de pronunciación en inglés</li>
-          <li>Lista de documentos para imprimir</li>
-        </ul>
-        <a class="btn b-pri" href="#empezar">Obtener acceso completo</a>
-      </div>
-      <div class="plan">
-        <h3>Para su despacho</h3>
-        <p class="who">Abogados y organizaciones</p>
-        <div class="price">$40 <small>al mes</small></div>
-        <p class="per" style="font-size:12.5px;color:var(--faint)">clientes ilimitados</p>
-        <ul>
-          <li>Acceso completo para sus clientes</li>
-          <li>Su nombre y logotipo en la aplicación</li>
-          <li>Aparece cuando detectamos un caso complejo</li>
-          <li>Panel de avance de sus clientes</li>
-          <li>Sus clientes llegan preparados a la entrevista</li>
-        </ul>
-        <a class="btn b-out" href="#abogados">Conocer más</a>
-      </div>
+    <div class="gwrap rise" id="gwrap"></div>
+    <div class="gnote rise">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"
+           stroke-linecap="round" style="flex:0 0 19px;margin-top:2px" aria-hidden="true">
+        <path d="M12 2v6M12 22v-4M4.9 4.9l4.2 4.2M19.1 19.1l-4.2-4.2M2 12h6M22 12h-4M4.9 19.1l4.2-4.2M19.1 4.9l-4.2 4.2"/>
+      </svg>
+      <p><b>33 respuestas traen un gráfico.</b> Son las más difíciles de fijar: los mandatos de 2, 4 y 6 años, la suma
+      del Congreso, las enmiendas que se confunden entre sí. La memoria visual retiene mejor que el texto solo.</p>
     </div>
-  </div>
-</section>
-
-<section id="abogados">
-  <div class="wrap">
-    <div class="law">
-      <div>
-        <p class="kick" style="color:var(--gold)">PARA ABOGADOS DE INMIGRACIÓN</p>
-        <h2>No competimos con usted.<br>Le mandamos los casos que sí valen.</h2>
-        <p class="lede">
-          Los trámites sencillos consumen tiempo y dejan poco margen. Nosotros
-          atendemos esos, y cuando aparece un caso con complicaciones reales, su
-          despacho es el que aparece.
-        </p>
-        <div class="law-list">
-          <div class="law-item"><span class="ic">1</span><span><b>Recibe los casos complejos</b><p>Antecedentes penales, ausencias prolongadas, problemas fiscales o dudas sobre residencia continua.</p></span></div>
-          <div class="law-item"><span class="ic">2</span><span><b>Sus clientes llegan preparados</b><p>Entrégueles la herramienta de estudio. Llegan a la entrevista sabiéndose el examen.</p></span></div>
-          <div class="law-item"><span class="ic">3</span><span><b>Su marca, no la nuestra</b><p>La aplicación lleva su nombre y su logotipo cuando la usan sus clientes.</p></span></div>
-          <div class="law-item"><span class="ic">4</span><span><b>Tarifa fija, nunca comisión</b><p>Pagamos publicidad, no repartimos honorarios. Es la única forma legal de hacerlo.</p></span></div>
-        </div>
-      </div>
-      <div class="law-panel">
-        <p class="lab">CÓMO CLASIFICAMOS LOS CASOS</p>
-        <div class="lp-row"><span>Residencia continua sin interrupciones</span><b class="lp-tag t-simple">SENCILLO</b></div>
-        <div class="lp-row"><span>Impuestos al día, sin arrestos</span><b class="lp-tag t-simple">SENCILLO</b></div>
-        <div class="lp-row"><span>Casado con ciudadano, 3 años</span><b class="lp-tag t-simple">SENCILLO</b></div>
-        <div class="lp-row"><span>Ausencia mayor a 6 meses del país</span><b class="lp-tag t-law">A SU DESPACHO</b></div>
-        <div class="lp-row"><span>Cualquier arresto o cargo penal</span><b class="lp-tag t-law">A SU DESPACHO</b></div>
-        <div class="lp-row"><span>Impuestos no declarados</span><b class="lp-tag t-law">A SU DESPACHO</b></div>
-        <div class="lp-row"><span>Manutención de menores atrasada</span><b class="lp-tag t-law">A SU DESPACHO</b></div>
-        <p style="font-size:12px;color:rgba(255,255,255,.5);margin-top:18px;line-height:1.5">
-          Nunca damos una opinión legal sobre estos casos. Solo los identificamos
-          y le decimos a la persona que necesita un abogado.
-        </p>
-      </div>
+    <div style="margin-top:28px" class="rise">
+      <a class="btn pri" href="estudio.html">Abrir el estudio visual</a>
     </div>
   </div>
 </section>
 
 <section>
   <div class="wrap">
-    <div class="head">
-      <p class="kick">NUESTROS LÍMITES</p>
-      <h2>Lo que hacemos y lo que no</h2>
-      <p class="lede">
-        Esta comunidad ha sido estafada muchas veces. Preferimos ser incómodamente
-        claros.
-      </p>
+    <div class="shead rise">
+      <h2>Qué es el examen, con precisión.</h2>
+      <p class="lede">Cada punto es una de las 128 preguntas del banco oficial.</p>
     </div>
-    <div class="limits">
-      <div class="lcol yes-c">
-        <h3><span class="b">✓</span> Sí hacemos</h3>
-        <ul>
-          <li><b>Explicarle el proceso oficial</b> traducido y ordenado, con las fuentes de USCIS a la vista.</li>
-          <li><b>Ayudarle a saber si califica</b> con las mismas preguntas que hace el formulario.</li>
-          <li><b>Prepararle para el examen</b> con el banco oficial de 128 preguntas.</li>
-          <li><b>Practicar la entrevista</b> las veces que haga falta.</li>
-          <li><b>Avisarle cuando necesita un abogado</b> y ayudarle a encontrar uno.</li>
-        </ul>
+    <div class="figure">
+      <figure class="rise">
+        <div class="dots" id="dots" role="img"
+             aria-label="Figura: 128 puntos representan el banco de preguntas. Veinte están delineados, que son los que le preguntan. Doce están rellenos, que son los que debe acertar."></div>
+        <div class="legend">
+          <div><b class="num">128</b><span>preguntas tiene el banco oficial publicado por USCIS</span></div>
+          <div><b class="num">20</b><span>le hacen en la entrevista, como máximo</span></div>
+          <div><b class="num">12</b><span>debe contestar bien para aprobar</span></div>
+        </div>
+      </figure>
+
+      <div class="rise">
+        <h3 style="font-size:21px;font-weight:600">Y qué cuesta.</h3>
+        <p class="lede" style="font-size:15.5px;margin-top:10px">La tarifa del formulario es obligatoria. El abogado, en
+        un caso sencillo, no lo es.</p>
+        <div class="cost">
+          <div class="bars">
+            <div class="bar">
+              <span class="lab">Formulario</span>
+              <span class="tr"><span style="width:30%;background:var(--accent)"></span></span>
+              <span class="vl num">$760</span>
+            </div>
+            <div class="bar">
+              <span class="lab">Abogado</span>
+              <span class="tr"><span style="width:100%;background:var(--crim)"></span></span>
+              <span class="vl num">hasta $2,500</span>
+            </div>
+            <div class="bar">
+              <span class="lab">Nosotros</span>
+              <span class="tr"><span style="width:1.2%;background:var(--ok)"></span></span>
+              <span class="vl num">$29</span>
+            </div>
+          </div>
+          <p style="font-size:13px;color:var(--tx-3);margin-top:17px;line-height:1.6">
+            USCIS establece que no se necesita abogado para presentar el Formulario N-400. En junio de 2026 el gobierno
+            propuso subir la tarifa en papel a $1,330 y eliminar las exenciones; todavía no está vigente.
+          </p>
+        </div>
       </div>
-      <div class="lcol no-c">
-        <h3><span class="b">✕</span> No hacemos</h3>
-        <ul>
-          <li><b>No somos abogados</b> ni damos asesoría legal sobre su caso.</li>
-          <li><b>No llenamos su solicitud</b> ni le decimos qué contestar en el N-400.</li>
-          <li><b>No somos USCIS</b> ni tenemos relación con el gobierno.</li>
-          <li><b>No garantizamos resultados.</b> Nadie puede hacerlo, y quien se lo prometa le está mintiendo.</li>
-          <li><b>No pedimos su número de seguro social</b> ni su número de extranjero.</li>
-        </ul>
-      </div>
-    </div>
-    <div class="legal-note">
-      <h4>POR QUÉ ESTOS LÍMITES</h4>
-      <p>
-        Cobrar por preparar formularios de inmigración o por aconsejar cuál
-        presentar es ejercicio no autorizado de la abogacía en casi todos los
-        estados. Por eso no lo hacemos y por eso cobramos por herramientas de
-        estudio y seguimiento, no por su trámite.
-      </p>
-      <p>
-        La información viene de fuentes oficiales de USCIS y puede cambiar.
-        Verifique siempre en <strong>uscis.gov</strong> antes de tomar decisiones
-        sobre su caso.
-      </p>
     </div>
   </div>
 </section>
 
-<section id="preguntas" style="background:var(--surface);border-top:1px solid var(--line)">
-  <div class="wrap">
-    <div class="head"><p class="kick">PREGUNTAS FRECUENTES</p><h2>Lo que la gente pregunta primero</h2></div>
-    <div class="faq">
-      <div class="fi"><button class="fq">¿De verdad puedo hacer esto sin abogado? <i>+</i></button><div class="fa"><p>En la mayoría de los casos, sí. USCIS dice expresamente que no se necesita abogado para presentar el Formulario N-400. Ahora bien, «la mayoría» no es «todos»: si usted tiene algún arresto, salió del país por más de seis meses seguidos, debe impuestos o manutención, o tiene dudas sobre su residencia continua, sí necesita un abogado. La primera herramienta le dice en cuál de los dos grupos está.</p></div></div>
-      <div class="fi"><button class="fq">¿Cómo es el examen exactamente? <i>+</i></button><div class="fa"><p>Existe un banco oficial de 128 preguntas de educación cívica, publicado por USCIS. En la entrevista el oficial le hace hasta 20 de esas preguntas y usted debe contestar correctamente 12 para aprobar. Además hay una prueba de inglés: leer una oración en voz alta, escribir una al dictado y conversar sobre su solicitud. Esta versión rige para las solicitudes presentadas desde el 20 de octubre de 2025.</p></div></div>
-      <div class="fi"><button class="fq">¿Necesito instalar una aplicación? <i>+</i></button><div class="fa"><p>No. Funciona desde el navegador de su teléfono y de su computadora, sin descargar nada y sin ocupar espacio. Puede empezar en el teléfono y seguir en la computadora, o al revés. Tampoco consume muchos datos.</p></div></div>
-      <div class="fi"><button class="fq">¿Puedo presentar el examen en español? <i>+</i></button><div class="fa"><p>Por regla general el examen es en inglés, pero hay excepciones por edad y tiempo de residencia. Si tiene 50 años o más y lleva 20 como residente, o 55 o más y lleva 15, puede presentar la parte de educación cívica en español con intérprete. Si tiene 65 o más y lleva 20 años de residencia, además estudia una lista más corta. La primera herramienta le dice si le toca alguna de estas excepciones.</p></div></div>
-      <div class="fi"><button class="fq">¿Cuánto cuesta el trámite en total? <i>+</i></button><div class="fa"><p>La tarifa oficial del N-400 es de 710 dólares si presenta en línea o 760 en papel, e incluye la cita de datos biométricos. Hay tarifa reducida de 380 dólares para hogares con ingresos entre el 150 % y el 400 % de las guías federales de pobreza, y exención total por debajo del 150 %. Tenga en cuenta que en junio de 2026 el gobierno propuso subir la tarifa en papel a 1 330 dólares y eliminar las exenciones; todavía no está vigente.</p></div></div>
-      <div class="fi"><button class="fq">¿Qué hacen con mis datos? <i>+</i></button><div class="fa"><p>Su avance se guarda en su propio dispositivo. No le pedimos número de seguro social, número de extranjero ni datos de su caso. No vendemos información, no usamos rastreo publicitario y no tenemos ninguna relación con agencias del gobierno. No podemos afectar su caso ni para bien ni para mal.</p></div></div>
+<section class="limits">
+  <div class="wrap lgrid">
+    <figure class="lshot rise">
+      <div class="frame">
+        <img src="img/manos.jpg" width="760" height="950" loading="lazy"
+             alt="Las manos de un hombre mayor sostienen un documento doblado sobre una mesa de madera.">
+      </div>
+    </figure>
+    <div class="rise">
+      <h2>Lo que hacemos y lo que no.</h2>
+      <p class="lede" style="margin-top:15px;margin-bottom:30px">Esta comunidad ha sido estafada muchas veces.
+      Preferimos ser incómodamente claros.</p>
+      <div class="lcols">
+        <div class="yes">
+          <h3>Sí hacemos</h3>
+          <ul>
+            <li><b>Explicarle el proceso oficial</b> traducido y ordenado.</li>
+            <li><b>Ayudarle a saber si califica</b> con las mismas preguntas del formulario.</li>
+            <li><b>Prepararle para el examen</b> con el banco oficial completo.</li>
+            <li><b>Avisarle cuándo necesita abogado</b> y dónde buscarlo.</li>
+          </ul>
+        </div>
+        <div class="no">
+          <h3>No hacemos</h3>
+          <ul>
+            <li><b>No somos abogados</b> ni damos asesoría sobre su caso.</li>
+            <li><b>No llenamos su solicitud</b> ni le decimos qué contestar.</li>
+            <li><b>No somos USCIS</b> ni tenemos relación con el gobierno.</li>
+            <li><b>No garantizamos resultados.</b> Nadie puede hacerlo.</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="close" id="empezar">
+<section class="law" id="abogados">
+  <div class="wrap lwgrid">
+    <div>
+      <h2>No competimos con usted.<br>Le mandamos los casos que sí valen.</h2>
+      <p class="lede" style="margin-top:17px">Los trámites sencillos consumen tiempo y dejan poco margen. Nosotros
+      atendemos esos, y cuando aparece un caso con complicaciones reales, su despacho es el que aparece.</p>
+      <div class="lwlist">
+        <div><span class="n num">01</span><div><b>Recibe los casos complejos</b>
+          <p>Antecedentes penales, ausencias prolongadas, problemas fiscales o dudas sobre residencia continua.</p></div></div>
+        <div><span class="n num">02</span><div><b>Sus clientes llegan preparados</b>
+          <p>Entrégueles la herramienta de estudio y llegan a la entrevista sabiéndose el examen.</p></div></div>
+        <div><span class="n num">03</span><div><b>Su marca, no la nuestra</b>
+          <p>La aplicación lleva su nombre y su logotipo cuando la usan sus clientes.</p></div></div>
+        <div><span class="n num">04</span><div><b>Tarifa fija, nunca comisión</b>
+          <p>Pagamos publicidad, no repartimos honorarios. Es la única forma legal de hacerlo.</p></div></div>
+      </div>
+    </div>
+    <div class="triage">
+      <p style="font-size:10.5px;letter-spacing:.13em;color:var(--gold);font-weight:700;margin-bottom:15px">
+        CÓMO CLASIFICAMOS</p>
+      <div class="trow"><span>Residencia continua sin interrupciones</span><b class="tag s">SENCILLO</b></div>
+      <div class="trow"><span>Impuestos al día, sin arrestos</span><b class="tag s">SENCILLO</b></div>
+      <div class="trow"><span>Casado con ciudadano, tres años</span><b class="tag s">SENCILLO</b></div>
+      <div class="trow"><span>Ausencia mayor a seis meses</span><b class="tag l">A SU DESPACHO</b></div>
+      <div class="trow"><span>Cualquier arresto o cargo penal</span><b class="tag l">A SU DESPACHO</b></div>
+      <div class="trow"><span>Impuestos no declarados</span><b class="tag l">A SU DESPACHO</b></div>
+      <p class="tfoot">Nunca damos una opinión legal sobre estos casos. Solo los identificamos y le decimos a la persona
+      que necesita un abogado. Ante la duda, siempre mandamos al abogado.</p>
+    </div>
+  </div>
+</section>
+
+<section id="precio">
   <div class="wrap">
-    <p class="kick">EMPEZAR</p>
+    <div class="shead rise">
+      <h2>Cuesta menos que una hora de consulta.</h2>
+      <p class="lede">La información del proceso es gratuita y lo seguirá siendo. Lo que se paga es el seguimiento y la
+      práctica.</p>
+    </div>
+    <div class="price rise">
+      <div class="tier">
+        <h3>Gratis</h3>
+        <p class="who">Para empezar y ver si califica</p>
+        <p class="amt num">$0</p>
+        <p class="per">para siempre, sin tarjeta</p>
+        <ul>
+          <li>Verificación de requisitos completa</li>
+          <li>Guía del proceso paso a paso</li>
+          <li>Las 128 preguntas para consultar</li>
+          <li>Los nueve grupos de memoria</li>
+        </ul>
+        <a class="btn ghost" href="app.html">Empezar gratis</a>
+      </div>
+      <div class="tier hi">
+        <h3>Completo</h3>
+        <p class="who">Para hacer el trámite de principio a fin</p>
+        <p class="amt num">$29 <small>una vez</small></p>
+        <p class="per">sin suscripción, sin renovación</p>
+        <ul>
+          <li>Todo lo del plan gratis</li>
+          <li>Seguimiento de sus siete pasos con recordatorios</li>
+          <li>Práctica que insiste en las preguntas que falla</li>
+          <li>Simulación completa de la entrevista</li>
+          <li>Audio de pronunciación y lista de documentos</li>
+        </ul>
+        <a class="btn pri" href="app.html">Obtener acceso completo</a>
+      </div>
+    </div>
+    <div class="lawline rise">
+      <p><b>¿Es usted abogado o atiende una organización?</b> La aplicación lleva su marca y sus clientes la usan sin
+      costo adicional, por una tarifa fija de $40 al mes.</p>
+      <a class="btn ghost" href="#abogados">Conocer más</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="shead rise"><h2>Lo que la gente pregunta primero.</h2></div>
+    <div class="faq rise" id="faq">
+      <div class="fi"><button class="fq" aria-expanded="false">¿De verdad puedo hacer esto sin abogado? <span class="pm"></span></button>
+        <div class="fa"><p>En la mayoría de los casos, sí. USCIS dice expresamente que no se necesita abogado para presentar el Formulario N-400. Ahora bien, «la mayoría» no es «todos»: si usted tiene algún arresto, salió del país por más de seis meses seguidos, debe impuestos o manutención, o tiene dudas sobre su residencia continua, sí necesita un abogado. La primera herramienta le dice en cuál de los dos grupos está.</p></div></div>
+      <div class="fi"><button class="fq" aria-expanded="false">¿Cómo es el examen exactamente? <span class="pm"></span></button>
+        <div class="fa"><p>Existe un banco oficial de 128 preguntas de educación cívica. En la entrevista el oficial le hace hasta 20 de esas preguntas y usted debe contestar correctamente 12 para aprobar. Además hay una prueba de inglés: leer una oración en voz alta, escribir una al dictado y conversar sobre su solicitud. Esta versión rige para las solicitudes presentadas desde el 20 de octubre de 2025.</p></div></div>
+      <div class="fi"><button class="fq" aria-expanded="false">¿Necesito instalar una aplicación? <span class="pm"></span></button>
+        <div class="fa"><p>No. Funciona desde el navegador de su teléfono y de su computadora, sin descargar nada y sin ocupar espacio. Puede empezar en el teléfono y seguir en la computadora. Tampoco consume muchos datos.</p></div></div>
+      <div class="fi"><button class="fq" aria-expanded="false">¿Puedo presentar el examen en español? <span class="pm"></span></button>
+        <div class="fa"><p>Por regla general el examen es en inglés, pero hay excepciones por edad y tiempo de residencia. Si tiene 50 años o más y lleva 20 como residente, o 55 o más y lleva 15, puede presentar la parte de educación cívica en español con intérprete. Si tiene 65 o más y lleva 20 años de residencia, además estudia una lista más corta. La primera herramienta le dice si le toca alguna de estas excepciones.</p></div></div>
+      <div class="fi"><button class="fq" aria-expanded="false">¿Qué hacen con mis datos? <span class="pm"></span></button>
+        <div class="fa"><p>Su avance se guarda en su propio dispositivo. No le pedimos número de seguro social, número de extranjero ni datos de su caso. No vendemos información, no usamos rastreo publicitario y no tenemos ninguna relación con agencias del gobierno. No podemos afectar su caso ni para bien ni para mal.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="close">
+  <div class="wrap">
     <h2>Vea si califica. Toma tres minutos.</h2>
-    <p class="lede">
-      No pedimos registro ni tarjeta para empezar. Si resulta que necesita un
-      abogado, también se lo diremos.
-    </p>
-    <div style="margin-top:32px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-      <a class="btn b-pri b-lg" href="app.html">Abrir la aplicación</a>
-      <a class="btn b-out b-lg" href="estudio.html">Estudiar el examen</a>
+    <p class="lede">No pedimos registro ni tarjeta para empezar. Si resulta que necesita un abogado, también se lo decimos.</p>
+    <div style="margin-top:32px;display:flex;gap:13px;justify-content:center;flex-wrap:wrap">
+      <a class="btn pri lg" href="app.html">Abrir la aplicación</a>
+      <a class="btn ghost lg" href="estudio.html">Estudiar el examen</a>
     </div>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    <div class="f-grid">
+    <div class="fg">
       <div>
-        <svg width="176" height="37" viewBox="0 0 300 64" aria-label="Mi Ciudadanía">
+        <svg width="178" height="38" viewBox="0 0 300 64" aria-label="Mi Ciudadanía">
           <g fill="#C8A24A">
-            <rect x="8" y="40" width="8" height="14" rx="2.5" opacity=".4"/>
-            <rect x="20" y="33" width="8" height="21" rx="2.5" opacity=".6"/>
-            <rect x="32" y="26" width="8" height="28" rx="2.5" opacity=".8"/>
-            <rect x="44" y="22" width="8" height="32" rx="2.5"/>
+            <rect x="8" y="40" width="8" height="14" rx="2.5" opacity=".4"/><rect x="20" y="33" width="8" height="21" rx="2.5" opacity=".6"/>
+            <rect x="32" y="26" width="8" height="28" rx="2.5" opacity=".8"/><rect x="44" y="22" width="8" height="32" rx="2.5"/>
             <path d="M48 5 L49.572 9.837 L54.657 9.837 L50.543 12.826 L52.115 17.663 L48 14.674 L43.885 17.663 L45.457 12.826 L41.343 9.837 L46.428 9.837 Z"/>
           </g>
-          <text x="72" y="35" font-family="Archivo,sans-serif" font-size="25" font-weight="600" letter-spacing="-.9" fill="#101828">Mi Ciudadanía</text>
-          <text x="73" y="50" font-family="Inter,sans-serif" font-size="10.5" font-weight="500" letter-spacing="1.7" fill="#8A94A6">SU TRÁMITE, PASO A PASO</text>
+          <text x="72" y="35" font-family="Archivo,sans-serif" font-size="25" font-weight="600" letter-spacing="-.9" fill="currentColor">Mi Ciudadanía</text>
+          <text x="73" y="50" font-family="Inter,sans-serif" font-size="9.5" font-weight="500" letter-spacing="1.35" fill="currentColor" opacity=".55">SU TRÁMITE, PASO A PASO</text>
         </svg>
-        <p style="margin-top:16px;max-width:32em">
-          Herramientas en español para que usted haga su propio trámite de
-          naturalización, cuando no necesita un abogado para hacerlo.
-        </p>
+        <p style="margin-top:17px;max-width:34em">Herramientas en español para que usted haga su propio trámite de
+        naturalización, cuando no necesita un abogado para hacerlo.</p>
       </div>
       <div>
-        <h5>PRODUCTO</h5>
+        <h4>PRODUCTO</h4>
         <ul>
           <li><a href="#herramientas">Las cuatro herramientas</a></li>
+          <li><a href="estudio.html">Estudio visual</a></li>
           <li><a href="#precio">Precio</a></li>
           <li><a href="#abogados">Para abogados</a></li>
-          <li><a href="#preguntas">Preguntas frecuentes</a></li>
         </ul>
       </div>
       <div>
-        <h5>FUENTES OFICIALES</h5>
+        <h4>FUENTES OFICIALES</h4>
         <ul>
           <li><a href="https://www.uscis.gov" target="_blank" rel="noopener">USCIS.gov</a></li>
           <li><a href="https://www.uscis.gov/n-400" target="_blank" rel="noopener">Formulario N-400</a></li>
@@ -819,150 +691,155 @@ footer a:hover{color:var(--text)}
         </ul>
       </div>
     </div>
-    <p class="f-legal">
-      <strong>Aviso legal.</strong> Mi Ciudadanía es un recurso educativo
-      independiente. No es un bufete de abogados, no ofrece asesoría legal y no
-      tiene relación alguna con USCIS ni con ninguna agencia del gobierno de los
-      Estados Unidos. Usar esta herramienta no crea una relación abogado-cliente.
-      La información puede cambiar; verifique siempre en uscis.gov. Si su caso
-      presenta complicaciones, consulte a un abogado de inmigración acreditado o
-      a una organización reconocida por la Junta de Apelaciones de Inmigración.
-      Desconfíe de cualquier persona que le garantice un resultado migratorio.
-      <br><br>
-      © 2026 Mi Ciudadanía
+    <p class="flegal">
+      <b>Aviso legal.</b> Mi Ciudadanía es un recurso educativo independiente. No es un bufete de abogados, no ofrece
+      asesoría legal y no tiene relación alguna con USCIS ni con ninguna agencia del gobierno de los Estados Unidos.
+      Usar esta herramienta no crea una relación abogado-cliente. La información puede cambiar; verifique siempre en
+      uscis.gov. Si su caso presenta complicaciones, consulte a un abogado de inmigración acreditado o a una
+      organización reconocida por la Junta de Apelaciones de Inmigración. Desconfíe de cualquier persona que le
+      garantice un resultado migratorio.
+      <br><br>© 2026 Mi Ciudadanía
     </p>
   </div>
 </footer>
 
 <script>
-const $=i=>document.getElementById(i);
+const $=s=>document.querySelector(s);
 
-/* ---------- módulos ---------- */
-document.querySelectorAll('.modbtn').forEach(b=>{
-  b.addEventListener('click',()=>{
-    document.querySelectorAll('.modbtn').forEach(o=>{o.classList.remove('on');o.setAttribute('aria-selected','false');});
-    document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));
-    b.classList.add('on');b.setAttribute('aria-selected','true');
-    $('p'+b.dataset.m).classList.add('on');
-  });
-});
+/* ── figura del examen: 128 puntos, 20 delineados, 12 rellenos ── */
+(()=>{
+  const d=$("#dots"); if(!d) return;
+  let h="";
+  for(let i=0;i<128;i++) h+=`<i class="${i<12?"right":i<20?"asked":""}"></i>`;
+  d.innerHTML=h;
+})();
 
-/* ---------- chequeo de elegibilidad ---------- */
-const CHK=[
-  {q:"¿Cuánto tiempo lleva con su tarjeta de residente permanente?",
-   h:"Por regla general se necesitan 5 años, o 3 si está casado con un ciudadano estadounidense.",
-   o:[["5 años o más","ok"],["Entre 3 y 5 años, casado con ciudadano","ok"],["Menos de 3 años","wait"]]},
-  {q:"¿Ha salido de los Estados Unidos por más de 6 meses seguidos?",
-   h:"Las ausencias largas pueden interrumpir la residencia continua.",
-   o:[["No, nunca","ok"],["Sí, una o más veces","law"]]},
-  {q:"¿Ha sido arrestado o acusado de algún delito, aunque el caso se haya cerrado?",
-   h:"Incluye faltas menores y casos sobreseídos o eliminados del expediente.",
-   o:[["No","ok"],["Sí","law"]]},
-  {q:"¿Está al día con sus impuestos y, si aplica, con la manutención de menores?",
-   h:"USCIS lo revisa como parte del buen carácter moral.",
-   o:[["Sí, al día","ok"],["No, o no estoy seguro","law"]]}
+/* ── tarjetas de grupo con gráfico flotante ── */
+const G=[
+ {n:"Números",c:"var(--azur-deep)",q:12,cap:"Los mandatos suben 2, 4 y 6. Pares consecutivos.",
+  v:`<svg viewBox="0 0 300 118"><rect width="300" height="118" fill="transparent"/>
+   <rect x="36" y="62" width="58" height="36" rx="4" fill="#2F6FE4"/><text x="65" y="86" text-anchor="middle" fill="#fff" font-family="Archivo" font-size="19" font-weight="700">2</text>
+   <rect x="112" y="40" width="58" height="58" rx="4" fill="#A32F42"/><text x="141" y="76" text-anchor="middle" fill="#fff" font-family="Archivo" font-size="19" font-weight="700">4</text>
+   <rect x="188" y="20" width="58" height="78" rx="4" fill="#1B4FB0"/><text x="217" y="66" text-anchor="middle" fill="#fff" font-family="Archivo" font-size="19" font-weight="700">6</text>
+   <text x="65" y="112" text-anchor="middle" fill="#8A94A6" font-family="Inter" font-size="9">Representante</text>
+   <text x="141" y="112" text-anchor="middle" fill="#8A94A6" font-family="Inter" font-size="9">Presidente</text>
+   <text x="217" y="112" text-anchor="middle" fill="#8A94A6" font-family="Inter" font-size="9">Senador</text></svg>`},
+ {n:"Enmiendas",c:"var(--plum)",q:6,cap:"Tres números seguidos, tres pasos seguidos.",
+  v:`<svg viewBox="0 0 300 110"><rect width="300" height="110" fill="transparent"/>
+   <rect x="14" y="22" width="84" height="56" rx="5" fill="#A32F42"/><text x="56" y="50" text-anchor="middle" fill="#fff" font-family="Archivo" font-size="21" font-weight="700">13</text><text x="56" y="68" text-anchor="middle" fill="#fff" font-family="Inter" font-size="9.5" font-weight="700">Libertad</text>
+   <rect x="108" y="22" width="84" height="56" rx="5" fill="#1B4FB0"/><text x="150" y="50" text-anchor="middle" fill="#fff" font-family="Archivo" font-size="21" font-weight="700">14</text><text x="150" y="68" text-anchor="middle" fill="#fff" font-family="Inter" font-size="9.5" font-weight="700">Ciudadanía</text>
+   <rect x="202" y="22" width="84" height="56" rx="5" fill="#0E7C4A"/><text x="244" y="50" text-anchor="middle" fill="#fff" font-family="Archivo" font-size="21" font-weight="700">15</text><text x="244" y="68" text-anchor="middle" fill="#fff" font-family="Inter" font-size="9.5" font-weight="700">Voto</text>
+   <text x="150" y="98" text-anchor="middle" fill="#8A94A6" font-family="Inter" font-size="9.5">Abolición, ciudadanía y voto, en ese orden</text></svg>`},
+ {n:"Fechas y años",c:"var(--teal)",q:7,cap:"Once años entre separarse y organizarse.",
+  v:`<svg viewBox="0 0 300 104"><rect width="300" height="104" fill="transparent"/>
+   <path d="M40 58 H260" stroke="#E1E6EC" stroke-width="3"/>
+   <circle cx="58" cy="58" r="8" fill="#A32F42"/><circle cx="242" cy="58" r="8" fill="#1B4FB0"/>
+   <text x="58" y="40" text-anchor="middle" fill="#A32F42" font-family="Archivo" font-size="17" font-weight="700">1776</text>
+   <text x="242" y="40" text-anchor="middle" fill="#1B4FB0" font-family="Archivo" font-size="17" font-weight="700">1787</text>
+   <rect x="124" y="46" width="52" height="24" rx="12" fill="#C8A24A"/><text x="150" y="63" text-anchor="middle" fill="#fff" font-family="Archivo" font-size="12" font-weight="700">+11</text>
+   <text x="58" y="82" text-anchor="middle" fill="#8A94A6" font-family="Inter" font-size="9">Declaración</text>
+   <text x="242" y="82" text-anchor="middle" fill="#8A94A6" font-family="Inter" font-size="9">Constitución</text></svg>`},
+ {n:"Personas",c:"var(--ocher)",q:14,cap:"Un objeto por fundador. El objeto trae el nombre.",
+  v:`<svg viewBox="0 0 300 104"><rect width="300" height="104" fill="transparent"/>
+   <g stroke-width="2" fill="none" stroke-linecap="round">
+   <g transform="translate(26 26)" stroke="#1B4FB0"><circle cx="14" cy="14" r="15" fill="#1B4FB01A" stroke="none"/><path d="M14 5 V18 M10 18 H18 M14 18 V24"/></g>
+   <g transform="translate(92 26)" stroke="#2F6FE4"><circle cx="14" cy="14" r="15" fill="#2F6FE41A" stroke="none"/><path d="M6 22 L21 7 L23 9 L8 24 Z"/></g>
+   <g transform="translate(158 26)" stroke="#5B4B9E"><circle cx="14" cy="14" r="15" fill="#5B4B9E1A" stroke="none"/><path d="M6 8 H22 M14 8 V22 M8 22 H20"/></g>
+   <g transform="translate(224 26)" stroke="#0E7C4A"><circle cx="14" cy="14" r="15" fill="#0E7C4A1A" stroke="none"/><path d="M5 10 H23 V19 H5 Z M14 10 V19"/></g></g>
+   <text x="40" y="78" text-anchor="middle" fill="#101828" font-family="Inter" font-size="9" font-weight="700">Washington</text>
+   <text x="106" y="78" text-anchor="middle" fill="#101828" font-family="Inter" font-size="9" font-weight="700">Jefferson</text>
+   <text x="172" y="78" text-anchor="middle" fill="#101828" font-family="Inter" font-size="9" font-weight="700">Madison</text>
+   <text x="238" y="78" text-anchor="middle" fill="#101828" font-family="Inter" font-size="9" font-weight="700">Hamilton</text>
+   <text x="40" y="90" text-anchor="middle" fill="#8A94A6" font-family="Inter" font-size="8.5">la espada</text>
+   <text x="106" y="90" text-anchor="middle" fill="#8A94A6" font-family="Inter" font-size="8.5">la pluma</text>
+   <text x="172" y="90" text-anchor="middle" fill="#8A94A6" font-family="Inter" font-size="8.5">la ley</text>
+   <text x="238" y="90" text-anchor="middle" fill="#8A94A6" font-family="Inter" font-size="8.5">el dinero</text></svg>`},
+ {n:"Todo lo del Presidente",c:"var(--crim)",q:7,cap:"Cuatro preguntas distintas, una sola respuesta.",
+  v:`<svg viewBox="0 0 300 112"><rect width="300" height="112" fill="transparent"/>
+   <g font-family="Inter" font-size="9.5" fill="#5B6779">
+   <rect x="10" y="12" width="104" height="20" rx="4" fill="#FFF" stroke="#E1E6EC"/><text x="18" y="26">Comandante en jefe</text>
+   <rect x="10" y="38" width="104" height="20" rx="4" fill="#FFF" stroke="#E1E6EC"/><text x="18" y="52">Firma las leyes</text>
+   <rect x="10" y="64" width="104" height="20" rx="4" fill="#FFF" stroke="#E1E6EC"/><text x="18" y="78">Veta las leyes</text>
+   <rect x="10" y="90" width="104" height="20" rx="4" fill="#FFF" stroke="#E1E6EC"/><text x="18" y="104">Nombra jueces</text></g>
+   <path d="M120 22 H150 M120 48 H150 M120 74 H150 M120 100 H150 M150 22 V100 M150 61 H176" stroke="#C8A24A" stroke-width="1.6" fill="none"/>
+   <rect x="180" y="44" width="110" height="34" rx="5" fill="#A32F42"/>
+   <text x="235" y="66" text-anchor="middle" fill="#fff" font-family="Archivo" font-size="15" font-weight="700">El Presidente</text></svg>`},
+ {n:"Lugares y símbolos",c:"var(--ok)",q:7,cap:"13 franjas por las colonias. 50 estrellas por los estados.",
+  v:`<svg viewBox="0 0 300 112"><rect width="300" height="112" fill="transparent"/>
+   ${Array.from({length:13},(_,i)=>`<rect x="24" y="${18+i*6.2}" width="150" height="6.2" fill="${i%2?"#FFFFFF":"#C4304A"}" stroke="#E1E6EC" stroke-width=".4"/>`).join("")}
+   <rect x="24" y="18" width="64" height="34" fill="#1B4FB0"/>
+   ${Array.from({length:5},(_,r)=>Array.from({length:10},(_,c)=>`<circle cx="${28.4+c*6.2}" cy="${24+r*6.8}" r="1.4" fill="#fff"/>`).join("")).join("")}
+   <text x="236" y="46" text-anchor="middle" fill="#6B5210" font-family="Archivo" font-size="20" font-weight="700">13</text>
+   <text x="236" y="60" text-anchor="middle" fill="#8A94A6" font-family="Inter" font-size="8.5">colonias</text>
+   <text x="236" y="84" text-anchor="middle" fill="#6B5210" font-family="Archivo" font-size="20" font-weight="700">50</text>
+   <text x="236" y="98" text-anchor="middle" fill="#8A94A6" font-family="Inter" font-size="8.5">estados</text></svg>`},
+ {n:"Listas para enumerar",c:"var(--azur)",q:21,cap:"Le piden pocos de muchos. Aprenda solo los que necesita.",
+  v:`<svg viewBox="0 0 300 100"><rect width="300" height="100" fill="transparent"/>
+   ${Array.from({length:24},(_,i)=>`<rect x="${20+(i%12)*22}" y="${26+Math.floor(i/12)*26}" width="16" height="16" rx="3" fill="${i<3?"#2F6FE4":"#E1E6EC"}"/>`).join("")}
+   <text x="150" y="88" text-anchor="middle" fill="#5B6779" font-family="Inter" font-size="10" font-weight="600">Le piden tres. Elija los tres más fáciles.</text></svg>`},
+ {n:"El porqué",c:"#6B5210",q:46,cap:"No son de memorizar. Si entiende la razón, no la olvida.",
+  v:`<svg viewBox="0 0 300 108"><rect width="300" height="108" fill="transparent"/>
+   <g fill="none" stroke-width="2" stroke-linecap="round">
+   <rect x="22" y="26" width="72" height="44" rx="5" stroke="#2F6FE4"/><text x="58" y="53" text-anchor="middle" fill="#2F6FE4" font-family="Archivo" font-size="13" font-weight="700">escribe</text>
+   <rect x="114" y="26" width="72" height="44" rx="5" stroke="#A32F42"/><text x="150" y="53" text-anchor="middle" fill="#A32F42" font-family="Archivo" font-size="13" font-weight="700">ejecuta</text>
+   <rect x="206" y="26" width="72" height="44" rx="5" stroke="#5B4B9E"/><text x="242" y="53" text-anchor="middle" fill="#5B4B9E" font-family="Archivo" font-size="13" font-weight="700">juzga</text>
+   <path d="M94 48 H114 M186 48 H206" stroke="#C8A24A"/></g>
+   <text x="150" y="92" text-anchor="middle" fill="#8A94A6" font-family="Inter" font-size="9.5">Tres ramas, para que ninguna mande sola</text></svg>`},
+ {n:"Cambian",c:"var(--faint)",q:8,cap:"Verifíquelas en uscis.gov la semana antes de su entrevista.",
+  v:`<svg viewBox="0 0 300 100"><rect width="300" height="100" fill="transparent"/>
+   <g fill="none" stroke="#B26B12" stroke-width="2.4" stroke-linecap="round">
+   <path d="M186 50 a36 36 0 1 1-11-26"/><path d="M186 22 v22 h-22"/></g>
+   <text x="150" y="86" text-anchor="middle" fill="#5B6779" font-family="Inter" font-size="10" font-weight="600">Cargos que rotan y datos de su estado</text></svg>`}
 ];
-let ci=0, cv="ok";
-function drawChk(){
-  const it=CHK[ci];
-  $('cprog').innerHTML=CHK.map((_,i)=>'<i class="'+(i<=ci?'on':'')+'"></i>').join('');
-  $('cq').textContent=it.q;
-  $('chint').textContent=it.h;
-  const box=$('copts');box.innerHTML='';
-  it.o.forEach(([t,v])=>{
-    const b=document.createElement('button');
-    b.className='chk-opt';b.type='button';b.textContent=t;
-    b.addEventListener('click',()=>{
-      if(v==='law')cv='law';
-      else if(v==='wait'&&cv==='ok')cv='wait';
-      if(ci<CHK.length-1){ci++;drawChk();}else showRes();
+(()=>{
+  const w=$("#gwrap"); if(!w) return;
+  w.innerHTML=G.map(g=>{
+    const off=(100.5*(1-g.q/128)).toFixed(1);
+    return `<button class="gcard" style="--gc:${g.c}" aria-label="${g.n}: ${g.q} de las 128 preguntas">
+      <span class="ring"><svg width="46" height="46" viewBox="0 0 38 38" aria-hidden="true">
+        <circle cx="19" cy="19" r="16" fill="none" stroke="var(--rule)" stroke-width="4"/>
+        <circle cx="19" cy="19" r="16" fill="none" stroke="${g.c}" stroke-width="4" stroke-linecap="round"
+          stroke-dasharray="100.5" stroke-dashoffset="${off}"/></svg><i>${g.q}</i></span>
+      <span><span class="nm">${g.n}</span><span class="ct">de las 128</span></span>
+      <span class="pop">${g.v}<span class="cap">${g.cap}</span></span>
+    </button>`;
+  }).join("");
+  w.addEventListener("click",e=>{const c=e.target.closest(".gcard"); if(c) location.href="estudio.html";});
+})();
+
+/* ── preguntas ── */
+document.querySelectorAll(".fi").forEach(it=>{
+  const q=it.querySelector(".fq"), a=it.querySelector(".fa");
+  q.addEventListener("click",()=>{
+    const open=it.classList.contains("on");
+    document.querySelectorAll(".fi").forEach(o=>{
+      o.classList.remove("on"); o.querySelector(".fa").style.maxHeight=null;
+      o.querySelector(".fq").setAttribute("aria-expanded","false");
     });
-    box.appendChild(b);
-  });
-}
-function showRes(){
-  $('chk').style.display='none';
-  const R={
-    ok:['v-ok','Todo indica que usted puede solicitar',
-      'Según sus respuestas, su caso no presenta las complicaciones que obligan a buscar un abogado. Puede continuar por su cuenta: el siguiente paso es reunir sus documentos y empezar a preparar el examen. Recuerde que esto es orientación general, no una opinión legal sobre su caso.'],
-    law:['v-law','Le conviene consultar a un abogado',
-      'Una de sus respuestas señala algo que un abogado de inmigración debe revisar antes de que usted presente la solicitud. No significa que no califique; significa que presentar sin revisión puede perjudicarle. Puede seguir usando las herramientas de estudio mientras tanto.'],
-    wait:['v-wait','Todavía no cumple el tiempo de residencia',
-      'Le falta tiempo como residente permanente para poder solicitar. Puede presentar hasta 90 días antes de cumplir el plazo. Aproveche para ir preparando el examen: cuando llegue el momento, ya lo tendrá andado.']
-  }[cv];
-  $('cres').innerHTML='<div class="verdict '+R[0]+'"><h5>'+R[1]+'</h5><p>'+R[2]+'</p>'+
-    '<button class="btn b-out" style="margin-top:18px" id="cagain">Volver a empezar</button></div>';
-  $('cagain').addEventListener('click',()=>{ci=0;cv='ok';$('cres').innerHTML='';$('chk').style.display='block';drawChk();});
-}
-drawChk();
-
-/* ---------- examen ---------- */
-const BANK=[
- {q:"¿Cuál es la ley suprema de la nación?",en:"What is the supreme law of the land?",
-  o:["La Constitución","La Declaración de Independencia","El Acta de Derechos Civiles"],a:0},
- {q:"¿Cuántos senadores de los Estados Unidos hay?",en:"How many U.S. Senators are there?",
-  o:["Cincuenta (50)","Cien (100)","Cuatrocientos treinta y cinco (435)"],a:1},
- {q:"¿Cuál es la capital de los Estados Unidos?",en:"What is the capital of the United States?",
-  o:["Nueva York","Filadelfia","Washington, D.C."],a:2},
- {q:"¿Por qué tiene la bandera trece franjas?",en:"Why does the flag have 13 stripes?",
-  o:["Por las trece colonias originales","Por los trece primeros presidentes","Por las trece enmiendas"],a:0}
-];
-let qi=0,qs=0,ql=false;
-function drawQ(){
-  const it=BANK[qi];ql=false;
-  $('qt').textContent=it.q;$('qe').textContent=it.en;
-  $('qf').className='q-fb';
-  const b=$('qo');b.innerHTML='';
-  it.o.forEach((t,i)=>{
-    const el=document.createElement('button');
-    el.className='q-opt';el.type='button';el.textContent=t;
-    el.addEventListener('click',()=>pickQ(i));
-    b.appendChild(el);
-  });
-}
-function pickQ(i){
-  if(ql)return;ql=true;
-  const it=BANK[qi],ok=i===it.a;
-  [...document.querySelectorAll('#qo .q-opt')].forEach((el,j)=>{
-    el.disabled=true;
-    if(j===it.a){el.classList.add('right');el.innerHTML=el.textContent+'<i>✓</i>';}
-    else if(j===i){el.classList.add('wrong');el.innerHTML=el.textContent+'<i>✕</i>';}
-  });
-  if(ok)qs++;
-  const f=$('qf');
-  f.className='q-fb on '+(ok?'good':'bad');
-  f.textContent=ok?'Correcto. Así son las 128 del banco oficial.'
-    :'La respuesta correcta está marcada. En la entrevista le hacen 20 y necesita acertar 12.';
-  setTimeout(()=>{
-    if(qi<BANK.length-1){qi++;drawQ();}
-    else{
-      f.className='q-fb on good';
-      f.innerHTML='Acertó <strong>'+qs+' de '+BANK.length+'</strong>. El banco completo tiene 128 preguntas y en la entrevista le hacen 20.';
-      $('qo').innerHTML='<a class="btn b-pri" style="width:100%" href="estudio.html">Estudiar las 128 con ganchos de memoria</a>';
-    }
-  },1800);
-}
-drawQ();
-
-/* ---------- faq ---------- */
-document.querySelectorAll('.fi').forEach(it=>{
-  const q=it.querySelector('.fq'),a=it.querySelector('.fa');
-  q.addEventListener('click',()=>{
-    const open=it.classList.contains('open');
-    document.querySelectorAll('.fi').forEach(o=>{o.classList.remove('open');o.querySelector('.fa').style.maxHeight=null;});
-    if(!open){it.classList.add('open');a.style.maxHeight=a.scrollHeight+'px';}
+    if(!open){it.classList.add("on");a.style.maxHeight=a.scrollHeight+"px";q.setAttribute("aria-expanded","true");}
   });
 });
 
-/* ---------- menú móvil ---------- */
-const bg=$('bg'),nl=$('nl');
-bg.addEventListener('click',()=>{
-  const o=nl.classList.toggle('open');
-  bg.setAttribute('aria-expanded',o);bg.textContent=o?'✕':'☰';
+/* ── menú móvil ── */
+const bg=$("#bg"), nl=$("#nl");
+bg.addEventListener("click",()=>{
+  const o=nl.classList.toggle("open");
+  bg.setAttribute("aria-expanded",String(o));
+  bg.setAttribute("aria-label",o?"Cerrar menú":"Abrir menú");
 });
-document.querySelectorAll('#nl a').forEach(a=>a.addEventListener('click',()=>{
-  nl.classList.remove('open');bg.textContent='☰';bg.setAttribute('aria-expanded','false');
+document.querySelectorAll("#nl a").forEach(a=>a.addEventListener("click",()=>{
+  nl.classList.remove("open"); bg.setAttribute("aria-expanded","false");
 }));
+
+/* ── revelado al desplazar ── */
+if(matchMedia("(prefers-reduced-motion: no-preference)").matches){
+  const io=new IntersectionObserver((es)=>es.forEach(en=>{
+    if(en.isIntersecting){en.target.classList.add("in");io.unobserve(en.target);}
+  }),{threshold:.14,rootMargin:"0px 0px -6% 0px"});
+  document.querySelectorAll(".rise").forEach(el=>io.observe(el));
+}else{
+  document.querySelectorAll(".rise").forEach(el=>el.classList.add("in"));
+}
 </script>
 </body>
 </html>
