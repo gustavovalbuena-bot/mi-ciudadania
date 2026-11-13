@@ -258,6 +258,10 @@ footer a:hover{color:var(--tx);text-decoration:underline}
 .flegal{margin-top:26px;font-size:12px;color:var(--tx-3);line-height:1.7;max-width:96ch}
 .flegal b{color:var(--tx-2)}
 
+.hnote{margin-top:22px;font-size:14px;color:var(--tx-3)}
+.costs li{display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:15px 0;border-bottom:1px solid var(--rule);font-size:15.5px;color:var(--tx-2)}
+.costs b{font-family:Archivo,Inter,sans-serif;color:var(--tx);font-size:18px;white-space:nowrap}
+.gnote{background:none;border:none;padding:0}
 /* movimiento: una entrada de héroe escalonada y revelado al desplazar */
 .hero .enter{opacity:0;transform:translateY(16px);animation:enter .9s var(--ease) forwards}
 .hero .enter:nth-child(2){animation-delay:.08s}.hero .enter:nth-child(3){animation-delay:.16s}.hero .enter:nth-child(4){animation-delay:.24s}.hero .enter:nth-child(5){animation-delay:.32s}
@@ -318,28 +322,15 @@ footer a:hover{color:var(--tx);text-decoration:underline}
         <a class="btn pri lg" href="app.html">Empezar gratis</a>
         <a class="link" href="#herramientas">Ver las herramientas <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
-      <ul class="proof enter">
-        <li><b class="num">128</b><span>preguntas del banco oficial</span></li>
-        <li><b class="num">$0</b><span>para empezar, sin tarjeta</span></li>
-        <li><b class="num">3 min</b><span>para saber si ya califica</span></li>
-      </ul>
+      <p class="hnote enter">Gratis para empezar, sin registro y sin instalar nada.</p>
     </div>
 
     <figure class="shot enter">
       <div class="frame">
         <img src="img/hero.jpg" width="1760" height="1100" fetchpriority="high" alt="Una mujer estudia para el examen de ciudadanía en su teléfono, en la mesa de su cocina, con un cuaderno de apuntes al lado.">
       </div>
-      <div class="float a">
-        <p class="k">ELEGIBLES HOY</p>
-        <p class="v num">8.5 M</p>
-        <p class="d">residentes permanentes pueden solicitar. Solo 820 mil lo hacen al año.</p>
-      </div>
-      <div class="float b">
-        <span class="ring"><svg width="38" height="38" viewBox="0 0 38 38" aria-hidden="true">
-          <circle cx="19" cy="19" r="16" fill="none" stroke="var(--rule)" stroke-width="4"/>
-          <circle cx="19" cy="19" r="16" fill="none" stroke="var(--ok)" stroke-width="4" stroke-linecap="round" stroke-dasharray="100.5" stroke-dashoffset="40.2"/></svg><i class="num">12</i></span>
-        <span class="t">de 20 preguntas para aprobar</span>
-      </div>
+      <div class="float a"><p class="d" style="margin:0"><b>8.5 millones</b> de residentes ya pueden solicitar la ciudadanía. Cada año lo hacen 820 mil.</p></div>
+      
     </figure>
   </div>
 </header>
@@ -347,8 +338,8 @@ footer a:hover{color:var(--tx);text-decoration:underline}
 <section id="herramientas">
   <div class="wrap">
     <div class="shead rise">
-      <h2>El trámite tiene cuatro preguntas. Esto responde las cuatro.</h2>
-      <p class="lede">Los demás productos solo preparan el examen. El examen es la tercera.</p>
+      <h2>Cuatro herramientas para las cuatro partes del trámite</h2>
+      <p class="lede">La mayoría de las aplicaciones solo cubren el examen. Aquí está el trámite completo.</p>
     </div>
     <div class="tools">
       <a class="tool rise" href="app.html" style="--tc:var(--azur-deep)">
@@ -387,16 +378,12 @@ footer a:hover{color:var(--tx);text-decoration:underline}
 <section class="fact">
   <div class="wrap fgrid">
     <div class="rise">
-      <h2>Para presentar el Formulario N-400 no se necesita abogado.</h2>
+      <h2>Para presentar el Formulario N-400 no se necesita abogado</h2>
       <p class="lede" style="margin-top:18px">Con una condición: que su caso sea sencillo. La primera herramienta le dice si lo es.</p>
       <p class="src">Fuente: <a href="https://www.uscis.gov/n-400" target="_blank" rel="noopener">USCIS, Formulario N-400</a></p>
     </div>
     <div class="rise">
-      <div class="bars">
-        <div class="bar"><span class="lab">Formulario</span><span class="tr"><span style="width:30%;background:var(--accent)"></span></span><span class="vl num">$760</span></div>
-        <div class="bar"><span class="lab">Abogado</span><span class="tr"><span style="width:100%;background:var(--crim)"></span></span><span class="vl num">hasta $2,500</span></div>
-        <div class="bar"><span class="lab">Nosotros</span><span class="tr"><span style="width:1.2%;background:var(--ok)"></span></span><span class="vl num">$29</span></div>
-      </div>
+      <ul class="costs"><li><span>Tarifa del Formulario N-400</span><b class="num">$760</b></li><li><span>Honorarios de un abogado</span><b class="num">$500 a $2,500</b></li><li><span>Mi Ciudadanía, acceso completo</span><b class="num">$29</b></li></ul>
       <p class="fine">La tarifa del formulario es obligatoria; el abogado, en un caso sencillo, no. En junio de 2026 el gobierno propuso subir la tarifa en papel a $1,330 y eliminar las exenciones; todavía no está vigente.</p>
     </div>
   </div>
@@ -405,12 +392,8 @@ footer a:hover{color:var(--tx);text-decoration:underline}
 <section>
   <div class="wrap cgrid">
     <div class="rise">
-      <h2>Todo lo que cubre el trámite.</h2>
-      <ul class="chips" style="margin-top:28px">
-        <li>Elegibilidad y residencia continua</li><li>Documentos y tarifas</li><li>Seguimiento de siete pasos</li>
-        <li>Banco de 128 preguntas</li><li>Inglés: lectura y dictado</li><li>Simulación de entrevista</li>
-        <li>Excepción por edad</li><li>Aviso cuando necesita abogado</li>
-      </ul>
+      <h2>Qué cubre</h2>
+      <p class="lede" style="margin-top:18px">Desde saber si cumple los requisitos de residencia hasta el día de la entrevista: documentos y tarifas, los siete pasos del proceso, las 128 preguntas, la lectura y el dictado en inglés, y las excepciones por edad. Si en algún punto su caso necesita un abogado, se lo decimos.</p>
       <div class="src-row">Todo sale de material oficial de USCIS:<br>
         <a href="https://www.uscis.gov/citizenship" target="_blank" rel="noopener">Centro de recursos</a>
         <a href="https://www.uscis.gov/n-400" target="_blank" rel="noopener">Formulario N-400</a>
@@ -431,7 +414,7 @@ footer a:hover{color:var(--tx);text-decoration:underline}
 <section class="study" id="estudio">
   <div class="wrap">
     <div class="shead rise">
-      <h2>Las 128 preguntas, agrupadas por cómo se recuerdan.</h2>
+      <h2>Las 128 preguntas, agrupadas por cómo se recuerdan</h2>
       <p class="lede">USCIS las ordena por tema, que sirve para clasificar y no para aprender. Pase el cursor por un grupo para ver su gráfico de memoria.</p>
     </div>
     <div class="gwrap rise" id="gwrap"></div>
@@ -444,20 +427,10 @@ footer a:hover{color:var(--tx);text-decoration:underline}
   <div class="wrap agrid">
     <figure class="rise"><div class="frame"><img src="img/manos.jpg" width="760" height="950" loading="lazy" alt="Las manos de un hombre mayor sostienen un documento doblado sobre una mesa de madera."></div></figure>
     <div class="rise">
-      <h2>Lo que hacemos y lo que no.</h2>
-      <p class="lede" style="margin-top:14px">Esta comunidad ha sido estafada muchas veces. Preferimos ser incómodamente claros.</p>
-      <div class="lcols">
-        <div class="yes"><h3>Sí hacemos</h3><ul>
-          <li><b>Explicarle el proceso oficial</b> traducido y ordenado.</li>
-          <li><b>Ayudarle a saber si califica</b> con las preguntas del formulario.</li>
-          <li><b>Prepararle para el examen</b> con el banco oficial completo.</li>
-          <li><b>Avisarle cuándo necesita abogado</b> y dónde buscarlo.</li></ul></div>
-        <div class="no"><h3>No hacemos</h3><ul>
-          <li><b>No somos abogados</b> ni damos asesoría sobre su caso.</li>
-          <li><b>No llenamos su solicitud</b> ni le decimos qué contestar.</li>
-          <li><b>No somos USCIS</b> ni tenemos relación con el gobierno.</li>
-          <li><b>No garantizamos resultados.</b> Nadie puede hacerlo.</li></ul></div>
-      </div>
+      <h2>Qué hacemos y qué no</h2>
+      <p class="lede" style="margin-top:14px">Esta comunidad ha sido estafada muchas veces, así que lo decimos sin rodeos.</p>
+      <p style="margin-top:22px;color:var(--tx-2)">Le explicamos el proceso oficial en español, le ayudamos a saber si califica con las mismas preguntas del formulario, y le preparamos para el examen y la entrevista. Cuando un caso necesita abogado, lo decimos y le indicamos dónde buscar uno.</p>
+      <p style="margin-top:14px;color:var(--tx-2)">No somos abogados ni parte de USCIS. No llenamos su solicitud, no opinamos sobre su caso y no garantizamos resultados; nadie puede garantizarlos.</p>
     </div>
   </div>
 </section>
@@ -465,13 +438,8 @@ footer a:hover{color:var(--tx);text-decoration:underline}
 <section id="precio" style="padding-top:0">
   <div class="wrap">
     <div class="shead rise">
-      <h2>Precio simple. Sin sorpresas.</h2>
+      <h2>Cuánto cuesta</h2>
       <p class="lede">La información del proceso es gratuita y lo seguirá siendo. Lo que se paga es el seguimiento y la práctica.</p>
-    </div>
-    <div class="steps3 rise">
-      <div style="--tc:var(--azur-deep)"><h3>Verifique</h3><p>Responda unas preguntas y sepa si su caso es sencillo.</p></div>
-      <div style="--tc:var(--ocher)"><h3>Estudie</h3><p>Aprenda las 128 preguntas por grupos, con gráficos.</p></div>
-      <div style="--tc:var(--crim)"><h3>Practique</h3><p>Ensaye la entrevista en voz alta las veces que haga falta.</p></div>
     </div>
     <div class="price rise">
       <div class="tier">
@@ -491,30 +459,16 @@ footer a:hover{color:var(--tx);text-decoration:underline}
 </section>
 
 <section class="law" id="abogados">
-  <div class="wrap lgrid">
-    <div class="rise">
-      <h2>No competimos con usted. Le mandamos los casos que sí valen.</h2>
-      <p class="lede" style="margin-top:16px">Los trámites sencillos consumen tiempo y dejan poco margen. Nosotros atendemos esos, y cuando aparece un caso con complicaciones reales, su despacho es el que aparece.</p>
-      <div class="lw">
-        <div><span class="n num">01</span><div><b>Recibe los casos complejos</b><p>Antecedentes penales, ausencias prolongadas, problemas fiscales o dudas sobre residencia continua.</p></div></div>
-        <div><span class="n num">02</span><div><b>Sus clientes llegan preparados</b><p>Les entrega la herramienta de estudio y llegan a la entrevista sabiéndose el examen.</p></div></div>
-        <div><span class="n num">03</span><div><b>Su marca, tarifa fija de $40 al mes</b><p>La aplicación lleva su nombre. Pagamos publicidad, nunca comisión: repartir honorarios es ilegal.</p></div></div>
-      </div>
-    </div>
-    <div class="triage rise">
-      <div class="trow"><span>Residencia continua sin interrupciones</span><b class="tag s">SENCILLO</b></div>
-      <div class="trow"><span>Impuestos al día, sin arrestos</span><b class="tag s">SENCILLO</b></div>
-      <div class="trow"><span>Ausencia mayor a seis meses</span><b class="tag l">A SU DESPACHO</b></div>
-      <div class="trow"><span>Cualquier arresto o cargo penal</span><b class="tag l">A SU DESPACHO</b></div>
-      <div class="trow"><span>Impuestos no declarados</span><b class="tag l">A SU DESPACHO</b></div>
-      <p class="tfoot">Nunca damos una opinión legal sobre estos casos. Solo los identificamos. Ante la duda, siempre mandamos al abogado.</p>
-    </div>
+  <div class="wrap rise" style="max-width:820px">
+    <h2>Para abogados de inmigración</h2>
+    <p class="lede" style="margin-top:16px">Los trámites sencillos le quitan tiempo y dejan poco margen. Esta herramienta atiende esos casos, y cuando alguien responde que tuvo un arresto, una ausencia de más de seis meses o impuestos sin declarar, le decimos que necesita un abogado.</p>
+    <p style="margin-top:16px;color:var(--tx-2)">Por $40 al mes su despacho aparece ante esas personas en su zona, y sus propios clientes usan el estudio y la simulación de entrevista con el nombre de su despacho. Es una tarifa fija de publicidad, no una comisión por caso: repartir honorarios con quien no es abogado está prohibido. Nunca damos opinión legal; ante la duda, remitimos al abogado.</p>
   </div>
 </section>
 
 <section id="preguntas">
   <div class="wrap fgrid2">
-    <div class="rise"><h2>Lo que la gente pregunta primero.</h2></div>
+    <div class="rise"><h2>Preguntas frecuentes</h2></div>
     <div class="faq rise">
       <div class="fi"><button class="fq" aria-expanded="false">¿De verdad puedo hacer esto sin abogado? <span class="pm"></span></button>
         <div class="fa"><p>En la mayoría de los casos, sí. USCIS dice que no se necesita abogado para presentar el Formulario N-400. Pero «la mayoría» no es «todos»: si tiene algún arresto, salió del país por más de seis meses seguidos, debe impuestos o manutención, o duda de su residencia continua, sí necesita un abogado. La primera herramienta le dice en cuál de los dos grupos está.</p></div></div>
@@ -532,7 +486,7 @@ footer a:hover{color:var(--tx);text-decoration:underline}
 
 <section class="close">
   <div class="wrap">
-    <h2>Vea si califica. Toma tres minutos.</h2>
+    <h2>Averigüe en tres minutos si ya califica</h2>
     <p class="lede">No pedimos registro ni tarjeta para empezar. Si resulta que necesita un abogado, también se lo decimos.</p>
     <div style="margin-top:30px"><a class="btn pri lg" href="app.html">Empezar gratis</a></div>
   </div>
