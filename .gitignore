@@ -42,3 +42,4 @@ build-html.js
 used_tags.txt
 DEPLOY.md
 actualizar-repo.sh
+.claude/

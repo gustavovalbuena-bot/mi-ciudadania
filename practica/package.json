@@ -1,0 +1,25 @@
+{
+  "name": "mi-ciudadania-estudio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "App de práctica diaria del examen cívico de ciudadanía (banco 2025). Web (PWA) + iOS/Android con Capacitor.",
+  "type": "module",
+  "scripts": {
+    "dev": "python3 -m http.server 5180 --directory www",
+    "ios": "npx cap sync ios && npx cap open ios",
+    "android": "npx cap sync android && npx cap open android",
+    "sync": "npx cap sync"
+  },
+  "dependencies": {
+    "@capacitor/android": "8.6.2",
+    "@capacitor/app": "8.1.2",
+    "@capacitor/core": "8.6.2",
+    "@capacitor/haptics": "8.0.2",
+    "@capacitor/ios": "8.6.2",
+    "@capacitor/local-notifications": "8.3.1",
+    "@capacitor-community/text-to-speech": "8.0.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.6.2"
+  }
+}

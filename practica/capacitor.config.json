@@ -1,0 +1,9 @@
+{
+  "appId": "com.miciudadania.estudio",
+  "appName": "Mi Ciudadanía Estudio",
+  "webDir": "www",
+  "backgroundColor": "#FFFFFF",
+  "plugins": {
+    "LocalNotifications": { "iconColor": "#1F9D74" }
+  }
+}
