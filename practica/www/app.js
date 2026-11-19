@@ -196,47 +196,80 @@ function onboarding() {
   return `<main class="lesson">${steps[ui.onb]()}</main>`;
 }
 
+/* La Ruta: cada unidad es una parada del camino; cada lección, un sello del pasaporte. */
+const RW = 340, STEP = 108, AMP = 92;
+function routePts(n, k0) {
+  return Array.from({ length: n }, (_, i) => ({ x: RW / 2 + AMP * Math.sin((k0 + i) * 0.95), y: 64 + i * STEP }));
+}
+function roadD(pts, H) {
+  let d = `M${RW / 2} 0`, px = RW / 2, py = 0;
+  for (const p of [...pts, { x: RW / 2, y: H }]) { const m = (p.y - py) / 2; d += ` C${px} ${py + m} ${p.x} ${p.y - m} ${p.x} ${p.y}`; px = p.x; py = p.y; }
+  return d;
+}
+function stamp(state, label, trophy) {
+  if (trophy) return `<svg viewBox="0 0 80 80" width="80" height="80" aria-hidden="true"><g transform="rotate(45 40 40)">
+    <rect x="14" y="14" width="52" height="52" rx="12" class="st-fill"/><rect x="20" y="20" width="40" height="40" rx="8" class="st-ring"/></g>
+    <g class="st-ink" transform="translate(28 26)"><path d="M3 2v26" stroke-width="3.2" stroke-linecap="round"/><path d="M4 3h16l-4 6 4 6H4Z" stroke-width="0"/></g></svg>`;
+  return `<svg viewBox="0 0 80 80" width="80" height="80" aria-hidden="true">
+    <circle cx="40" cy="40" r="33" class="st-fill"/><circle cx="40" cy="40" r="26.5" class="st-ring"/>
+    ${state === 'done' ? `<path class="st-ink" d="m28 41 8 8 16-17" stroke-width="5.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
+      : `<text x="40" y="49" text-anchor="middle" class="st-num">${label}</text>`}</svg>`;
+}
 function pathScreen() {
-  const us = units(), cur = currentUnit();
-  const offs = [0, -46, -72, -46, 0, 46, 72, 46];
-  const greet = !cur ? '¡Completó todas las lecciones! Ahora haga el examen de práctica.'
-    : S.day.sec >= S.goal * 60 ? 'Meta de hoy cumplida. Si quiere, siga un poco más.'
-    : doneOf(cur.key) === 0 && cur === us[0] ? 'Empecemos por lo más fácil: lugares y símbolos.'
-    : `Hoy seguimos con <b>${esc(cur.name)}</b>.`;
+  const us = units(), cur = currentUnit(), curIdx = cur ? us.findIndex(x => x.key === cur.key) : us.length;
+  const greet = !cur ? '¡Recorrió toda la ruta! Solo falta el examen de práctica.'
+    : S.day.sec >= S.goal * 60 ? 'Meta de hoy cumplida. Si quiere, avance un poco más.'
+    : doneOf(cur.key) === 0 && curIdx === 0 ? 'Este es su camino a la ciudadanía. Primera parada: lugares y símbolos.'
+    : `Siguiente parada: <b>${esc(cur.name)}</b>.`;
   let k = 0;
   const html = us.map((u, ui_) => {
-    const d = doneOf(u.key), isCur = cur && cur.key === u.key, unitLocked = cur && us.findIndex(x => x.key === cur.key) < ui_;
-    const nodes = Array.from({ length: u.n + 1 }, (_, i) => {
-      const x = offs[k++ % offs.length], trophy = i === u.n;
+    const d = doneOf(u.key), isCur = curIdx === ui_, locked = curIdx < ui_, passed = curIdx > ui_;
+    const pts = routePts(u.n + 1, k); k += u.n + 1;
+    const H = 64 + u.n * STEP + 70;
+    const reach = passed ? u.n + 1 : isCur ? d + 1 : 0;           // hasta dónde llega el tramo recorrido
+    const trail = passed ? roadD(pts, H) : reach ? roadD(pts.slice(0, reach), pts[reach - 1].y).replace(/ C[^C]*$/, '') : '';
+    const scen = pts.map((p, i) => i % 2 ? '' : `<g class="tree" transform="translate(${p.x > RW / 2 ? p.x - 118 : p.x + 104} ${p.y + 38})"><path d="M0-16 9-2H-9Z"/><path d="M0-9 11 6h-22Z"/><rect x="-1.6" y="6" width="3.2" height="5" rx="1"/></g>`).join('');
+    const nodes = pts.map((p, i) => {
+      const trophy = i === u.n;
       const state = trophy ? (d >= u.n ? 'done' : 'locked') : i < d ? 'done' : (isCur && i === d) ? 'current' : 'locked';
       const id = `${u.key}:${i}`, open = ui.pop === id;
-      const ic = trophy ? I.trophy(32) : state === 'done' ? I.check(34) : state === 'current' ? I.star(34) : I.lock(28);
-      const luzSide = x > 0 ? 'right:calc(100% + 18px)' : 'left:calc(100% + 18px)';
-      return `<div class="nwrap ${open ? 'open' : ''} ${state === 'current' ? 'cur' : ''}" style="--x:${x}px">
-        ${state === 'current' && !open ? `<span class="tip">EMPEZAR</span>` : ''}
-        <button class="node ${state} ${trophy && state === 'done' ? 'trophy' : ''}" data-a="pop" data-v="${id}" aria-label="${trophy ? 'Repaso de la unidad' : `Lección ${i + 1}`}: ${state === 'done' ? 'completada' : state === 'current' ? 'siguiente' : 'bloqueada'}">${ic}</button>
-        ${state === 'current' ? `<div class="nluz" style="${luzSide}">${luz('idle', 76)}</div>` : ''}
-        ${open ? popover(u, i, state, trophy) : ''}
-      </div>`;
+      const tilt = state === 'done' && !trophy ? ((i * 37) % 15) - 7 : 0;
+      return `<button class="stamp ${state} ${trophy ? 'check' : ''}" style="left:${p.x - 40}px;top:${p.y - 40}px;--tilt:${tilt}deg" data-a="pop" data-v="${id}"
+          aria-label="${trophy ? 'Puesto de control: repaso de la unidad' : `Lección ${i + 1}`}: ${state === 'done' ? 'completada' : state === 'current' ? 'usted está aquí' : 'bloqueada'}">${stamp(state, i + 1, trophy)}</button>
+        ${state === 'current' && !open ? `<span class="here" style="left:${p.x > RW / 2 ? p.x - 93 : p.x + 91}px;top:${p.y - 40}px">USTED ESTÁ AQUÍ</span>
+          <div class="nluz" style="left:${p.x > RW / 2 ? p.x - 132 : p.x + 52}px;top:${p.y - 34}px">${luz('idle', 78)}</div>` : ''}
+        ${open ? `<div class="pop" style="top:${p.y + 50}px">${popover(u, i, state, trophy)}</div>` : ''}`;
     }).join('');
-    return `<section class="unit" style="--u:${unitLocked ? '#9AA5B5' : u.color}">
-      <div class="ubanner"><div class="k">Unidad ${ui_ + 1} · ${u.qs.length} preguntas</div><h2>${esc(u.name)}</h2><p>${esc(u.desc)}</p></div>
-      <div class="nodes">${nodes}</div></section>`;
+    return `<section class="unit ${locked ? 'locked' : ''}" style="--u:${locked ? 'var(--lockc)' : u.color}">
+      <div class="sign"><div class="sign-in"><div class="k">Parada ${ui_ + 1}<span>${u.qs.length} preguntas</span></div><h2>${esc(u.name)}</h2><p>${esc(u.desc)}</p></div></div>
+      <div class="route" style="height:${H}px">
+        <svg class="road" viewBox="0 0 ${RW} ${H}" width="${RW}" height="${H}" aria-hidden="true">${scen}
+          <path d="${roadD(pts, H)}" class="r-base"/><path d="${roadD(pts, H)}" class="r-line"/>
+          ${trail ? `<path d="${trail}" class="r-done"/>` : ''}</svg>
+        ${nodes}</div></section>`;
   }).join('');
-  const exam = `<section class="unit" style="--u:var(--gold)"><div class="ubanner" style="background:#B07D1C;box-shadow:0 4px 0 #7E5810">
-    <div class="k">Final</div><h2>Examen de práctica</h2><p>${S.senior ? '10 preguntas en español. Aprueba con 6.' : '20 preguntas, como en la entrevista. Aprueba con 12.'}</p></div>
-    <div class="nodes"><div class="nwrap" style="--x:0px"><button class="node trophy" data-a="exam" aria-label="Empezar examen de práctica">${I.trophy(34)}</button></div></div></section>`;
-  return `${topBar()}<main class="screen">
+  const exam = `<section class="unit finale" style="--u:#B07D1C">
+    <div class="sign gold"><div class="sign-in"><div class="k">Destino<span>${S.senior ? '10 preguntas' : '20 preguntas'}</span></div><h2>Ceremonia de juramento</h2>
+    <p>${S.senior ? 'Examen de práctica en español. Aprueba con 6.' : 'Examen de práctica, como en la entrevista. Aprueba con 12.'}</p></div></div>
+    <div class="dest"><button class="capitol" data-a="exam" aria-label="Empezar examen de práctica">
+      <svg viewBox="0 0 120 96" width="132" height="106" aria-hidden="true">
+        <path d="M60 6v10" stroke="#7E5810" stroke-width="2.4"/><path d="M60 6h13l-3 4 3 4H60Z" fill="#C8414F"/>
+        <path d="M34 40a26 22 0 0 1 52 0Z" fill="#E2B53B"/><rect x="30" y="38" width="60" height="6" rx="2" fill="#C99A2E"/>
+        <path d="M14 52 60 44l46 8Z" fill="#E2B53B"/><rect x="18" y="52" width="84" height="5" fill="#C99A2E"/>
+        ${[24, 38, 52, 66, 80, 94].map(x => `<rect x="${x - 3}" y="57" width="6" height="24" rx="1.5" fill="#F1D27A"/>`).join('')}
+        <rect x="12" y="81" width="96" height="6" rx="2" fill="#C99A2E"/><rect x="6" y="87" width="108" height="6" rx="2" fill="#B07D1C"/></svg>
+      <span>Hacer el examen</span></button></div></section>`;
+  return `${topBar()}<main class="screen path">
     <div class="hello">${talk(greet, cur ? 'idle' : 'cheer', 64)}</div>${html}${exam}</main>${tabs()}`;
 }
 function popover(u, i, state, trophy) {
-  if (trophy) return `<div class="pop"><h3>Repaso de la unidad</h3>
-    ${state === 'done' ? `<p>Practique todas las preguntas de ${esc(u.name.toLowerCase())}.</p><button class="btn" data-a="unitrev" data-v="${u.key}">Repasar +10 XP</button>` : '<p>Complete todas las lecciones de esta unidad para abrirlo.</p>'}</div>`;
-  if (state === 'locked') return `<div class="pop" style="background:var(--bg2);color:var(--tx);border:2px solid var(--line)"><h3>Lección ${i + 1}</h3><p>Complete las lecciones anteriores para abrir esta.</p></div>`;
-  return `<div class="pop"><h3>${esc(u.name)}</h3><p>Lección ${i + 1} de ${u.n}</p>
-    <button class="btn" data-a="start" data-v="${u.key}:${i}">${state === 'done' ? 'Practicar de nuevo +5 XP' : 'Empezar +15 XP'}</button></div>`;
+  if (trophy) return `<div class="tk"><div class="tk-h">Puesto de control</div><div class="tk-b">
+    ${state === 'done' ? `<p>Repase todas las preguntas de ${esc(u.name.toLowerCase())} antes de seguir.</p><button class="btn" data-a="unitrev" data-v="${u.key}">Repasar +10 XP</button>` : '<p>Termine las lecciones de esta parada para abrirlo.</p>'}</div></div>`;
+  if (state === 'locked') return `<div class="tk off"><div class="tk-h">Lección ${i + 1}</div><div class="tk-b"><p>Este tramo se abre cuando termine las lecciones anteriores.</p></div></div>`;
+  return `<div class="tk"><div class="tk-h">${esc(u.name)} · ${i + 1} de ${u.n}</div><div class="tk-b">
+    <p>${state === 'done' ? 'Ya tiene este sello. Puede volver a practicarlo.' : 'Tres preguntas nuevas y un repaso. Unos cinco minutos.'}</p>
+    <button class="btn" data-a="start" data-v="${u.key}:${i}">${state === 'done' ? 'Practicar de nuevo +5 XP' : 'Empezar +15 XP'}</button></div></div>`;
 }
-
 function reviewScreen() {
   const weak = weakest(8);
   const body = weak.length ? `${talk('Estas son las preguntas que más le cuestan. Repasarlas es la forma más rápida de mejorar.')}
@@ -491,7 +524,7 @@ const actions = {
   check() { if (!L.checked) check(); },
   next() { next(); },
   streak() { R.step = 1; render(); },
-  done() { R = null; ui.tab = 'learn'; render(); requestAnimationFrame(() => document.querySelector('.node.current')?.scrollIntoView({ block: 'center' })); },
+  done() { R = null; ui.tab = 'learn'; render(); requestAnimationFrame(() => document.querySelector('.stamp.current')?.scrollIntoView({ block: 'center' })); },
 };
 
 document.addEventListener('click', e => {
@@ -524,4 +557,4 @@ P.registerSW();
 document.addEventListener('visibilitychange', () => { if (!document.hidden && S.day.date !== today()) { S.day = { date: today(), sec: 0, lessons: 0 }; save(); if (!L) render(); } });
 
 render();
-requestAnimationFrame(() => document.querySelector('.node.current')?.scrollIntoView({ block: 'center' }));
+requestAnimationFrame(() => document.querySelector('.stamp.current')?.scrollIntoView({ block: 'center' }));
