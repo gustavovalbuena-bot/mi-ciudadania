@@ -1,5 +1,5 @@
 // Caché para usar la app sin conexión. Suba VERSION al publicar cambios.
-const VERSION = 'estudio-v3';
+const VERSION = 'estudio-v4';
 const FILES = ['./', 'index.html', 'app.css', 'app.js', 'data.js', 'distractors.js', 'mascot.js', 'platform.js', 'manifest.webmanifest', 'icons/icon-192.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(VERSION).then(c => c.addAll(FILES))); self.skipWaiting(); });
 self.addEventListener('activate', e => {

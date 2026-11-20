@@ -245,6 +245,8 @@ function week() {
 }
 
 /* ───────────── bienvenida y registro ───────────── */
+// Registro con código por correo: apagado hasta configurar Resend en Vercel (ver README).
+const REGISTRO = false;
 const okEmail = e => /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(e.trim());
 const okPhone = p => { const d = p.replace(/\D/g, ''); return p.trim().startsWith('+') ? d.length >= 8 && d.length <= 15 : d.length === 10 || (d.length === 11 && d[0] === '1'); };
 function welcome() {
@@ -279,7 +281,9 @@ function welcome() {
         <li>Las preguntas vienen del banco público oficial de 2025. Usar esta app <b>no garantiza</b> que apruebe el examen ni que su solicitud sea aprobada.</li>
         <li>Para decidir sobre su caso, consulte a un abogado de inmigración o a un representante acreditado por el Departamento de Justicia.</li></ul>
       <label class="agree"><input type="checkbox" id="agree" ${r.ok ? 'checked' : ''}><span>Entiendo que Mi Ciudadanía es solo una herramienta de estudio y que no me da asesoría legal.</span></label></section>
-    <section class="w-form"><h2>Regístrese gratis</h2>
+    ${!REGISTRO ? `<section class="w-form"><button class="btn green" data-a="enter" ${r.ok ? '' : 'disabled'}>Empezar gratis</button>
+      <p class="hint-s">${r.ok ? ' ' : 'Marque la casilla del aviso para continuar.'}</p></section></main>` : ''}
+    ${REGISTRO ? `<section class="w-form"><h2>Regístrese gratis</h2>
       <p class="sub">Le enviaremos un código a su correo para entrar. Usamos su correo y teléfono solo para su cuenta y avisos de la app.</p>
       <label class="lbl" for="email">Correo electrónico</label>
       <input id="email" class="field" type="email" inputmode="email" autocomplete="email" placeholder="nombre@correo.com" value="${esc(r.email)}">
@@ -288,7 +292,7 @@ function welcome() {
       ${r.err ? `<p class="err" role="alert">${esc(r.err)}</p>` : ''}
       <button class="btn green" data-a="sendcode" ${can ? '' : 'disabled'}>${r.busy ? 'Enviando…' : 'Recibir mi código'}</button>
       <p class="hint-s">${!r.ok ? 'Marque la casilla del aviso para continuar.' : !okEmail(r.email) ? 'Escriba su correo.' : !okPhone(r.phone) ? 'Escriba su teléfono (10 dígitos en EE.UU.).' : ' '}</p>
-    </section></main>`;
+    </section></main>` : ''}`;
 }
 async function api(path, data) {
   const res = await fetch(P.API + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
@@ -432,8 +436,8 @@ function progressScreen() {
       ${P.canListen() ? sw('voiceon', S.voiceOn, 'Responder hablando', 'Ejercicios en los que contesta en voz alta en inglés') : ''}
       ${sw('senior', S.senior, 'Modo 65/20', 'Solo las 20 preguntas marcadas, en español')}
       ${P.canNotify() ? sw('remind', S.remind, 'Recordatorio diario', 'A las 7 de la noche') : ''}
-      <div class="setrow"><div style="font-weight:700">Cuenta</div><p class="sub" style="font-size:14px;margin-top:4px">${esc(S.auth?.email || '')} · ${esc(S.auth?.phone || '')}</p></div>
-      <button class="switch" data-a="logout">Cerrar sesión</button>
+      ${S.auth?.email ? `<div class="setrow"><div style="font-weight:700">Cuenta</div><p class="sub" style="font-size:14px;margin-top:4px">${esc(S.auth.email)} · ${esc(S.auth.phone || '')}</p></div>
+      <button class="switch" data-a="logout">Cerrar sesión</button>` : ''}
       <button class="switch" data-a="reset" style="color:var(--red-tx)">Borrar mi progreso</button>
     </div>
     <p class="sub" style="font-size:13.5px">Mi Ciudadanía es una herramienta de estudio, no asesoría legal. No somos abogados ni estamos afiliados a USCIS. Preguntas del banco oficial público de 2025. Su progreso se guarda en este dispositivo.</p>
@@ -629,7 +633,7 @@ function resultScreen() {
 
 /* ───────────── render y acciones ───────────── */
 function render() {
-  const html = !S.auth ? welcome() : !S.onboarded ? onboarding() : R ? resultScreen() : L ? lessonScreen()
+  const html = !S.auth || (REGISTRO && S.auth.guest) ? welcome() : !S.onboarded ? onboarding() : R ? resultScreen() : L ? lessonScreen()
     : ui.tab === 'review' ? reviewScreen() : ui.tab === 'progress' ? progressScreen() : pathScreen();
   const focus = document.activeElement?.id, pos = document.activeElement?.selectionStart;
   root.innerHTML = html + (ui.toast ? `<div class="toast" role="status">${esc(ui.toast)}</div>` : '');
@@ -649,6 +653,7 @@ function confirmBox(title, text, okLabel, onOk, danger) {
 }
 
 const actions = {
+  enter() { if (!ui.reg.ok) return; S.auth = { guest: true, accepted: Date.now() }; save(); render(); scrollTo(0, 0); },
   async sendcode() {
     const r = ui.reg; r.err = ''; r.busy = true; render();
     try { const j = await api('/api/registro/enviar', { email: r.email.trim(), phone: r.phone.trim(), acepta: r.ok }); r.token = j.token; r.step = 'otp'; r.sentAt = Date.now(); tickResend(); }
@@ -740,7 +745,8 @@ document.addEventListener('change', e => {
   if (e.target.id === 'voice') { S.voice = e.target.value; P.setVoice(S.voice); save(); P.speak('Who is the Commander in Chief of the military?'); }
 });
 function refreshReg() {                                 // sin re-render para no perder el foco al escribir
-  const r = ui.reg, btn = document.querySelector('[data-a="sendcode"]'), h = document.querySelector('.hint-s');
+  const r = ui.reg, btn = document.querySelector('[data-a="sendcode"]'), h = document.querySelector('.hint-s'), go = document.querySelector('[data-a="enter"]');
+  if (go) { go.disabled = !r.ok; if (h) h.textContent = r.ok ? ' ' : 'Marque la casilla del aviso para continuar.'; return; }
   if (btn) btn.disabled = !(r.ok && okEmail(r.email) && okPhone(r.phone) && !r.busy);
   if (h) h.textContent = !r.ok ? 'Marque la casilla del aviso para continuar.' : !okEmail(r.email) ? 'Escriba su correo.' : !okPhone(r.phone) ? 'Escriba su teléfono (10 dígitos en EE.UU.).' : ' ';
 }
