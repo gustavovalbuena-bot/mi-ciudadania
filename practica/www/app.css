@@ -297,6 +297,9 @@ select.field{appearance:auto}
 .opts.grid2{grid-template-columns:1fr 1fr}
 .opts.grid2 .opt{font-size:15.5px;padding:13px 12px}
 .opt .key svg{display:block}
+.opt .ot{display:grid;gap:2px;min-width:0}
+.opt .ot small{font-size:.82em;font-weight:500;color:var(--tx);opacity:.62;line-height:1.25}
+.opt.right .ot small,.opt.wrong .ot small{color:inherit;opacity:.85}
 .sentence{font-size:21px;font-weight:700;line-height:1.9;padding:6px 0}
 .gap{display:inline-block;min-width:110px;border-bottom:3px solid var(--line2);text-align:center;padding:0 8px;line-height:1.3}
 .gap.filled{border-color:var(--blue);color:var(--blue)} .gap.ok{border-color:var(--green);color:var(--green-tx)} .gap.bad{border-color:var(--red);color:var(--red-tx)}

@@ -70,15 +70,24 @@ const answersOf = (q, lang) => (lang === 'en' ? q.answers_en : q.answers_es).fil
 const wrongsOf = (q, lang) => (WRONG[q.id] || []).map(s => s.split('|')[lang === 'en' ? 0 : 1]);
 const plain = s => s.replace(/\(.*?\)/g, '').replace(/\s+/g, ' ').replace(/\s([.,])/g, '$1').trim();
 
-function mc(q, lang) {
-  const correct = pick(answersOf(q, lang));
-  return { options: shuffle([correct, ...shuffle(wrongsOf(q, lang)).slice(0, 3)]), correct };
+// Opciones bilingües: se califica por el texto principal y se muestra la traducción debajo.
+// Principal en inglés (así se responde en la entrevista); en modo 65/20, en español.
+const goodPairs = q => q.answers_en.map((en, i) => [en, q.answers_es[i] || en]).filter(([en, es]) => !BAD.test(en) && !BAD.test(es));
+const badPairs = q => (WRONG[q.id] || []).map(s => { const [en, es] = s.split('|'); return [en, es || en]; });
+function asOptions(pairs) {
+  const main = S.senior ? 1 : 0;
+  return { options: pairs.map(p => p[main]), tr: Object.fromEntries(pairs.map(p => [p[main], p[1 - main]])) };
 }
-function multi(q, lang) {
+function mc(q) {
+  const c = pick(goodPairs(q)), o = asOptions(shuffle([c, ...shuffle(badPairs(q)).slice(0, 3)]));
+  return { ...o, correct: c[S.senior ? 1 : 0] };
+}
+function multi(q) {
   const k = MULTI[q.id], total = k === 2 ? 6 : k === 3 ? 8 : 10;
-  const good = shuffle(answersOf(q, lang)).slice(0, k);
-  return { k, options: shuffle([...good, ...shuffle(wrongsOf(q, lang)).slice(0, total - k)]), correct: good };
+  const good = shuffle(goodPairs(q)).slice(0, k), o = asOptions(shuffle([...good, ...shuffle(badPairs(q)).slice(0, total - k)]));
+  return { k, ...o, correct: good.map(p => p[S.senior ? 1 : 0]) };
 }
+const optText = (it, o) => { const t = it.tr?.[o]; return `<span class="ot"><span>${esc(o)}</span>${t && norm(t) !== norm(o) ? `<small>${esc(t)}</small>` : ''}</span>`; };
 function tilesFor(q) {
   if (MULTI[q.id]) return null;
   const cand = answersOf(q, 'en').map(plain).map(a => a.replace(/\.$/, '')).filter(a => { const w = a.split(' ').length; return w >= 2 && w <= 7; });
@@ -453,7 +462,7 @@ function startSession(kind, items, meta = {}) {
 }
 const cur = () => L.items[L.pos];
 function onItem() { const it = cur(); if (it?.type === 'listen') setTimeout(() => P.speak(QBY[it.id].q_en), 350); }
-const readAll = it => P.speak([QBY[it.id].q_en, ...it.options.map((o, i) => `${i + 1}. ${plain(o)}`)]);
+const readAll = it => P.speak([QBY[it.id].q_en, ...it.options.map((o, i) => `${i + 1}. ${plain(S.senior ? it.tr?.[o] || o : o)}`)]);
 
 function qHeader(q, lang, big = true) {         // la pregunta siempre en los dos idiomas, con lectura completa en inglés
   const en = `<p class="${big && lang === 'en' ? 'prompt' : 'sub'} qen"><button class="say" data-a="say" data-v="q" aria-label="Escuchar la pregunta en inglés">${I.speaker(big && lang === 'en' ? 26 : 20)}</button><span>${esc(q.q_en)}</span></p>`;
@@ -467,10 +476,10 @@ function lessonScreen() {
     <div class="bar" role="progressbar" aria-valuenow="${Math.round(pct)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${Math.max(pct, 3)}%"></i></div>
     ${L.kind === 'exam' ? `<span class="score num" style="color:var(--green)">${L.correct}</span><span class="score num" style="color:var(--red)">${L.wrong}</span>` : ''}</div>`;
   let body = '', canCheck = false, direct = false;
-  const readBtn = it.lang === 'en' && it.options ? `<button class="chip" data-a="readall">${I.list(18)} Escuchar pregunta y opciones</button>` : '';
+  const readBtn = (it.type === 'mc' || it.type === 'multi' || it.type === 'listen') && !S.senior ? `<button class="chip" data-a="readall">${I.list(18)} Escuchar pregunta y opciones</button>` : '';
   const opts = () => `<div class="opts" role="radiogroup">${it.options.map((o, i) => {
     const st = L.checked ? (o === it.correct ? 'right' : L.sel === i ? 'wrong' : '') : L.sel === i ? 'on' : '';
-    return `<button class="opt ${st}" data-a="sel" data-v="${i}" role="radio" aria-checked="${L.sel === i}" ${L.checked ? 'disabled' : ''}><span class="key">${i + 1}</span>${esc(o)}</button>`; }).join('')}</div>`;
+    return `<button class="opt ${st}" data-a="sel" data-v="${i}" role="radio" aria-checked="${L.sel === i}" ${L.checked ? 'disabled' : ''}><span class="key">${i + 1}</span>${optText(it, o)}</button>`; }).join('')}</div>`;
 
   if (it.type === 'teach') {
     direct = true;
@@ -484,7 +493,7 @@ function lessonScreen() {
       ${q.viz && VIZ[q.viz] ? `<div class="viz">${VIZ[q.viz]}</div>` : ''}</div>`;
   } else if (it.type === 'mc') {
     canCheck = L.sel != null;
-    body = `<h1 class="kind">${it.lang === 'en' ? 'Elija la respuesta en inglés' : 'Elija la respuesta correcta'}</h1>${qHeader(q, it.lang)}${readBtn}${opts()}`;
+    body = `<h1 class="kind">${it.lang === 'en' ? 'Elija la respuesta en inglés' : S.senior ? 'Elija la respuesta correcta' : 'Elija la respuesta correcta en inglés'}</h1>${qHeader(q, it.lang)}${readBtn}${opts()}`;
   } else if (it.type === 'multi') {
     canCheck = L.multi.length === it.k;
     const n = { 2: 'dos', 3: 'tres', 5: 'cinco' }[it.k];
@@ -493,7 +502,7 @@ function lessonScreen() {
       <div class="opts grid2">${it.options.map((o, i) => {
         const on = L.multi.includes(i), right = it.correct.includes(o);
         const st = L.checked ? (right ? 'right' : on ? 'wrong' : '') : on ? 'on' : '';
-        return `<button class="opt ${st}" data-a="msel" data-v="${i}" role="checkbox" aria-checked="${on}" ${L.checked ? 'disabled' : ''}><span class="key">${on || (L.checked && right) ? I.check(14) : ''}</span>${esc(o)}</button>`; }).join('')}</div>`;
+        return `<button class="opt ${st}" data-a="msel" data-v="${i}" role="checkbox" aria-checked="${on}" ${L.checked ? 'disabled' : ''}><span class="key">${on || (L.checked && right) ? I.check(14) : ''}</span>${optText(it, o)}</button>`; }).join('')}</div>`;
   } else if (it.type === 'listen') {
     canCheck = L.sel != null;
     body = `<h1 class="kind">Escuche la pregunta y elija la respuesta</h1>
@@ -540,8 +549,9 @@ function lessonScreen() {
   let foot;
   if (L.checked) {
     const ok = L.checked === 'ok';
-    const ans = it.type === 'tiles' ? it.target : it.type === 'multi' ? it.correct.join(' · ') : it.type === 'blank' ? it.full
-      : it.type === 'speak' ? answersOf(q, 'en').slice(0, MULTI[q.id] || 1).join(' · ') : it.correct;
+    const withTr = o => it.tr?.[o] && norm(it.tr[o]) !== norm(o) ? `${o} (${it.tr[o]})` : o;
+    const ans = it.type === 'tiles' ? it.target : it.type === 'multi' ? it.correct.map(withTr).join(' · ') : it.type === 'blank' ? it.full
+      : it.type === 'speak' ? answersOf(q, 'en').slice(0, MULTI[q.id] || 1).join(' · ') : withTr(it.correct);
     foot = `<footer class="lfoot ${ok ? 'ok' : 'bad'}" role="status"><div class="fb"><span class="ic">${ok ? I.check(30) : I.x(26)}</span><div>
       <h3>${ok ? L.praise : 'Respuesta correcta:'}</h3>
       ${ok ? (it.type === 'blank' ? `<p class="h">${esc(it.full)}</p>` : '') : `<p>${esc(ans)}</p>${q.ancla ? `<p class="h">Recuerde: ${esc(q.ancla)}</p>` : ''}`}</div></div>
